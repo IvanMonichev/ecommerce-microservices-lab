@@ -1,0 +1,22 @@
+import type { Request, Response } from 'express'
+import { UsersService } from './user.service.js'
+
+export class UsersController {
+  constructor(private readonly service: UsersService) {}
+
+  create = async (req: Request, res: Response) => {
+    const user = await this.service.create(req.body)
+    res.status(201).json(user)
+  }
+
+  get = async (req: Request, res: Response) => {
+    const user = await this.service.get(req.params.id)
+    res.json(user)
+  }
+
+  list = async (req: Request, res: Response) => {
+    const limit = Number(req.query.limit ?? 20)
+    const users = await this.service.list(limit)
+    res.json(users)
+  }
+}
