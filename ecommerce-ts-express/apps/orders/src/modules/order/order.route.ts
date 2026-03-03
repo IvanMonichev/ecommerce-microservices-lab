@@ -13,6 +13,7 @@ export function ordersRouter() {
   router.post('/', controller.create)
   router.get('/', controller.listAll)
   router.get('/:id', controller.getById)
+  router.get('/all/http', controller.listAllHttp)
 
   return router
 }

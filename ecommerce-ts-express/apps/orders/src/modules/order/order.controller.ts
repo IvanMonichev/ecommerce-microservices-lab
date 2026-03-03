@@ -38,4 +38,14 @@ export class OrderController {
       next(error)
     }
   }
+
+  listAllHttp = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { page, limit, offset } = normalizePagination(req.query)
+      const result = await this.service.listAllHttp({ page, limit, offset })
+      res.json(result)
+    } catch (e) {
+      next(e)
+    }
+  }
 }

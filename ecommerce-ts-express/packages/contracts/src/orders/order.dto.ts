@@ -1,5 +1,5 @@
 import { Currency } from '../common/currency.enum.js'
-import { OrderItemDto } from './order-item.enum.js'
+import { OrderItemDto, OrderProductDto } from './order-item.enum.js'
 import { OrderStatus } from './order-status.enum.js'
 
 export type OrderDto = {
@@ -12,11 +12,12 @@ export type OrderDto = {
   updatedAt: string
 }
 
-export type CreateOrderDto = Omit<
-  OrderDto,
-  'createdAt' | 'updatedAt' | 'id' | 'status'
->
+export type OrderWithProductDto = Omit<OrderDto, 'items'> & {
+  products: OrderProductDto[]
+}
 
-export type OrderViewDto = OrderDto & {
-  totalAmount: string
+export type CreateOrderDto = {
+  userId: string
+  currency: Currency
+  items: OrderItemDto[]
 }

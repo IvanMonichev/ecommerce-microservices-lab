@@ -37,4 +37,29 @@ export class ProductController {
       next(e)
     }
   }
+
+  batch = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const ids = req.body?.ids
+
+      if (!Array.isArray(ids) || ids.length === 0) {
+        return res
+          .status(400)
+          .json({ message: 'ids must be a non-empty array' })
+      }
+
+      // легкая валидация
+      const normalized = ids.map(String).filter(Boolean)
+      if (normalized.length === 0) {
+        return res
+          .status(400)
+          .json({ message: 'ids must contain non-empty strings' })
+      }
+
+      const result = await this.service.batch(normalized)
+      res.json(result)
+    } catch (e) {
+      next(e)
+    }
+  }
 }

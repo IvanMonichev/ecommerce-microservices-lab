@@ -2,13 +2,16 @@ import {
   CreateOrderDto,
   Currency,
   OrderDto,
-  OrderStatus
+  OrderStatus,
+  OrderWithProductDto,
+  ProductDto
 } from '@repo/contracts'
 import { PaginatedResponse } from '@repo/contracts'
+import { getEnv } from '../../config/env.js'
 import { AppDataSource } from '../../config/postgres.js'
 import { OrderItemEntity } from '../order-item/order-item.entity.js'
 import { OrderEntity } from './order.entity.js'
-import { toOrderDto } from './order.mapper.js'
+import { toOrderDto, toOrderWithProducts } from './order.mapper.js'
 import { OrderRepo } from './order.repo.js'
 
 export class OrderService {
@@ -73,5 +76,53 @@ export class OrderService {
       limit: params.limit,
       total
     }
+  }
+
+  async listAllHttp(params: {
+    page: number
+    limit: number
+    offset: number
+  }): Promise<PaginatedResponse<OrderWithProductDto>> {
+    const { rows, total } = await this.repo.findAll({
+      offset: params.offset,
+      limit: params.limit
+    })
+
+    const ids = Array.from(
+      new Set(rows.flatMap((o) => (o.items ?? []).map((i) => i.productId)))
+    )
+
+    const products = await this.getProductsBatchHttp(ids)
+
+    return {
+      data: rows.map((o) => toOrderWithProducts(o, products)),
+      page: params.page,
+      limit: params.limit,
+      total
+    }
+  }
+
+  private async getProductsBatchHttp(ids: string[]): Promise<ProductDto[]> {
+    if (ids.length === 0) return []
+
+    const env = getEnv()
+    const base = env.productsBaseUrl
+
+    const res = await fetch(`${base}/batch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids })
+    })
+
+    if (!res.ok) {
+      const text = await res.text()
+      const err: any = new Error(
+        `Products service error (${res.status}): ${text}`
+      )
+      err.statusCode = 502
+      throw err
+    }
+
+    return res.json()
   }
 }

@@ -1,4 +1,4 @@
-import { CreateProductDto, Currency } from '@repo/contracts'
+import { CreateProductDto, Currency, ProductDto } from '@repo/contracts'
 import { ProductRepo } from './product.repo.js'
 
 export class ProductService {
@@ -19,5 +19,11 @@ export class ProductService {
 
   list(limit: number) {
     return this.repo.list(limit)
+  }
+
+  async batch(ids: string[]): Promise<ProductDto[]> {
+    if (!ids.length) return []
+
+    return this.repo.findByProductIds(ids)
   }
 }

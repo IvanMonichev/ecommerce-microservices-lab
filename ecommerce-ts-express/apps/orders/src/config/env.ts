@@ -7,6 +7,7 @@ export type Env = {
   postgresDb: string
   postgresUser: string
   postgresPassword: string
+  productsBaseUrl: string
 }
 
 function required(name: string, value: string | undefined): string {
@@ -14,10 +15,15 @@ function required(name: string, value: string | undefined): string {
   return value
 }
 
-function toNumber(name: string, value: string | undefined, fallback: number): number {
+function toNumber(
+  name: string,
+  value: string | undefined,
+  fallback: number
+): number {
   const raw = value ?? String(fallback)
   const n = Number(raw)
-  if (!Number.isFinite(n)) throw new Error(`Invalid number env var: ${name}="${raw}"`)
+  if (!Number.isFinite(n))
+    throw new Error(`Invalid number env var: ${name}="${raw}"`)
   return n
 }
 
@@ -30,7 +36,11 @@ export function getEnv(): Env {
     postgresPort: toNumber('POSTGRES_PORT', process.env.POSTGRES_PORT, 5432),
     postgresDb: required('POSTGRES_DB', process.env.POSTGRES_DB),
     postgresUser: required('POSTGRES_USER', process.env.POSTGRES_USER),
-    postgresPassword: required('POSTGRES_PASSWORD', process.env.POSTGRES_PASSWORD),
-
+    postgresPassword: required(
+      'POSTGRES_PASSWORD',
+      process.env.POSTGRES_PASSWORD
+    ),
+    productsBaseUrl:
+      process.env.PRODUCTS_BASE_UR ?? 'http://localhost:3030/api/products'
   }
 }

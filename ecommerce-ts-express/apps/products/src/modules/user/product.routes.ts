@@ -11,6 +11,7 @@ export function productRouter() {
   const controller = new ProductController(service)
 
   router.get('/', controller.list)
+  router.post('/batch', controller.batch)
   router.get('/:productId', controller.get)
   router.post('/', controller.create)
 

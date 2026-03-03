@@ -1,4 +1,4 @@
-import { CreateProductDto } from '@repo/contracts'
+import { CreateProductDto, ProductDto } from '@repo/contracts'
 import { ProductModel } from './product.model.js'
 
 export class ProductRepo {
@@ -14,11 +14,7 @@ export class ProductRepo {
     return ProductModel.find().sort({ createdAt: -1 }).limit(limit).lean()
   }
 
-  async updateStock(productId: string, delta: number) {
-    return ProductModel.findOneAndUpdate(
-      { product_id: productId },
-      { $inc: { stock: delta } },
-      { new: true }
-    ).lean()
+  async findByProductIds(ids: string[]): Promise<ProductDto[]> {
+    return ProductModel.find({ product_id: { $in: ids } }).lean()
   }
 }
