@@ -1,42 +1,89 @@
 services:
-  mongo:
+  mongo-users:
     image: mongo:7
-    container_name: infra-mongo
+    container_name: infra-mongo-users
     restart: unless-stopped
     ports:
-      - "${MONGO_PORT:-27017}:27017"
+      - "${MONGO_USERS_PORT:-27017}:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-admin}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS:-password}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERS_ROOT_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_USERS_ROOT_PASS:-password}
     volumes:
-      - mongo_data:/data/db
+      - mongo_users_data:/data/db
     healthcheck:
       test:
         [
           "CMD",
           "mongosh",
           "--quiet",
-          "mongodb://${MONGO_ROOT_USER:-admin}:${MONGO_ROOT_PASS:-password}@localhost:27017/admin?authSource=admin",
+          "mongodb://${MONGO_USERS_ROOT_USER:-admin}:${MONGO_USERS_ROOT_PASS:-password}@localhost:27017/admin?authSource=admin",
           "--eval",
           "db.runCommand({ ping: 1 }).ok"
         ]
       interval: 5s
       timeout: 3s
       retries: 20
+    networks:
+      - infra-net
 
-  mongo-express:
+  mongo-express-users:
     image: mongo-express:1
-    container_name: infra-mongo-express
+    container_name: infra-mongo-express-users
     restart: unless-stopped
     depends_on:
-      mongo:
+      mongo-users:
         condition: service_healthy
     ports:
-      - "8081:8081"
+      - "${MONGO_EXPRESS_USERS_PORT:-8081}:8081"
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER:-admin}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASS:-password}
-      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_ROOT_USER:-admin}:${MONGO_ROOT_PASS:-password}@mongo:27017/admin?authSource=admin
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_USERS_ROOT_USER:-admin}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_USERS_ROOT_PASS:-password}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_USERS_ROOT_USER:-admin}:${MONGO_USERS_ROOT_PASS:-password}@mongo-users:27017/admin?authSource=admin
+    networks:
+      - infra-net
+
+  mongo-products:
+    image: mongo:7
+    container_name: infra-mongo-products
+    restart: unless-stopped
+    ports:
+      - "${MONGO_PRODUCTS_PORT:-27018}:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_PRODUCTS_ROOT_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PRODUCTS_ROOT_PASS:-password}
+    volumes:
+      - mongo_products_data:/data/db
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--quiet",
+          "mongodb://${MONGO_PRODUCTS_ROOT_USER:-admin}:${MONGO_PRODUCTS_ROOT_PASS:-password}@localhost:27017/admin?authSource=admin",
+          "--eval",
+          "db.runCommand({ ping: 1 }).ok"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - infra-net
+
+  mongo-express-products:
+    image: mongo-express:1
+    container_name: infra-mongo-express-products
+    restart: unless-stopped
+    depends_on:
+      mongo-products:
+        condition: service_healthy
+    ports:
+      - "${MONGO_EXPRESS_PRODUCTS_PORT:-8083}:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_PRODUCTS_ROOT_USER:-admin}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_PRODUCTS_ROOT_PASS:-password}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_PRODUCTS_ROOT_USER:-admin}:${MONGO_PRODUCTS_ROOT_PASS:-password}@mongo-products:27017/admin?authSource=admin
+    networks:
+      - infra-net
 
   postgres:
     image: postgres:16
@@ -59,6 +106,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+    networks:
+      - infra-net
 
   pgadmin:
     image: dpage/pgadmin4:8
@@ -74,9 +123,15 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-password}
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - infra-net
 
+networks:
+  infra-net:
+    driver: bridge
 
 volumes:
-  mongo_data:
+  mongo_users_data:
+  mongo_products_data:
   postgres_data:
   pgadmin_data:

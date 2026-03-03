@@ -1,4 +1,4 @@
-import { Currency } from './currency.enum.js'
+import { Currency } from '../common/currency.enum.js'
 import { OrderItemDto } from './order-item.enum.js'
 import { OrderStatus } from './order-status.enum.js'
 

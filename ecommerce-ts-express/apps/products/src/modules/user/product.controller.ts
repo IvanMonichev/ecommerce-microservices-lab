@@ -1,0 +1,40 @@
+import type { Request, Response, NextFunction } from 'express'
+import { ProductService } from './product.service.js'
+
+export class ProductController {
+  constructor(private readonly service: ProductService) {}
+
+  create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this.service.create(req.body)
+      res.status(201).json(result)
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  get = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const productId = req.params.productId
+      if (!productId)
+        return res.status(400).json({ message: 'productId is required' })
+
+      const result = await this.service.get(productId as string)
+      if (!result) return res.status(404).json({ message: 'Not found' })
+
+      res.json(result)
+    } catch (e) {
+      next(e)
+    }
+  }
+
+  list = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const limit = Number(req.query.limit ?? 20)
+      const result = await this.service.list(limit)
+      res.json(result)
+    } catch (e) {
+      next(e)
+    }
+  }
+}
