@@ -18,7 +18,6 @@ export function requestIdMiddleware(opts: RequestIdOptions = {}): RequestHandler
 
     res.setHeader(headerName, requestId)
 
-    // кладём в req для удобства (без декларации типов, чтобы не усложнять)
     ;(req as any).requestId = requestId
 
     next()

@@ -1,0 +1,77 @@
+import {
+  CreateOrderDto,
+  Currency,
+  OrderDto,
+  OrderStatus
+} from '@repo/contracts'
+import { PaginatedResponse } from '@repo/contracts'
+import { AppDataSource } from '../../config/postgres.js'
+import { OrderItemEntity } from '../order-item/order-item.entity.js'
+import { OrderEntity } from './order.entity.js'
+import { toOrderDto } from './order.mapper.js'
+import { OrderRepo } from './order.repo.js'
+
+export class OrderService {
+  constructor(private readonly repo: OrderRepo) {}
+
+  async create(dto: CreateOrderDto): Promise<OrderDto> {
+    if (dto.items.length === 0) throw new Error('items is required')
+
+    return AppDataSource.transaction(async (manager) => {
+      const orderRepo = manager.getRepository(OrderEntity)
+      const itemRepo = manager.getRepository(OrderItemEntity)
+
+      const currency = Currency.RUB // Упрощение
+
+      const order = orderRepo.create({
+        userId: dto.userId,
+        status: OrderStatus.NEW,
+        currency
+      })
+
+      const saved = await orderRepo.save(order)
+
+      const items = dto.items.map((it) =>
+        itemRepo.create({
+          orderId: saved.id,
+          productId: it.productId,
+          quantity: it.quantity
+        })
+      )
+
+      await itemRepo.save(items)
+
+      const full = await orderRepo.findOne({
+        where: { id: saved.id },
+        relations: { items: true }
+      })
+      if (!full) throw new Error('Order not found after create')
+
+      return toOrderDto(full)
+    })
+  }
+
+  async getById(orderId: string): Promise<OrderDto> {
+    const order = await this.repo.findById(orderId)
+    if (!order) throw new Error('Order not found')
+    return toOrderDto(order)
+  }
+
+  async listAll(params: {
+    page: number
+    limit: number
+    offset: number
+  }): Promise<PaginatedResponse<OrderDto>> {
+    const { rows, total } = await this.repo.findAll({
+      offset: params.offset,
+      limit: params.limit
+    })
+
+    return {
+      data: rows.map(toOrderDto),
+      page: params.page,
+      limit: params.limit,
+      total
+    }
+  }
+}

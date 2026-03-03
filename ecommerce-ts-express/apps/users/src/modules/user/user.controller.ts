@@ -10,7 +10,7 @@ export class UsersController {
   }
 
   get = async (req: Request, res: Response) => {
-    const user = await this.service.get(req.params.id)
+    const user = await this.service.get(req.params.id as string)
     res.json(user)
   }
 

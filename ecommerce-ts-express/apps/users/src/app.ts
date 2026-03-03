@@ -1,12 +1,11 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import 'dotenv/config'
-import { Logger, notFoundMiddleware } from '@repo/common'
+import { errorMiddleware, Logger, notFoundMiddleware } from '@repo/common'
 import { httpLoggerMiddleware, requestIdMiddleware } from '@repo/common'
 import { initCollections } from './initial-collections.js'
+import { usersRouter } from './modules/user/user.routes.js'
 
-import { usersRouter } from './modules/user.routes.js'
-import { errorMiddleware } from './shared/middleware/error.middleware.js'
 import { connectMongo } from './config/mongo.js'
 import { getEnv } from './config/env.js'
 
@@ -29,7 +28,7 @@ export function createApp(logger: Logger) {
   app.use('/api/users', usersRouter())
 
   app.use(notFoundMiddleware)
-  app.use(errorMiddleware)
+  app.use(errorMiddleware(logger))
 
   return app
 }

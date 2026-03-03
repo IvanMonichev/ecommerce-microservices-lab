@@ -5,11 +5,14 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "check-types": "turbo run check-types"
+    "check-types": "turbo run check-types",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "pino-pretty": "^13.1.3",
+    "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "turbo": "^2.8.12",
     "typescript": "5.9.2"

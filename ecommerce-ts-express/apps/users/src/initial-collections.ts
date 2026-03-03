@@ -1,5 +1,5 @@
 import type { Logger } from '@repo/common'
-import { UserModel } from './modules/user.model.js'
+import { UserModel } from './modules/user/user.model.js'
 
 export async function initCollections(logger: Logger) {
   logger.info('Инициализация коллекций...')

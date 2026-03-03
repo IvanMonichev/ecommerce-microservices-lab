@@ -18,9 +18,4 @@ export class UsersRepo {
   async list(limit: number) {
     return UserModel.find().sort({ createdAt: -1 }).limit(limit).lean()
   }
-
-  async deleteById(id: string) {
-    const res = await UserModel.deleteOne({ _id: id })
-    return res.deletedCount === 1
-  }
 }
