@@ -9,8 +9,10 @@
     "check-types": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@repo/contracts": "*",
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.0",
     "@repo/common": "*",
+    "@repo/contracts": "*",
     "mongoose": "^9.2.3"
   }
 }

@@ -14,6 +14,7 @@ export function ordersRouter() {
   router.get('/', controller.listAll)
   router.get('/:id', controller.getById)
   router.get('/all/http', controller.listAllHttp)
+  router.get('/all/grpc', controller.listAllGrpc)
 
   return router
 }

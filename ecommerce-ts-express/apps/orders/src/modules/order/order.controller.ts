@@ -48,4 +48,14 @@ export class OrderController {
       next(e)
     }
   }
+
+  listAllGrpc = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { page, limit, offset } = normalizePagination(req.query)
+      const result = await this.service.listAllGrpc({ page, limit, offset })
+      res.json(result)
+    } catch (e) {
+      next(e)
+    }
+  }
 }

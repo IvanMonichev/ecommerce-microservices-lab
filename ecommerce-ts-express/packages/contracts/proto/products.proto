@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package products.v1;
+
+service ProductsService {
+  rpc Batch (BatchProductsRequest) returns (BatchProductsResponse);
+}
+
+message BatchProductsRequest {
+  repeated string ids = 1;
+}
+
+message Product {
+  string _id = 1;
+  string product_id = 2;
+  string name = 3;
+  string price = 4;
+  string currency = 5;
+  string createdAt = 6;
+  string updatedAt = 7;
+}
+
+message BatchProductsResponse {
+  repeated Product products = 1;
+}

@@ -8,6 +8,7 @@ export type Env = {
   postgresUser: string
   postgresPassword: string
   productsBaseUrl: string
+  productsGrpcAddress: string
 }
 
 function required(name: string, value: string | undefined): string {
@@ -41,6 +42,7 @@ export function getEnv(): Env {
       process.env.POSTGRES_PASSWORD
     ),
     productsBaseUrl:
-      process.env.PRODUCTS_BASE_UR ?? 'http://localhost:3030/api/products'
+      process.env.PRODUCTS_BASE_UR ?? 'http://localhost:3030/api/products',
+    productsGrpcAddress: process.env.PRODUCTS_GRPC_ADDRESS ?? '0.0.0.0:50051'
   }
 }

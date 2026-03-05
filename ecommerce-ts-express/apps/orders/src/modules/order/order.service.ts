@@ -6,9 +6,11 @@ import {
   OrderWithProductDto,
   ProductDto
 } from '@repo/contracts'
+import * as grpc from '@grpc/grpc-js'
 import { PaginatedResponse } from '@repo/contracts'
 import { getEnv } from '../../config/env.js'
 import { AppDataSource } from '../../config/postgres.js'
+import { ProductsGrpcClient } from '../../grpc/products.client.js'
 import { OrderItemEntity } from '../order-item/order-item.entity.js'
 import { OrderEntity } from './order.entity.js'
 import { toOrderDto, toOrderWithProducts } from './order.mapper.js'
@@ -124,5 +126,49 @@ export class OrderService {
     }
 
     return res.json()
+  }
+
+  async listAllGrpc(params: { page: number; limit: number; offset: number }) {
+    const { rows, total } = await this.repo.findAll({
+      offset: params.offset,
+      limit: params.limit
+    })
+
+    const ids = Array.from(
+      new Set(rows.flatMap((o) => (o.items ?? []).map((i) => i.productId)))
+    )
+
+    const products = await this.getProductsBatchGrpc(ids)
+
+    return {
+      data: rows.map((o) => toOrderWithProducts(o, products)),
+      page: params.page,
+      limit: params.limit,
+      total
+    }
+  }
+
+  private async getProductsBatchGrpc(ids: string[]): Promise<ProductDto[]> {
+    if (ids.length === 0) return []
+
+    const env = getEnv()
+    const client = new ProductsGrpcClient(env.productsGrpcAddress) // например "products:50051"
+
+    try {
+      return await client.batch(ids, 2000)
+    } catch (e: any) {
+      // Приводим к тому же смыслу, что и HTTP 502
+      const err: any = new Error(
+        `Products gRPC error (${e?.code ?? 'unknown'}): ${e?.message ?? e}`
+      )
+      err.statusCode = 502
+
+      // если хочешь различать timeout:
+      if (e?.code === grpc.status.DEADLINE_EXCEEDED) {
+        err.statusCode = 504
+      }
+
+      throw err
+    }
   }
 }

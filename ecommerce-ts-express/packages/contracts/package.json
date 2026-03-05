@@ -17,7 +17,8 @@
     "./errors": {
       "types": "./dist/errors.d.ts",
       "default": "./dist/errors.js"
-    }
+    },
+    "./proto/products.proto": "./proto/products.proto"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
