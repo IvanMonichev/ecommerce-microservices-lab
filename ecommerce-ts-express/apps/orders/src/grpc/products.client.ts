@@ -1,10 +1,7 @@
 import * as grpc from '@grpc/grpc-js'
 import * as protoLoader from '@grpc/proto-loader'
 import { createRequire } from 'node:module'
-import { fileURLToPath } from 'node:url'
 import type { ProductDto } from '@repo/contracts'
-
-const __filename = fileURLToPath(import.meta.url)
 
 const require = createRequire(import.meta.url)
 
@@ -60,4 +57,11 @@ export class ProductsGrpcClient {
       )
     })
   }
+}
+
+let singleton: ProductsGrpcClient | null = null
+
+export function getProductsClient(address: string) {
+  if (!singleton) singleton = new ProductsGrpcClient(address)
+  return singleton
 }

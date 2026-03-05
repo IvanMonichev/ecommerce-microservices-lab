@@ -10,14 +10,20 @@ import * as grpc from '@grpc/grpc-js'
 import { PaginatedResponse } from '@repo/contracts'
 import { getEnv } from '../../config/env.js'
 import { AppDataSource } from '../../config/postgres.js'
-import { ProductsGrpcClient } from '../../grpc/products.client.js'
+import {
+  getProductsClient,
+  ProductsGrpcClient
+} from '../../grpc/products.client.js'
 import { OrderItemEntity } from '../order-item/order-item.entity.js'
 import { OrderEntity } from './order.entity.js'
 import { toOrderDto, toOrderWithProducts } from './order.mapper.js'
 import { OrderRepo } from './order.repo.js'
 
 export class OrderService {
-  constructor(private readonly repo: OrderRepo) {}
+  constructor(
+    private readonly repo: OrderRepo,
+    private readonly productsGrpcClient: ProductsGrpcClient
+  ) {}
 
   async create(dto: CreateOrderDto): Promise<OrderDto> {
     if (dto.items.length === 0) throw new Error('items is required')
@@ -151,11 +157,8 @@ export class OrderService {
   private async getProductsBatchGrpc(ids: string[]): Promise<ProductDto[]> {
     if (ids.length === 0) return []
 
-    const env = getEnv()
-    const client = new ProductsGrpcClient(env.productsGrpcAddress) // например "products:50051"
-
     try {
-      return await client.batch(ids, 2000)
+      return await this.productsGrpcClient.batch(ids, 2000)
     } catch (e: any) {
       // Приводим к тому же смыслу, что и HTTP 502
       const err: any = new Error(
