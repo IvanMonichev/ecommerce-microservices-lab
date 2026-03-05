@@ -9,6 +9,7 @@ export type Env = {
   postgresPassword: string
   productsBaseUrl: string
   productsGrpcAddress: string
+  rabbitUrl: string
 }
 
 function required(name: string, value: string | undefined): string {
@@ -43,6 +44,7 @@ export function getEnv(): Env {
     ),
     productsBaseUrl:
       process.env.PRODUCTS_BASE_UR ?? 'http://localhost:3030/api/products',
-    productsGrpcAddress: process.env.PRODUCTS_GRPC_ADDRESS ?? '0.0.0.0:50051'
+    productsGrpcAddress: process.env.PRODUCTS_GRPC_ADDRESS ?? '0.0.0.0:50051',
+    rabbitUrl: process.env.RABBIT_URL ?? 'amqp://localhost:5672'
   }
 }

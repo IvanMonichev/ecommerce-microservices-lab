@@ -21,3 +21,8 @@ export type CreateOrderDto = {
   currency: Currency
   items: OrderItemDto[]
 }
+
+export type OrderStatusUpdate = {
+  orderId: string
+  status: OrderStatus
+}

@@ -126,6 +126,28 @@ services:
     networks:
       - infra-net
 
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: infra-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"        # AMQP
+      - "${RABBITMQ_UI_PORT:-15672}:15672"   # Web UI
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS:-password}
+      # опционально: дефолтный vhost
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST:-/}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - infra-net
+
 networks:
   infra-net:
     driver: bridge
@@ -135,3 +157,4 @@ volumes:
   mongo_products_data:
   postgres_data:
   pgadmin_data:
+  rabbitmq_data:

@@ -5,14 +5,8 @@ import { OrderController } from './order.controller.js'
 import { OrderRepo } from './order.repo.js'
 import { OrderService } from './order.service.js'
 
-export function ordersRouter() {
+export function ordersRouter(controller: OrderController) {
   const router = Router()
-
-  const repo = new OrderRepo()
-  const env = getEnv()
-  const productsClient = new ProductsGrpcClient(env.productsGrpcAddress)
-  const service = new OrderService(repo, productsClient)
-  const controller = new OrderController(service)
 
   router.post('/', controller.create)
   router.get('/', controller.listAll)

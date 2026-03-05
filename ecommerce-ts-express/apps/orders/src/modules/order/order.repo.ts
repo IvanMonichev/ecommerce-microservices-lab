@@ -1,3 +1,4 @@
+import { OrderStatus } from '@repo/contracts'
 import { Repository } from 'typeorm'
 import { AppDataSource } from '../../config/postgres.js'
 import { OrderEntity } from './order.entity.js'
@@ -33,5 +34,9 @@ export class OrderRepo {
     })
 
     return { rows, total }
+  }
+
+  async updateStatus(orderId: string, status: OrderStatus) {
+    return this.repo.update({ id: orderId }, { status })
   }
 }

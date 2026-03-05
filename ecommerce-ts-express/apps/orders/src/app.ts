@@ -8,9 +8,14 @@ import { httpLoggerMiddleware, requestIdMiddleware } from '@repo/common'
 
 import { getEnv } from './config/env.js'
 import { AppDataSource } from './config/postgres.js'
+import { ProductsGrpcClient } from './grpc/products.client.js'
+import { OrderController } from './modules/order/order.controller.js'
+import { OrderRepo } from './modules/order/order.repo.js'
 import { ordersRouter } from './modules/order/order.route.js'
+import { OrderService } from './modules/order/order.service.js'
+import { startStatusUpdateConsumer } from './rabbit/status-update.consumer.js'
 
-export function createApp(logger: Logger) {
+export async function createApp(logger: Logger) {
   const app = express()
 
   app.use(requestIdMiddleware())
@@ -34,7 +39,14 @@ export function createApp(logger: Logger) {
     }
   })
 
-  app.use('/api/orders', ordersRouter())
+  const repo = new OrderRepo()
+  const env = getEnv()
+  const productsClient = new ProductsGrpcClient(env.productsGrpcAddress)
+  const service = new OrderService(repo, productsClient)
+  const controller = new OrderController(service)
+  await startStatusUpdateConsumer(new OrderRepo())
+
+  app.use('/api/orders', ordersRouter(controller))
 
   app.use(notFoundMiddleware)
   app.use(errorMiddleware(logger))
@@ -44,12 +56,14 @@ export function createApp(logger: Logger) {
 
 async function bootstrap() {
   const env = getEnv()
-  const logger = (await import('@repo/common')).createLogger({ service: env.serviceName })
+  const logger = (await import('@repo/common')).createLogger({
+    service: env.serviceName
+  })
 
   await AppDataSource.initialize()
   logger.info('🗄 Подключение к Postgres установлено')
 
-  const app = createApp(logger)
+  const app = await createApp(logger)
 
   const server = app.listen(env.port, () => {
     logger.info(`🚀 Сервер на http://localhost:${env.port} запущен!`)

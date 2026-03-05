@@ -13,8 +13,12 @@
     "@grpc/proto-loader": "^0.8.0",
     "@repo/common": "*",
     "@repo/contracts": "*",
+    "amqplib": "^0.10.9",
     "pg": "^8.19.0",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.28"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.8"
   }
 }
