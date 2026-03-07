@@ -15,11 +15,10 @@ export class ProductController {
 
   get = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const productId = req.params.productId
-      if (!productId)
-        return res.status(400).json({ message: 'productId is required' })
+      const id = req.params.id
+      if (!id) return res.status(400).json({ message: 'productId is required' })
 
-      const result = await this.service.get(productId as string)
+      const result = await this.service.get(id as string)
       if (!result) return res.status(404).json({ message: 'Not found' })
 
       res.json(result)
@@ -48,7 +47,6 @@ export class ProductController {
           .json({ message: 'ids must be a non-empty array' })
       }
 
-      // легкая валидация
       const normalized = ids.map(String).filter(Boolean)
       if (normalized.length === 0) {
         return res
