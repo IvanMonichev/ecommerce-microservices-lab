@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "seed:products": "node seed-products.js"
+    "seed:products": "node seed-products.js",
+    "seed:users": "node seed-users.js",
+    "seed:orders": "node seed-orders.js"
   },
   "keywords": [],
   "author": "",

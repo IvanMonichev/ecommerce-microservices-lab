@@ -3,13 +3,11 @@ import { faker } from '@faker-js/faker'
 const BASE_URL = 'http://localhost:3030/api/products'
 const COUNT = 100
 
-function generateProduct(i) {
+function generateProduct() {
     return {
-        product_id: String(i),
         name: faker.commerce.productName(),
-        price: faker.commerce.price({ min: 100, max: 5000 }),
+        price: faker.commerce.price({ min: 100, max: 50000 }),
         currency: 'RUB',
-        stock: faker.number.int({ min: 0, max: 1000 })
     }
 }
 
@@ -32,11 +30,11 @@ async function seed() {
     console.log(`Seeding ${COUNT} products...`)
 
     for (let i = 1; i <= COUNT; i++) {
-        const product = generateProduct(i)
+        const product = generateProduct()
 
         try {
             const result = await createProduct(product)
-            console.log(`✔ ${result.product_id} - ${result.name}`)
+            console.log(`✔ ${i + 1} - ${result.name}`)
         } catch (err) {
             console.error(`✖ Error for product ${i}:`, err.message)
         }
