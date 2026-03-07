@@ -6,15 +6,17 @@ export class ProductRepo {
     return ProductModel.create(data)
   }
 
-  findByProductId(productId: string) {
-    return ProductModel.findOne({ product_id: productId }).lean()
+  findById(id: string) {
+    return ProductModel.findById(id).lean()
   }
 
   list(limit: number) {
     return ProductModel.find().sort({ createdAt: -1 }).limit(limit).lean()
   }
 
-  async findByProductIds(ids: string[]): Promise<ProductDto[]> {
-    return ProductModel.find({ product_id: { $in: ids } }).lean()
+  async findByIds(ids: string[]): Promise<ProductDto[]> {
+    return ProductModel.find({
+      _id: { $in: ids }
+    }).lean()
   }
 }

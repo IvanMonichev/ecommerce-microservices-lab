@@ -12,12 +12,11 @@ message BatchProductsRequest {
 
 message Product {
   string _id = 1;
-  string product_id = 2;
-  string name = 3;
-  string price = 4;
-  string currency = 5;
-  string createdAt = 6;
-  string updatedAt = 7;
+  string name = 2;
+  string price = 3;
+  string currency = 4;
+  string createdAt = 5;
+  string updatedAt = 6;
 }
 
 message BatchProductsResponse {

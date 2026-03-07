@@ -13,6 +13,7 @@ export function usersRouter() {
   router.get('/', controller.list)
   router.get('/:id', controller.get)
   router.post('/', controller.create)
+  router.post('/batch', controller.getByIds)
 
   return router
 }

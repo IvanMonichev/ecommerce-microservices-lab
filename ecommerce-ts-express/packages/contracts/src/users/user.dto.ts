@@ -1,8 +1,9 @@
 export interface UserDto {
-  id: string
+  _id: string
   email: string
   name: string
   createdAt: string
+  updatedAt: string
 }
 
 export interface CreateUserDto {

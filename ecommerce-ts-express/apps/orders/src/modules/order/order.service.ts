@@ -1,19 +1,16 @@
+import * as grpc from '@grpc/grpc-js'
 import {
   CreateOrderDto,
   Currency,
   OrderDto,
   OrderStatus,
   OrderWithProductDto,
+  PaginatedResponse,
   ProductDto
 } from '@repo/contracts'
-import * as grpc from '@grpc/grpc-js'
-import { PaginatedResponse } from '@repo/contracts'
 import { getEnv } from '../../config/env.js'
 import { AppDataSource } from '../../config/postgres.js'
-import {
-  getProductsClient,
-  ProductsGrpcClient
-} from '../../grpc/products.client.js'
+import { ProductsGrpcClient } from '../../grpc/products.client.js'
 import { OrderItemEntity } from '../order-item/order-item.entity.js'
 import { OrderEntity } from './order.entity.js'
 import { toOrderDto, toOrderWithProducts } from './order.mapper.js'
@@ -102,6 +99,7 @@ export class OrderService {
 
     const products = await this.getProductsBatchHttp(ids)
 
+    console.log('products', products)
     return {
       data: rows.map((o) => toOrderWithProducts(o, products)),
       page: params.page,
@@ -160,7 +158,6 @@ export class OrderService {
     try {
       return await this.productsGrpcClient.batch(ids, 2000)
     } catch (e: any) {
-      // Приводим к тому же смыслу, что и HTTP 502
       const err: any = new Error(
         `Products gRPC error (${e?.code ?? 'unknown'}): ${e?.message ?? e}`
       )

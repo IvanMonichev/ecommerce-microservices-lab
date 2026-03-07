@@ -40,7 +40,6 @@ export function startProductsGrpcServer(opts: {
 
         const mapped = products.map((p) => ({
           _id: p._id,
-          product_id: p.product_id,
           name: p.name,
           price: p.price,
           currency: String(p.currency),

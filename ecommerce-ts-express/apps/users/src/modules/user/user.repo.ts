@@ -18,4 +18,12 @@ export class UsersRepo {
   async list(limit: number) {
     return UserModel.find().sort({ createdAt: -1 }).limit(limit).lean()
   }
+
+  async findByIds(ids: string[]) {
+    const uniqueIds = [...new Set(ids)]
+
+    return UserModel.find({
+      _id: { $in: uniqueIds }
+    }).lean()
+  }
 }

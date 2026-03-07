@@ -12,7 +12,7 @@ export function productRouter() {
 
   router.get('/', controller.list)
   router.post('/batch', controller.batch)
-  router.get('/:productId', controller.get)
+  router.get('/:id', controller.get)
   router.post('/', controller.create)
 
   return router

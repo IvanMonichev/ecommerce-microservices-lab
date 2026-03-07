@@ -19,4 +19,10 @@ export class UsersController {
     const users = await this.service.list(limit)
     res.json(users)
   }
+
+  getByIds = async (req: Request, res: Response) => {
+    const body = req.body as { ids: string[] }
+    const users = await this.service.getByIds(body.ids)
+    res.json(users)
+  }
 }

@@ -27,20 +27,18 @@ export function toOrderWithProducts(
   order: OrderEntity,
   products: ProductDto[]
 ): OrderWithProductDto {
-  const byId = new Map(products.map((p) => [p.product_id, p]))
+  const byId = new Map(products.map((p) => [p._id, p]))
+  const productsWithQuantity = order.items.map((it) => {
+    const p = byId.get(it.productId) as ProductDto
+    return { ...p, quantity: it.quantity }
+  })
 
   return {
     id: order.id,
     userId: order.userId,
     status: order.status,
     currency: order.currency,
-    products: (order.items ?? [])
-      .map((it) => {
-        const p = byId.get(it.productId)
-        if (!p) return null
-        return { ...p, quantity: it.quantity }
-      })
-      .filter(Boolean) as any,
+    products: productsWithQuantity,
     createdAt: order.createdAt.toISOString(),
     updatedAt: order.updatedAt.toISOString()
   }

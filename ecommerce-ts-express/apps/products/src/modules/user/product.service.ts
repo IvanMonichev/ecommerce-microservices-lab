@@ -6,15 +6,14 @@ export class ProductService {
 
   create(dto: CreateProductDto) {
     return this.repo.create({
-      product_id: dto.product_id,
       name: dto.name,
       price: dto.price,
       currency: dto.currency ?? Currency.RUB
     })
   }
 
-  get(productId: string) {
-    return this.repo.findByProductId(productId)
+  get(id: string) {
+    return this.repo.findById(id)
   }
 
   list(limit: number) {
@@ -24,6 +23,6 @@ export class ProductService {
   async batch(ids: string[]): Promise<ProductDto[]> {
     if (!ids.length) return []
 
-    return this.repo.findByProductIds(ids)
+    return this.repo.findByIds(ids)
   }
 }

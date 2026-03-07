@@ -3,7 +3,6 @@ import mongoose from 'mongoose'
 
 const productSchema = new mongoose.Schema<ProductDto>(
   {
-    product_id: { type: String, required: true, unique: true, index: true },
     name: { type: String, required: true },
     price: { type: String, required: true },
     currency: {
