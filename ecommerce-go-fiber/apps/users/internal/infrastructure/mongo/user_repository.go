@@ -1,4 +1,4 @@
-package repository
+package mongo
 
 import (
 	"context"
@@ -10,18 +10,11 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
-type UserRepository interface {
-	Create(ctx context.Context, user domain.User) (domain.User, error)
-	FindAll(ctx context.Context) ([]domain.User, error)
-	FindByID(ctx context.Context, id string) (*domain.User, error)
-	FindByIDs(ctx context.Context, ids []string) ([]domain.User, error)
-}
-
 type mongoUserRepository struct {
 	collection *mongo.Collection
 }
 
-func NewUserRepository(collection *mongo.Collection) UserRepository {
+func NewUserRepository(collection *mongo.Collection) domain.UserRepository {
 	return &mongoUserRepository{
 		collection: collection,
 	}

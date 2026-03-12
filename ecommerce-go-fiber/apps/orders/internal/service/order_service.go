@@ -12,7 +12,7 @@ import (
 var ErrInvalidUserInput = errors.New("invalid user input")
 var ErrUserNotFound = errors.New("user not found")
 
-type UserService interface {
+type OrderService interface {
 	Create(ctx context.Context, dto users.CreateUserDTO) (domain.User, error)
 	FindAll(ctx context.Context) ([]domain.User, error)
 	FindByID(ctx context.Context, id string) (*domain.User, error)

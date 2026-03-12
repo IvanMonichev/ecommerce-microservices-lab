@@ -1,9 +1,5 @@
 import { Router } from 'express'
-import { getEnv } from '../../config/env.js'
-import { ProductsGrpcClient } from '../../grpc/products.client.js'
 import { OrderController } from './order.controller.js'
-import { OrderRepo } from './order.repo.js'
-import { OrderService } from './order.service.js'
 
 export function ordersRouter(controller: OrderController) {
   const router = Router()

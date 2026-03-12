@@ -8,20 +8,20 @@ import (
 )
 
 type Env struct {
-	AppPort      string
-	MongoURI     string
-	MongoDBName  string
-	UserCollName string
+	UserPort        string
+	UserMongoURI    string
+	UserMongoDBName string
+	UserCollName    string
 }
 
 func LoadEnv() Env {
 	loadDotEnv()
 
 	return Env{
-		AppPort:      getEnv("APP_PORT", "3010"),
-		MongoURI:     getEnv("MONGO_URI", "mongodb://admin:password@localhost:27017"),
-		MongoDBName:  getEnv("MONGO_DB_NAME", "users_db"),
-		UserCollName: getEnv("USER_COLLECTION_NAME", "users"),
+		UserPort:        getEnv("USER_PORT", "3010"),
+		UserMongoURI:    getEnv("USER_MONGO_URI", "mongodb://admin:password@localhost:27017"),
+		UserMongoDBName: getEnv("USER_MONGO_DB_NAME", "users_db"),
+		UserCollName:    getEnv("USER_COLLECTION_NAME", "users"),
 	}
 }
 
