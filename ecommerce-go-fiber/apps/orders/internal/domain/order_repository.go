@@ -10,5 +10,5 @@ import (
 type OrderRepository interface {
 	Create(ctx context.Context, order Order) (Order, error)
 	FindByID(ctx context.Context, id string) (*Order, error)
-	FindAll(ctx context.Context, params common.ListOrdersQuery) (common.PaginatedResponse[orders.OrderDTO], error)
+	FindAll(ctx context.Context, params common.PaginationQuery) (common.PaginatedResponse[orders.OrderDTO], error)
 }

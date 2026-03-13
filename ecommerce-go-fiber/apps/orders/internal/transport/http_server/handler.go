@@ -1,11 +1,10 @@
-package http
+package http_server
 
 import (
 	"errors"
 
 	"github.com/gofiber/fiber/v3"
-	"github.com/ivanmonichev/ecommerce-go-fiber/apps/users/internal/mapper"
-	"github.com/ivanmonichev/ecommerce-go-fiber/apps/users/internal/service"
+	"github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/service"
 	contractUsers "github.com/ivanmonichev/ecommerce-go-fiber/shared/contracts/users"
 )
 

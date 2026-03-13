@@ -99,7 +99,6 @@ export class OrderService {
 
     const products = await this.getProductsBatchHttp(ids)
 
-    console.log('products', products)
     return {
       data: rows.map((o) => toOrderWithProducts(o, products)),
       page: params.page,
