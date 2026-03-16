@@ -11,13 +11,17 @@ import (
 	"github.com/ivanmonichev/ecommerce-go-fiber/shared/contracts/products"
 )
 
-type ProductsHTTPClient struct {
+type ProductsHTTPClient interface {
+	Batch(ctx context.Context, ids []string) ([]products.ProductDTO, error)
+}
+
+type productsHTTPClient struct {
 	baseURL string
 	client  *http.Client
 }
 
-func NewProductsHTTPClient(baseURL string) *ProductsHTTPClient {
-	return &ProductsHTTPClient{
+func NewProductsHTTPClient(baseURL string) ProductsHTTPClient {
+	return &productsHTTPClient{
 		baseURL: baseURL,
 		client: &http.Client{
 			Timeout: 3 * time.Second,
@@ -25,7 +29,10 @@ func NewProductsHTTPClient(baseURL string) *ProductsHTTPClient {
 	}
 }
 
-func (c *ProductsHTTPClient) Batch(ctx context.Context, ids []string) ([]products.ProductDTO, error) {
+func (c *productsHTTPClient) Batch(
+	ctx context.Context,
+	ids []string,
+) ([]products.ProductDTO, error) {
 	if len(ids) == 0 {
 		return []products.ProductDTO{}, nil
 	}

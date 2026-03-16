@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package products.v1;
+
+option go_package = "github.com/ivanmonichev/ecommerce-go-fiber/shared/contracts/proto/productsv1;productsv1";
+
+service ProductsService {
+  rpc Batch (BatchProductsRequest) returns (BatchProductsResponse);
+}
+
+message BatchProductsRequest {
+  repeated string ids = 1;
+}
+
+message Product {
+  string id = 1;
+  string name = 2;
+  string price = 3;
+  string currency = 4;
+  string createdAt = 5;
+  string updatedAt = 6;
+}
+
+message BatchProductsResponse {
+  repeated Product products = 1;
+}

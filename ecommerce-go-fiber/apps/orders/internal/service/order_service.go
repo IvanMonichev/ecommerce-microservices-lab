@@ -19,14 +19,14 @@ var ErrInvalidOrderStatus = errors.New("invalid order status")
 
 type OrderService struct {
 	repo               *repository.OrderRepository
-	productsHTTPClient *httpclient.ProductsHTTPClient
-	productsGRPCClient *grpcclient.ProductsGRPCClient
+	productsHTTPClient httpclient.ProductsHTTPClient
+	productsGRPCClient grpcclient.ProductsGRPCClient
 }
 
 func NewOrderService(
 	repo *repository.OrderRepository,
-	productsHTTPClient *httpclient.ProductsHTTPClient,
-	productsGRPCClient *grpcclient.ProductsGRPCClient,
+	productsHTTPClient httpclient.ProductsHTTPClient,
+	productsGRPCClient grpcclient.ProductsGRPCClient,
 ) *OrderService {
 	return &OrderService{
 		repo:               repo,
@@ -84,6 +84,30 @@ func (s *OrderService) ListAllHTTP(
 	ids := collectProductIDs(result.Rows)
 
 	productsList, err := s.productsHTTPClient.Batch(ctx, ids)
+	if err != nil {
+		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, err
+	}
+
+	return s.buildOrdersWithProducts(query, result, productsList), nil
+}
+
+func (s *OrderService) ListAllGRPC(
+	ctx context.Context,
+	query common.PaginationQuery,
+) (common.PaginatedResponse[orders.OrderWithProductDTO], error) {
+	query = query.Normalize()
+
+	result, err := s.repo.FindAll(ctx, repository.PaginationParams{
+		Offset: query.Offset(),
+		Limit:  query.Limit,
+	})
+	if err != nil {
+		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, err
+	}
+
+	ids := collectProductIDs(result.Rows)
+
+	productsList, err := s.productsGRPCClient.Batch(ctx, ids)
 	if err != nil {
 		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, err
 	}

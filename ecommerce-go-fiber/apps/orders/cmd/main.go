@@ -9,6 +9,7 @@ import (
 	"github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/config"
 	"github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/repository"
 	"github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/service"
+	grpcclient "github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/transport/grpc_client"
 	httpclient "github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/transport/http_client"
 	"github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/transport/http_server"
 )
@@ -25,23 +26,28 @@ func main() {
 
 	orderRepo := repository.NewOrderRepository(pool)
 
-	productsHTTPClient := httpclient.NewProductsHTTPClient(env.ProductsBaseURL)
+	productsHTTPClient := httpclient.NewProductsHTTPClient(env.ProductsHTTPURL)
+
+	productsGRPCClient, err := grpcclient.NewProductsGRPCClient(env.ProductsGRPCAddr)
+	if err != nil {
+		log.Fatalf("failed to create products grpc client: %v", err)
+	}
+	defer productsGRPCClient.Close()
 
 	orderService := service.NewOrderService(
 		orderRepo,
 		productsHTTPClient,
-		nil, // gRPC client позже
+		productsGRPCClient,
 	)
 
 	handler := http_server.NewHandler(orderService)
 
 	app := fiber.New()
-
 	app.Use(logger.New())
 
 	http_server.RegisterRoutes(app, handler)
 
-	log.Printf("orders service running on port %d", env.Port)
+	log.Printf("orders service running on port %s", env.Port)
 
 	if err := app.Listen(":" + env.Port); err != nil {
 		log.Fatal(err)

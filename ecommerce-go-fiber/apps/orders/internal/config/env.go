@@ -14,7 +14,7 @@ type Env struct {
 	PostgresDB       string
 	PostgresUser     string
 	PostgresPassword string
-	ProductsBaseURL  string
+	ProductsHTTPURL  string
 	ProductsGRPCAddr string
 	RabbitURL        string
 }
@@ -58,8 +58,8 @@ func LoadEnv() Env {
 		PostgresDB:       getString("POSTGRES_DB", "orders"),
 		PostgresUser:     getString("POSTGRES_USER", "admin"),
 		PostgresPassword: getString("POSTGRES_PASSWORD", "password"),
-		ProductsBaseURL:  getString("PRODUCTS_BASE_URL", "http://localhost:4030/api/products"),
-		ProductsGRPCAddr: getString("PRODUCTS_GRPC_ADDRESS", "0.0.0.0:50051"),
+		ProductsHTTPURL:  getString("PRODUCTS_HTTP_URL", "http://localhost:4030/api/products"),
+		ProductsGRPCAddr: getString("PRODUCTS_GRPC_ADDRESS", "0.0.0.0:50052"),
 		RabbitURL:        getString("RABBIT_URL", "amqp://localhost:5672"),
 	}
 }

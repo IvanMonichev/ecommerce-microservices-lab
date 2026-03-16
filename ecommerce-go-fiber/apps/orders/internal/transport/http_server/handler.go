@@ -80,3 +80,22 @@ func (h *Handler) GetOrdersHTTP(c fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(result)
 }
+
+func (h *Handler) GetOrdersGRPC(c fiber.Ctx) error {
+	var query common.PaginationQuery
+
+	if err := c.Bind().Query(&query); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "invalid query params",
+		})
+	}
+
+	result, err := h.orderService.ListAllGRPC(c.Context(), query)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "internal server error",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(result)
+}
