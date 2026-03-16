@@ -130,7 +130,7 @@ func (s *OrderService) buildOrdersWithProducts(
 	}
 
 	return common.PaginatedResponse[orders.OrderWithProductDTO]{
-		Items: items,
+		Data:  items,
 		Total: result.Total,
 		Page:  query.Page,
 		Limit: query.Limit,

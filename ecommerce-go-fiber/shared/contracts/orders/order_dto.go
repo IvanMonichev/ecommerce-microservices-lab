@@ -40,7 +40,7 @@ type OrderViewDTO struct {
 	Status    OrderStatus       `json:"status"`
 	Currency  common.Currency   `json:"currency"`
 	Products  []OrderProductDTO `json:"products"`
-	User      users.UserDTO     `json:"user"`
+	User      users.UserDTO     `json:"product"`
 	CreatedAt string            `json:"createdAt"`
 	UpdatedAt string            `json:"updatedAt"`
 }

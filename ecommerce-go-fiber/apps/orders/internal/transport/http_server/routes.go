@@ -4,9 +4,8 @@ import "github.com/gofiber/fiber/v3"
 
 func RegisterRoutes(app *fiber.App, handler *Handler) {
 
-	users := app.Group("/api/users")
-	users.Post("/", handler.CreateUser)
-	users.Get("/", handler.GetUsers)
-	users.Get("/:id", handler.GetUserByID)
-	users.Post("/batch", handler.BatchGetUsers)
+	users := app.Group("/api/orders")
+	users.Post("/", handler.CreateOrder)
+	users.Get("/:id", handler.GetOrderByID)
+	users.Get("/all/http", handler.GetOrdersHTTP)
 }

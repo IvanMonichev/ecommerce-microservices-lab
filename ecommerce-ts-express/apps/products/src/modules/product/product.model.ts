@@ -1,7 +1,8 @@
-import { Currency, ProductDto } from '@repo/contracts'
+import { Currency } from '@repo/contracts'
 import mongoose from 'mongoose'
+import { ProductEntity } from './product.entity.js'
 
-const productSchema = new mongoose.Schema<ProductDto>(
+const productSchema = new mongoose.Schema<ProductEntity>(
   {
     name: { type: String, required: true },
     price: { type: String, required: true },
@@ -15,4 +16,7 @@ const productSchema = new mongoose.Schema<ProductDto>(
   { timestamps: true, versionKey: false }
 )
 
-export const ProductModel = mongoose.model<ProductDto>('Product', productSchema)
+export const ProductModel = mongoose.model<ProductEntity>(
+  'Product',
+  productSchema
+)

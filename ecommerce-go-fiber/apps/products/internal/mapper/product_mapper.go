@@ -1,9 +1,8 @@
 package mapper
 
 import (
-	"time"
-
 	"github.com/ivanmonichev/ecommerce-go-fiber/apps/products/internal/domain"
+	"github.com/ivanmonichev/ecommerce-go-fiber/shared/common"
 	contractProducts "github.com/ivanmonichev/ecommerce-go-fiber/shared/contracts/products"
 )
 
@@ -13,8 +12,8 @@ func ToProductDTO(product domain.Product) contractProducts.ProductDTO {
 		Name:      product.Name,
 		Price:     product.Price,
 		Currency:  product.Currency,
-		CreatedAt: product.CreatedAt.Format(time.RFC3339),
-		UpdatedAt: product.UpdatedAt.Format(time.RFC3339),
+		CreatedAt: product.CreatedAt.Format(common.RFC3339Milli),
+		UpdatedAt: product.UpdatedAt.Format(common.RFC3339Milli),
 	}
 }
 

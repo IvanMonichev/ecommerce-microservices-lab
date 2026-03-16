@@ -43,7 +43,7 @@ export class ProductsGrpcClient {
           if (err) return reject(err)
 
           const products = (res?.products ?? []).map((p) => ({
-            _id: p._id,
+            id: p.id,
             name: p.name,
             price: p.price,
             currency: p.currency,

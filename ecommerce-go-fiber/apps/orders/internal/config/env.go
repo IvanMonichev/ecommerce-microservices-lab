@@ -7,7 +7,7 @@ import (
 )
 
 type Env struct {
-	Port             int
+	Port             string
 	ServiceName      string
 	PostgresHost     string
 	PostgresPort     int
@@ -49,16 +49,16 @@ func getInt(name string, fallback int) int {
 	return n
 }
 
-func GetEnv() Env {
+func LoadEnv() Env {
 	return Env{
-		Port:             getInt("PORT", 4020),
+		Port:             getString("PORT", "4020"),
 		ServiceName:      getString("SERVICE_NAME", "orders"),
 		PostgresHost:     getString("POSTGRES_HOST", "localhost"),
 		PostgresPort:     getInt("POSTGRES_PORT", 5432),
-		PostgresDB:       required("POSTGRES_DB"),
-		PostgresUser:     required("POSTGRES_USER"),
-		PostgresPassword: required("POSTGRES_PASSWORD"),
-		ProductsBaseURL:  getString("PRODUCTS_BASE_URL", "http://localhost:3030/api/products"),
+		PostgresDB:       getString("POSTGRES_DB", "orders"),
+		PostgresUser:     getString("POSTGRES_USER", "admin"),
+		PostgresPassword: getString("POSTGRES_PASSWORD", "password"),
+		ProductsBaseURL:  getString("PRODUCTS_BASE_URL", "http://localhost:4030/api/products"),
 		ProductsGRPCAddr: getString("PRODUCTS_GRPC_ADDRESS", "0.0.0.0:50051"),
 		RabbitURL:        getString("RABBIT_URL", "amqp://localhost:5672"),
 	}

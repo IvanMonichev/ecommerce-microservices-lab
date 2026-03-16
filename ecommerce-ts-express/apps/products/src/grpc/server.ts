@@ -1,7 +1,8 @@
 import * as grpc from '@grpc/grpc-js'
 import * as protoLoader from '@grpc/proto-loader'
+import { ProductDto } from '@repo/contracts'
 import { createRequire } from 'node:module'
-import { ProductService } from '../modules/user/product.service.js'
+import { ProductService } from '../modules/product/product.service.js'
 const require = createRequire(import.meta.url)
 
 const PROTO_PATH = require.resolve('@repo/contracts/proto/products.proto')
@@ -38,11 +39,11 @@ export function startProductsGrpcServer(opts: {
 
         const products = await opts.productService.batch(normalized)
 
-        const mapped = products.map((p) => ({
-          _id: p._id,
+        const mapped: ProductDto[] = products.map((p) => ({
+          id: p._id,
           name: p.name,
           price: p.price,
-          currency: String(p.currency),
+          currency: p.currency,
           createdAt: p.createdAt,
           updatedAt: p.updatedAt
         }))

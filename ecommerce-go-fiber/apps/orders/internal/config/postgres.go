@@ -9,7 +9,7 @@ import (
 
 func NewPostgresPool(ctx context.Context, env Env) (*pgxpool.Pool, error) {
 	dsn := fmt.Sprintf(
-		"postgres://%s:%s@%s:%d/%s",
+		"postgres://%s:%s@%s:%d/%s?sslmode=disable",
 		env.PostgresUser,
 		env.PostgresPassword,
 		env.PostgresHost,

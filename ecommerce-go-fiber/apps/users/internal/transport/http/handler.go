@@ -68,7 +68,7 @@ func (h *Handler) GetUserByID(c fiber.Ctx) error {
 	if err != nil {
 		if errors.Is(err, service.ErrUserNotFound) {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-				"message": "user not found",
+				"message": "product not found",
 			})
 		}
 

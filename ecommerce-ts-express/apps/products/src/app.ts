@@ -6,9 +6,9 @@ import { httpLoggerMiddleware, requestIdMiddleware } from '@repo/common'
 import { connectMongo } from './config/mongo.js'
 import { getEnv } from './config/env.js'
 import { startProductsGrpcServer } from './grpc/server.js'
-import { ProductRepo } from './modules/user/product.repo.js'
-import { productRouter } from './modules/user/product.routes.js'
-import { ProductService } from './modules/user/product.service.js'
+import { ProductRepo } from './modules/product/product.repo.js'
+import { productRouter } from './modules/product/product.routes.js'
+import { ProductService } from './modules/product/product.service.js'
 
 export function createApp(logger: Logger) {
   const app = express()

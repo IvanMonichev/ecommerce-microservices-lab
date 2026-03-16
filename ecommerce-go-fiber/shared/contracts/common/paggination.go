@@ -1,7 +1,7 @@
 package common
 
 type PaginatedResponse[T any] struct {
-	Items []T `json:"items"`
+	Data  []T `json:"data"`
 	Total int `json:"total"`
 	Page  int `json:"page"`
 	Limit int `json:"limit"`

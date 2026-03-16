@@ -22,23 +22,6 @@ export async function createApp(logger: Logger) {
   app.use(httpLoggerMiddleware(logger))
   app.use(express.json({ limit: '1mb' }))
 
-  app.get('/health', (_req, res) => {
-    res.json({ status: 'ok' })
-  })
-
-  app.get('/ready', async (_req, res) => {
-    try {
-      if (!AppDataSource.isInitialized) {
-        return res.status(503).json({ ready: false })
-      }
-
-      await AppDataSource.query('SELECT 1')
-      return res.status(200).json({ ready: true })
-    } catch {
-      return res.status(503).json({ ready: false })
-    }
-  })
-
   const repo = new OrderRepo()
   const env = getEnv()
   const productsClient = new ProductsGrpcClient(env.productsGrpcAddress)

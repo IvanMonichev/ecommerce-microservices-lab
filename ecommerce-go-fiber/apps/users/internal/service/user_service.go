@@ -9,8 +9,8 @@ import (
 	"github.com/ivanmonichev/ecommerce-go-fiber/shared/contracts/users"
 )
 
-var ErrInvalidUserInput = errors.New("invalid user input")
-var ErrUserNotFound = errors.New("user not found")
+var ErrInvalidUserInput = errors.New("invalid product input")
+var ErrUserNotFound = errors.New("product not found")
 
 type UserService interface {
 	Create(ctx context.Context, dto users.CreateUserDTO) (domain.User, error)

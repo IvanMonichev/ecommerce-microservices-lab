@@ -1,4 +1,6 @@
+import { ProductDto } from '@repo/contracts'
 import type { Request, Response, NextFunction } from 'express'
+import { toProductDto } from './product.mapper.js'
 import { ProductService } from './product.service.js'
 
 export class ProductController {
@@ -7,7 +9,7 @@ export class ProductController {
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await this.service.create(req.body)
-      res.status(201).json(result)
+      res.status(201).json(toProductDto(result))
     } catch (e) {
       next(e)
     }
@@ -21,7 +23,7 @@ export class ProductController {
       const result = await this.service.get(id as string)
       if (!result) return res.status(404).json({ message: 'Not found' })
 
-      res.json(result)
+      res.json(toProductDto(result))
     } catch (e) {
       next(e)
     }
@@ -31,7 +33,7 @@ export class ProductController {
     try {
       const limit = Number(req.query.limit ?? 20)
       const result = await this.service.list(limit)
-      res.json(result)
+      res.json(result.map(toProductDto))
     } catch (e) {
       next(e)
     }
@@ -55,7 +57,9 @@ export class ProductController {
       }
 
       const result = await this.service.batch(normalized)
-      res.json(result)
+      const dto = result.map(toProductDto)
+
+      res.json(dto)
     } catch (e) {
       next(e)
     }

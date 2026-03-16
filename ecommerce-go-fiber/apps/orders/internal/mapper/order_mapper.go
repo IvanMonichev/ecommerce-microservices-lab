@@ -4,12 +4,13 @@ import (
 	"time"
 
 	"github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/domain"
+	"github.com/ivanmonichev/ecommerce-go-fiber/shared/common"
 	"github.com/ivanmonichev/ecommerce-go-fiber/shared/contracts/orders"
 	contractProducts "github.com/ivanmonichev/ecommerce-go-fiber/shared/contracts/products"
 )
 
 func formatTime(t time.Time) string {
-	return t.UTC().Format(time.RFC3339)
+	return t.UTC().Format(common.RFC3339Milli)
 }
 
 func ToOrderDTO(order domain.Order) orders.OrderDTO {

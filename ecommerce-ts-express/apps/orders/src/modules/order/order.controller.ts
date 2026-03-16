@@ -45,6 +45,7 @@ export class OrderController {
       const result = await this.service.listAllHttp({ page, limit, offset })
       res.json(result)
     } catch (e) {
+      console.log(e)
       next(e)
     }
   }

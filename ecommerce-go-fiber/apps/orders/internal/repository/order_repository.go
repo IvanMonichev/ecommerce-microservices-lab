@@ -6,7 +6,6 @@ import (
 	"sort"
 
 	"github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/domain"
-	"github.com/ivanmonichev/ecommerce-go-fiber/shared/contracts/common"
 	"github.com/ivanmonichev/ecommerce-go-fiber/shared/contracts/orders"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -255,8 +254,4 @@ func (r *OrderRepository) findItemsByOrderIDs(
 	}
 
 	return result, nil
-}
-
-func ParseCurrency(value string) common.Currency {
-	return common.Currency(value)
 }
