@@ -18,7 +18,7 @@ func LoadEnv() Env {
 	loadDotEnv()
 
 	return Env{
-		UserPort:        getEnv("USER_PORT", "3010"),
+		UserPort:        getEnv("USER_PORT", "4010"),
 		UserMongoURI:    getEnv("USER_MONGO_URI", "mongodb://admin:password@localhost:27017"),
 		UserMongoDBName: getEnv("USER_MONGO_DB_NAME", "users_db"),
 		UserCollName:    getEnv("USER_COLLECTION_NAME", "users"),

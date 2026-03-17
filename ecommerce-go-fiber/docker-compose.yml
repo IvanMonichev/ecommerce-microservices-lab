@@ -1,0 +1,76 @@
+version: "3.9"
+
+services:
+  api-gateway:
+    build:
+      context: .
+      dockerfile: apps/api-gateway/Dockerfile
+    container_name: api-gateway
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      USERS_SERVICE_URL: http://users:4010
+      ORDERS_SERVICE_URL: http://orders:4020
+      NOTIFICATION_SERVICE_URL: http://notification:4040
+    depends_on:
+      - orders
+      - users
+      - notification
+    restart: unless-stopped
+
+  users:
+    build:
+      context: .
+      dockerfile: apps/users/Dockerfile
+    container_name: users
+    environment:
+      PORT: 4010
+      SERVICE_NAME: users
+      MONGO_URI: mongodb://host.docker.internal:27017/users
+    ports:
+      - "4010:4010"
+    restart: unless-stopped
+
+  products:
+    build:
+      context: .
+      dockerfile: apps/products/Dockerfile
+    container_name: products
+    environment:
+      PORT: 4030
+      GRPC_PORT: 50052
+      SERVICE_NAME: products
+      MONGO_URI: mongodb://admin:password@host.docker.internal:27018/products
+    ports:
+      - "4030:4030"
+      - "50052:50052"
+    restart: unless-stopped
+
+  orders:
+    build:
+      context: .
+      dockerfile: apps/orders/Dockerfile
+    container_name: orders
+    ports:
+      - "4020:4020"
+    environment:
+      PORT: 4020
+      SERVICE_NAME: orders
+      DATABASE_URL: postgres://admin:password@host.docker.internal:5432/orders?sslmode=disable
+      PRODUCTS_HTTP_URL: http://products:4030
+      PRODUCTS_GRPC_ADDR: products:50052
+      RABBIT_URL: amqp://admin:password@host.docker.internal:5672/
+    restart: unless-stopped
+
+  notification:
+    build:
+      context: .
+      dockerfile: apps/notification/Dockerfile
+    container_name: notification
+    ports:
+      - "4040:4040"
+    environment:
+      PORT: 3040
+      RABBIT_URL: amqp://admin:password@host.docker.internal:5672/
+    restart: unless-stopped

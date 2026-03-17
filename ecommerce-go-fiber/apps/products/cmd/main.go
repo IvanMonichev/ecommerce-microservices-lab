@@ -59,7 +59,7 @@ func main() {
 
 	// Запуск gRPC-сервера
 
-	addr := fmt.Sprintf(":%s", env.GRPCServerPort)
+	addr := fmt.Sprintf(env.GRPCHost)
 	go func() {
 		if err := runGRPCServer(productService, addr); err != nil {
 			log.Fatalf("failed to run grpc server: %v", err)
