@@ -60,6 +60,6 @@ func LoadEnv() Env {
 		PostgresPassword: getString("POSTGRES_PASSWORD", "password"),
 		ProductsHTTPURL:  getString("PRODUCTS_HTTP_URL", "http://localhost:4030/api/products"),
 		ProductsGRPCAddr: getString("PRODUCTS_GRPC_ADDRESS", "0.0.0.0:50052"),
-		RabbitURL:        getString("RABBIT_URL", "amqp://localhost:5672"),
+		RabbitURL:        getString("RABBIT_URL", "amqp://admin:password@localhost:5672"),
 	}
 }
