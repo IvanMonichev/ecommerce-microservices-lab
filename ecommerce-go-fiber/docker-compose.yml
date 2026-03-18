@@ -26,8 +26,7 @@ services:
     container_name: users
     environment:
       PORT: 4010
-      SERVICE_NAME: users
-      MONGO_URI: mongodb://host.docker.internal:27017/users
+      MONGO_URI: mongodb://admin:password@host.docker.internal:27017/users?authSource=admin
     ports:
       - "4010:4010"
     restart: unless-stopped
@@ -41,7 +40,7 @@ services:
       PORT: 4030
       GRPC_PORT: 50052
       SERVICE_NAME: products
-      MONGO_URI: mongodb://admin:password@host.docker.internal:27018/products
+      MONGO_URI: mongodb://admin:password@host.docker.internal:27018/products?authSource=admin
     ports:
       - "4030:4030"
       - "50052:50052"
@@ -57,7 +56,10 @@ services:
     environment:
       PORT: 4020
       SERVICE_NAME: orders
-      DATABASE_URL: postgres://admin:password@host.docker.internal:5432/orders?sslmode=disable
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST: host.docker.internal
+      POSTGRES_PORT: 5432
       PRODUCTS_HTTP_URL: http://products:4030
       PRODUCTS_GRPC_ADDR: products:50052
       RABBIT_URL: amqp://admin:password@host.docker.internal:5672/

@@ -30,9 +30,9 @@ func getString(name, fallback string) string {
 
 func GetEnv() Env {
 	return Env{
-		ProductPort:        getString("PRODUCT_PORT", "4030"),
-		ProductMongoURI:    required("PRODUCT_MONGO_URI", "mongodb://admin:password@localhost:27018/products?authSource=admin"),
-		ProductServiceName: getString("SERVICE_NAME", "products"),
+		ProductPort:        getString("PORT", "4030"),
+		ProductMongoURI:    required("MONGO_URI", "mongodb://admin:password@localhost:27018/products?authSource=admin"),
+		ProductServiceName: getString("NAME", "products"),
 		GRPCHost:           getString("GRPC_HOST", ":50052"),
 	}
 }

@@ -32,7 +32,7 @@ func main() {
 
 	orderRepo := repository.NewOrderRepository(pool)
 
-	productsHTTPClient := httpclient.NewProductsHTTPClient(env.ProductsHTTPURL)
+	productsHTTPClient := httpclient.NewProductsHTTPClient(env.ProductsHTTPURL + "/api/products")
 
 	productsGRPCClient, err := grpcclient.NewProductsGRPCClient(env.ProductsGRPCAddr)
 	if err != nil {
