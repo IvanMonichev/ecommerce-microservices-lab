@@ -61,7 +61,7 @@ services:
       POSTGRES_HOST: host.docker.internal
       POSTGRES_PORT: 5432
       PRODUCTS_HTTP_URL: http://products:4030
-      PRODUCTS_GRPC_ADDR: products:50052
+      PRODUCTS_GRPC_ADDRESS: products:50052
       RABBIT_URL: amqp://admin:password@host.docker.internal:5672/
     restart: unless-stopped
 

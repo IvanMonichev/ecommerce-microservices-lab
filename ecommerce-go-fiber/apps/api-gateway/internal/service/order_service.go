@@ -117,13 +117,13 @@ func (s *OrderService) GetOrdersByGRPC(
 func (s *OrderService) CreateOrder(
 	ctx context.Context,
 	payload contractorders.CreateOrderDTO,
-) (*contractorders.OrderViewDTO, error) {
+) (*contractorders.CreateOrderDTO, error) {
 	order, err := s.ordersClient.CreateOrder(ctx, payload)
 	if err != nil {
 		return nil, err
 	}
 
-	return s.enrichOrder(ctx, *order)
+	return order, err
 }
 
 func (s *OrderService) UpdateOrderStatus(

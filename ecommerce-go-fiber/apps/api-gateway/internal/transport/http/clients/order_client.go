@@ -103,7 +103,7 @@ func (c *OrdersHTTPClient) GetOrdersByGRPC(
 func (c *OrdersHTTPClient) CreateOrder(
 	ctx context.Context,
 	payload contractorders.CreateOrderDTO,
-) (*contractorders.OrderWithProductDTO, error) {
+) (*contractorders.CreateOrderDTO, error) {
 	reqBody, err := json.Marshal(payload)
 	if err != nil {
 		return nil, err
@@ -130,7 +130,7 @@ func (c *OrdersHTTPClient) CreateOrder(
 		return nil, fmt.Errorf("create order failed with status %d", res.StatusCode)
 	}
 
-	var result contractorders.OrderWithProductDTO
+	var result contractorders.CreateOrderDTO
 	if err := json.NewDecoder(res.Body).Decode(&result); err != nil {
 		return nil, err
 	}

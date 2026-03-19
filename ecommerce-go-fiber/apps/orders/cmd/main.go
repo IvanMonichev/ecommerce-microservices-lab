@@ -34,7 +34,7 @@ func main() {
 
 	productsHTTPClient := httpclient.NewProductsHTTPClient(env.ProductsHTTPURL + "/api/products")
 
-	productsGRPCClient, err := grpcclient.NewProductsGRPCClient(env.ProductsGRPCAddr)
+	productsGRPCClient, err := grpcclient.NewProductsGRPCClient(env.ProductsGRPCAddress)
 	if err != nil {
 		log.Fatalf("failed to create products grpc client: %v", err)
 	}
