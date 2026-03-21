@@ -1,6 +1,6 @@
 {
   "name": "@repo/common",
-  "private": true,
+  "version": "1.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -8,23 +8,16 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
-    },
-    "./logger": {
-      "types": "./dist/logger/index.d.ts",
-      "default": "./dist/logger/index.js"
-    },
-    "./http/request-id": {
-      "types": "./dist/http/request-id.d.ts",
-      "default": "./dist/http/request-id.js"
-    },
-    "./http/http-logger": {
-      "types": "./dist/http/http-logger.d.ts",
-      "default": "./dist/http/http-logger.js"
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "tsc -p tsconfig.json -w",
     "check-types": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "pino": "^10.3.1"
   }
 }

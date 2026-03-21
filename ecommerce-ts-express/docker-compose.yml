@@ -1,0 +1,82 @@
+version: "3.9"
+
+services:
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api-gateway/Dockerfile
+    container_name: ts-api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      USERS_SERVICE_URL: http://users:3010
+      ORDERS_SERVICE_URL: http://orders:3020
+      NOTIFICATION_SERVICE_URL: http://notification:3040
+    depends_on:
+      - orders
+      - users
+      - notification
+    restart: unless-stopped
+
+  users:
+    build:
+      context: .
+      dockerfile: services/users/Dockerfile
+    container_name: ts-users
+    ports:
+      - "3010:3010"
+    environment:
+      PORT: 3010
+      MONGO_URI: mongodb://admin:password@host.docker.internal:27017/users_db?authSource=admin
+    restart: unless-stopped
+
+  products:
+    build:
+      context: .
+      dockerfile: services/products/Dockerfile
+    container_name: ts-products
+    ports:
+      - "3030:3030"
+      - "50051:50051"
+    environment:
+      PORT: 3030
+      GRPC_HOST: :50051
+      NAME: products
+      MONGO_URI: mongodb://admin:password@host.docker.internal:27018/products?authSource=admin
+    restart: unless-stopped
+
+  orders:
+    build:
+      context: .
+      dockerfile: services/orders/Dockerfile
+    container_name: ts-orders
+    ports:
+      - "3020:3020"
+    environment:
+      PORT: 3020
+      SERVICE_NAME: orders
+      POSTGRES_HOST: host.docker.internal
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: orders
+      PRODUCTS_BASE_URL: http://products:3030/api/products
+      PRODUCTS_GRPC_ADDRESS: products:50051
+      RABBIT_URL: amqp://admin:password@host.docker.internal:5672/
+    depends_on:
+      - products
+    restart: unless-stopped
+
+  notification:
+    build:
+      context: .
+      dockerfile: services/notification/Dockerfile
+    container_name: ts-notification
+    ports:
+      - "3040:3040"
+    environment:
+      PORT: 3040
+      RABBIT_URL: amqp://admin:password@host.docker.internal:5672/
+    restart: unless-stopped

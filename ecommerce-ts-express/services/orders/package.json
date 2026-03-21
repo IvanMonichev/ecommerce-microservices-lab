@@ -1,0 +1,27 @@
+{
+  "name": "@services/orders",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/app.ts",
+    "prebuild": "npm run build --workspace=@repo/common && npm run build --workspace=@repo/contracts",
+    "build": "tsc -p tsconfig.json",
+    "start": "npm run build && node dist/app.js",
+    "check-types": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.3",
+    "@grpc/proto-loader": "^0.8.0",
+    "@repo/common": "*",
+    "@repo/contracts": "*",
+    "amqplib": "^0.10.9",
+    "express": "^5.2.1",
+    "pg": "^8.19.0",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.28"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.8",
+    "@types/express": "^5.0.6"
+  }
+}
