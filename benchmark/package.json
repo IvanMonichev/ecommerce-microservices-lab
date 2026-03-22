@@ -1,0 +1,11 @@
+{
+  "name": "benchmark",
+  "private": true,
+  "scripts": {
+    "run:scenario": "./scripts/run-scenario.sh",
+    "run:get-all-orders-http": "./scripts/run-get-all-orders-http.sh",
+    "run:get-all-orders-grpc": "./scripts/run-get-all-orders-grpc.sh",
+    "run:create-order": "./scripts/run-create-order.sh",
+    "run:update-order-status": "./scripts/run-update-order-status.sh"
+  }
+}

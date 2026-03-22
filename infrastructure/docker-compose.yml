@@ -158,3 +158,4 @@ volumes:
   postgres_data:
   pgadmin_data:
   rabbitmq_data:
+  prometheus_data:
