@@ -7,7 +7,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /bin/orders ./services/orders/cmd
+RUN CGO_ENABLED=0 GOOS=linux go build -o /bin/orders ./apps/orders/cmd
 
 FROM alpine:3.20
 

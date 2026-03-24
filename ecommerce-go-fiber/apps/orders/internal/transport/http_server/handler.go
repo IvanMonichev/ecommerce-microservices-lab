@@ -2,6 +2,7 @@ package http_server
 
 import (
 	"errors"
+	"log"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/service"
@@ -73,6 +74,7 @@ func (h *Handler) GetOrdersHTTP(c fiber.Ctx) error {
 
 	result, err := h.orderService.ListAllHTTP(c.Context(), query)
 	if err != nil {
+		log.Printf("get orders via http failed: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "internal server error",
 		})
@@ -92,6 +94,7 @@ func (h *Handler) GetOrdersGRPC(c fiber.Ctx) error {
 
 	result, err := h.orderService.ListAllGRPC(c.Context(), query)
 	if err != nil {
+		log.Printf("get orders via grpc failed: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "internal server error",
 		})

@@ -73,6 +73,6 @@ services:
     ports:
       - "4040:4040"
     environment:
-      PORT: 3040
+      PORT: 4040
       RABBIT_URL: amqp://admin:password@host.docker.internal:5672/
     restart: unless-stopped

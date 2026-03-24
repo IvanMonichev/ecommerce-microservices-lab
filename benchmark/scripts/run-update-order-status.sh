@@ -8,8 +8,9 @@ RESULTS_DIR="${BENCHMARK_DIR}/results"
 STATS_SCRIPT="${SCRIPT_DIR}/collect-docker-stats.sh"
 SUMMARY_SCRIPT="${SCRIPT_DIR}/summarize-docker-stats.sh"
 SCENARIO="update-order-status"
-TARGET="${1:-ts}"
-RUNS="${RUNS:-1}"
+TARGET="${1:-go}"
+RUNS="${RUNS:-10}"
+ORDER_ID="${ORDER_ID:-e9f49396-7e4b-40a9-b0dc-e5ef5f033a31}"
 
 case "${TARGET}" in
   ts)
@@ -23,6 +24,11 @@ case "${TARGET}" in
     exit 1
     ;;
 esac
+
+if [[ -z "${ORDER_ID}" ]]; then
+  echo "ORDER_ID is required. Example: ORDER_ID=<order-id> ./scripts/run-update-order-status.sh ${TARGET}" >&2
+  exit 1
+fi
 
 mkdir -p "${RESULTS_DIR}/${SCENARIO}/${TARGET}"
 
@@ -39,8 +45,15 @@ for path in "${RESULTS_DIR}/${SCENARIO}/${TARGET}"/exp-*; do
 done
 shopt -u nullglob
 
-EXP_NUMBER="$(printf "%02d" "$((max_exp + 1))")"
-EXP_DIR="${RESULTS_DIR}/${SCENARIO}/${TARGET}/exp-${EXP_NUMBER}"
+next_exp=$((max_exp + 1))
+while true; do
+  EXP_NUMBER="$(printf "%03d" "${next_exp}")"
+  EXP_DIR="${RESULTS_DIR}/${SCENARIO}/${TARGET}/exp-${EXP_NUMBER}"
+  if [[ ! -e "${EXP_DIR}" ]]; then
+    break
+  fi
+  next_exp=$((next_exp + 1))
+done
 mkdir -p "${EXP_DIR}"
 
 for ((run = 1; run <= RUNS; run++)); do
@@ -60,6 +73,7 @@ for ((run = 1; run <= RUNS; run++)); do
   (
     cd "${BENCHMARK_DIR}"
     BASE_URL="${BASE_URL}" \
+    ORDER_ID="${ORDER_ID}" \
     HTML_REPORT_FILE="${html_file}" \
     HTML_REPORT_TITLE="${report_title}" \
     k6 run "scenarios/${SCENARIO}.js" \
@@ -70,7 +84,7 @@ for ((run = 1; run <= RUNS; run++)); do
   kill "${stats_pid}" 2>/dev/null || true
   wait "${stats_pid}" 2>/dev/null || true
 
-  "${SUMMARY_SCRIPT}" "${docker_stats_file}" "${docker_stats_summary_file}"
+  bash "${SUMMARY_SCRIPT}" "${docker_stats_file}" "${docker_stats_summary_file}"
 
   if [[ "${k6_exit_code}" -ne 0 ]]; then
     exit "${k6_exit_code}"

@@ -8,8 +8,8 @@ RESULTS_DIR="${BENCHMARK_DIR}/results"
 STATS_SCRIPT="${SCRIPT_DIR}/collect-docker-stats.sh"
 SUMMARY_SCRIPT="${SCRIPT_DIR}/summarize-docker-stats.sh"
 SCENARIO="get-all-orders-http"
-TARGET="${1:-ts}"
-RUNS="${RUNS:-1}"
+TARGET="${1:-go}"
+RUNS="${RUNS:-10}"
 
 case "${TARGET}" in
   ts)
@@ -39,8 +39,15 @@ for path in "${RESULTS_DIR}/${SCENARIO}/${TARGET}"/exp-*; do
 done
 shopt -u nullglob
 
-EXP_NUMBER="$(printf "%02d" "$((max_exp + 1))")"
-EXP_DIR="${RESULTS_DIR}/${SCENARIO}/${TARGET}/exp-${EXP_NUMBER}"
+next_exp=$((max_exp + 1))
+while true; do
+  EXP_NUMBER="$(printf "%03d" "${next_exp}")"
+  EXP_DIR="${RESULTS_DIR}/${SCENARIO}/${TARGET}/exp-${EXP_NUMBER}"
+  if [[ ! -e "${EXP_DIR}" ]]; then
+    break
+  fi
+  next_exp=$((next_exp + 1))
+done
 mkdir -p "${EXP_DIR}"
 
 for ((run = 1; run <= RUNS; run++)); do

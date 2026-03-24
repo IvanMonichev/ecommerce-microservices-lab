@@ -48,16 +48,17 @@ func main() {
 
 	statusUpdateConsumer, err := rabbitmq.NewStatusUpdateConsumer(env.RabbitURL, orderRepo)
 	if err != nil {
-		log.Fatalf("failed to create rabbitmq consumer: %v", err)
-	}
-	defer func() {
-		if err := statusUpdateConsumer.Close(); err != nil {
-			log.Printf("failed to close rabbitmq consumer: %v", err)
-		}
-	}()
+		log.Printf("rabbitmq consumer is disabled: %v", err)
+	} else {
+		defer func() {
+			if err := statusUpdateConsumer.Close(); err != nil {
+				log.Printf("failed to close rabbitmq consumer: %v", err)
+			}
+		}()
 
-	if err := statusUpdateConsumer.Start(ctx); err != nil {
-		log.Fatalf("failed to start rabbitmq consumer: %v", err)
+		if err := statusUpdateConsumer.Start(ctx); err != nil {
+			log.Printf("failed to start rabbitmq consumer, continue without it: %v", err)
+		}
 	}
 
 	handler := http_server.NewHandler(orderService)

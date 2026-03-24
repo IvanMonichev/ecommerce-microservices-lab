@@ -2,6 +2,7 @@
   "name": "benchmark",
   "private": true,
   "scripts": {
+    "report:get-all-orders-grpc": "node scripts/print-metrics.js",
     "run:scenario": "./scripts/run-scenario.sh",
     "run:get-all-orders-http": "./scripts/run-get-all-orders-http.sh",
     "run:get-all-orders-grpc": "./scripts/run-get-all-orders-grpc.sh",

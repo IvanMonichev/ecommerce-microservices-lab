@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/domain"
 	"github.com/ivanmonichev/ecommerce-go-fiber/apps/orders/internal/mapper"
@@ -78,14 +79,14 @@ func (s *OrderService) ListAllHTTP(
 		Limit:  query.Limit,
 	})
 	if err != nil {
-		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, err
+		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, fmt.Errorf("find all orders: %w", err)
 	}
 
 	ids := collectProductIDs(result.Rows)
 
 	productsList, err := s.productsHTTPClient.Batch(ctx, ids)
 	if err != nil {
-		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, err
+		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, fmt.Errorf("fetch products by http: %w", err)
 	}
 
 	return s.buildOrdersWithProducts(query, result, productsList), nil
@@ -102,14 +103,14 @@ func (s *OrderService) ListAllGRPC(
 		Limit:  query.Limit,
 	})
 	if err != nil {
-		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, err
+		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, fmt.Errorf("find all orders: %w", err)
 	}
 
 	ids := collectProductIDs(result.Rows)
 
 	productsList, err := s.productsGRPCClient.Batch(ctx, ids)
 	if err != nil {
-		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, err
+		return common.PaginatedResponse[orders.OrderWithProductDTO]{}, fmt.Errorf("fetch products by grpc: %w", err)
 	}
 
 	return s.buildOrdersWithProducts(query, result, productsList), nil

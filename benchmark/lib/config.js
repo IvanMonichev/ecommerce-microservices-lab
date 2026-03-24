@@ -4,8 +4,8 @@ const DEFAULT_PAGE = Number(__ENV.PAGE || 1);
 
 const SCENARIO_DEFAULTS = {
   "get-all-orders-http": {
-    vus: 500,
-    duration: "30s",
+    vus: 1000,
+    duration: "1m",
     limit: 25,
     thresholds: {
       http_req_failed: ["rate<0.05"],
@@ -13,8 +13,8 @@ const SCENARIO_DEFAULTS = {
     },
   },
   "get-all-orders-grpc": {
-    vus: 500,
-    duration: "30s",
+    vus: 1000,
+    duration: "1m",
     limit: 25,
     thresholds: {
       http_req_failed: ["rate<0.05"],
@@ -22,7 +22,7 @@ const SCENARIO_DEFAULTS = {
     },
   },
   "create-order": {
-    vus: 500,
+    vus: 1000,
     duration: "1m",
     quantity: 1,
     thresholds: {
@@ -31,7 +31,7 @@ const SCENARIO_DEFAULTS = {
     },
   },
   "update-order-status": {
-    vus: 500,
+    vus: 1000,
     duration: "1m",
     status: "COMPLETED",
     thresholds: {

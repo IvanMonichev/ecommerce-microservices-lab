@@ -36,8 +36,7 @@
 
 Для `update-order-status`:
 
-- `USER_ID` и `PRODUCT_ID` можно не задавать, тогда сценарий попробует получить их из `users` и `products`
-- `ORDER_ID` можно не задавать, тогда сценарий создаст заказ в `setup()`
+- нужен `ORDER_ID`
 
 ## Быстрый запуск
 
@@ -89,20 +88,28 @@ PAGE=1
 LIMIT=25
 ```
 
-Для `create-order` и `update-order-status`:
+Для `create-order`:
 
 ```bash
 USER_ID=<existing-user-id>
 PRODUCT_ID=<existing-product-id>
-ORDER_ID=<existing-order-id>
 CURRENCY=RUB
 QUANTITY=1
-STATUS=COMPLETED
-USERS_BASE_URL=http://localhost:3010
-PRODUCTS_BASE_URL=http://localhost:3030
 ```
 
-`USERS_BASE_URL` и `PRODUCTS_BASE_URL` нужны только если `BASE_URL` не указывает на стандартные порты `3000` или `4000`.
+Для `create-order` `USER_ID` и `PRODUCT_ID` обязательны именно на уровне bash-раннера:
+
+```bash
+cd benchmark
+USER_ID=<user-id> PRODUCT_ID=<product-id> ./scripts/run-create-order.sh ts
+```
+
+Для `update-order-status`:
+
+```bash
+ORDER_ID=<existing-order-id>
+STATUS=COMPLETED
+```
 
 ## Что сохраняется в results
 
@@ -230,5 +237,5 @@ USER_ID=<user-id> PRODUCT_ID=<product-id> RUNS=3 ./scripts/run-create-order.sh g
 
 ```bash
 cd benchmark
-USER_ID=<user-id> PRODUCT_ID=<product-id> STATUS=COMPLETED ./scripts/run-update-order-status.sh ts
+ORDER_ID=<order-id> STATUS=COMPLETED ./scripts/run-update-order-status.sh ts
 ```

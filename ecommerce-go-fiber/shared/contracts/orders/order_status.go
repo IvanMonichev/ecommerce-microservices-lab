@@ -4,6 +4,6 @@ type OrderStatus string
 
 const (
 	OrderStatusNew       OrderStatus = "NEW"
-	OrderStatusCanceled  OrderStatus = "CANCELLED"
+	OrderStatusCanceled  OrderStatus = "CANCELED"
 	OrderStatusCompleted OrderStatus = "COMPLETED"
 )

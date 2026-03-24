@@ -8,8 +8,10 @@ RESULTS_DIR="${BENCHMARK_DIR}/results"
 STATS_SCRIPT="${SCRIPT_DIR}/collect-docker-stats.sh"
 SUMMARY_SCRIPT="${SCRIPT_DIR}/summarize-docker-stats.sh"
 SCENARIO="create-order"
-TARGET="${1:-ts}"
-RUNS="${RUNS:-1}"
+TARGET="${1:-go}"
+RUNS="${RUNS:-10}"
+USER_ID="${USER_ID:-69ac3e096bf6d0f7eaffb5f8}"
+PRODUCT_ID="${PRODUCT_ID:-69ac451b9896cb84ead49a9d}"
 
 case "${TARGET}" in
   ts)
@@ -23,6 +25,16 @@ case "${TARGET}" in
     exit 1
     ;;
 esac
+
+if [[ -z "${USER_ID}" ]]; then
+  echo "USER_ID is required. Example: USER_ID=<user-id> PRODUCT_ID=<product-id> ./scripts/run-create-order.sh ${TARGET}" >&2
+  exit 1
+fi
+
+if [[ -z "${PRODUCT_ID}" ]]; then
+  echo "PRODUCT_ID is required. Example: USER_ID=<user-id> PRODUCT_ID=<product-id> ./scripts/run-create-order.sh ${TARGET}" >&2
+  exit 1
+fi
 
 mkdir -p "${RESULTS_DIR}/${SCENARIO}/${TARGET}"
 
@@ -39,8 +51,15 @@ for path in "${RESULTS_DIR}/${SCENARIO}/${TARGET}"/exp-*; do
 done
 shopt -u nullglob
 
-EXP_NUMBER="$(printf "%02d" "$((max_exp + 1))")"
-EXP_DIR="${RESULTS_DIR}/${SCENARIO}/${TARGET}/exp-${EXP_NUMBER}"
+next_exp=$((max_exp + 1))
+while true; do
+  EXP_NUMBER="$(printf "%03d" "${next_exp}")"
+  EXP_DIR="${RESULTS_DIR}/${SCENARIO}/${TARGET}/exp-${EXP_NUMBER}"
+  if [[ ! -e "${EXP_DIR}" ]]; then
+    break
+  fi
+  next_exp=$((next_exp + 1))
+done
 mkdir -p "${EXP_DIR}"
 
 for ((run = 1; run <= RUNS; run++)); do
@@ -60,6 +79,8 @@ for ((run = 1; run <= RUNS; run++)); do
   (
     cd "${BENCHMARK_DIR}"
     BASE_URL="${BASE_URL}" \
+    USER_ID="${USER_ID}" \
+    PRODUCT_ID="${PRODUCT_ID}" \
     HTML_REPORT_FILE="${html_file}" \
     HTML_REPORT_TITLE="${report_title}" \
     k6 run "scenarios/${SCENARIO}.js" \
