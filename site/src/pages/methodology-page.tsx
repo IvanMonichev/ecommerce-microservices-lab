@@ -1,0 +1,44 @@
+import { Link } from "react-router-dom";
+import { methodologyDetails, methodologySteps } from "../data/site-content";
+import { SectionHeading } from "../shared/ui/section-heading";
+
+export function MethodologyPage() {
+  return (
+    <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10 lg:py-20">
+      <SectionHeading
+        eyebrow="Methodology"
+        title="Методика эксперимента"
+        description="Эта страница даёт опорную структуру раздела, который можно расширять подробными таблицами, графиками и ссылками на артефакты прогонов."
+      />
+      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="rounded-sm border border-line bg-panel p-8">
+          <h3 className="text-xl font-semibold">Что фиксируется</h3>
+          <div className="mt-6 space-y-4 text-sm leading-7 text-black/65">
+            {methodologyDetails.map((item) => (
+              <p key={item}>{item}</p>
+            ))}
+          </div>
+          <Link
+            to="/reports/get-all-orders-grpc"
+            className="mt-8 inline-flex rounded-sm bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:opacity-92"
+          >
+            Перейти к отчётам
+          </Link>
+        </div>
+        <div className="grid gap-px border border-line bg-line">
+          {methodologySteps.map((item) => (
+            <article key={item.step} className="bg-white px-7 py-8">
+              <div className="text-sm font-semibold text-accent">
+                {item.step}
+              </div>
+              <h3 className="mt-4 text-2xl font-semibold">{item.title}</h3>
+              <p className="mt-4 text-sm leading-7 text-black/60">
+                {item.text}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

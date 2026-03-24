@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting…</title>
+    <script>
+      const path = window.location.pathname.replace(
+        /^\/ecommerce-microservices-lab/,
+        "",
+      );
+      const query = window.location.search || "";
+      const hash = window.location.hash || "";
+      window.location.replace(
+        `/ecommerce-microservices-lab/?redirect=${encodeURIComponent(path + query + hash)}`,
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
