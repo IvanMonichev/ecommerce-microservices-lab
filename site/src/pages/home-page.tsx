@@ -2,53 +2,21 @@ import { Link } from 'react-router-dom'
 import {
   reports,
   goals,
-  heroStats,
   architecturePillars,
-  methodologySteps,
   navigationCards,
 } from '@/data/site-content'
-import webHero from '@/assets/web-hero.svg'
+
 import { SectionHeading } from '@/shared/ui/section-heading'
-import { AppButtonOutline } from '@/shared/ui/app-button-outline'
-import { AppButton } from '@/shared/ui/app-button'
+import { SectionHero } from '@/modules/landing/section-hero'
+import { SectionAbout } from '@/modules/landing/section-about'
+import { SectionMethodology } from '@/modules/landing/section-methodology'
 
 export function HomePage() {
   return (
     <>
-      <section className="bg-mist">
-        <div className="mx-auto grid min-h-[calc(100vh-73px)] w-full max-w-6xl gap-8 py-16 lg:grid-cols-[1.15fr_0.85fr] lg:py-16">
-          <div className="flex flex-col justify-center">
-            <h1 className="max-w-xl text-2xl leading-[1.03] tracking-tight md:text-4xl">
-              Исследование методов взаимодействия между микросервисами в
-              веб-приложениях
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-text-black">
-              Исследование посвящено сравнению способов взаимодействия между
-              микросервисами в составе веб-приложения. В рамках проекта
-              анализируются HTTP, gRPC и событийная модель обмена сообщениями, а
-              также оценивается их влияние на задержки, пропускную способность,
-              устойчивость системы и потребление ресурсов в условиях
-              нагрузочного тестирования. Листайте ниже, чтобы узнать больше про
-              этот проект и его создателя.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <AppButtonOutline>Перейти к методике</AppButtonOutline>
-              <AppButton>Открыть отчёты</AppButton>
-            </div>
-          </div>
-          <div className="flex items-center justify-center">
-            <div className="relative h-[300px] w-[300px] rounded-full border border-line bg-[radial-gradient(circle_at_center,_rgba(122,52,243,0.12),_rgba(122,52,243,0)_62%)] md:h-[380px] md:w-[380px]">
-              <img
-                src={webHero}
-                alt="web-hero"
-                aria-hidden="true"
-                className="absolute inset-[7%] h-[86%] w-[86%] object-contain opacity-80"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
+      <SectionHero />
+      <SectionAbout />
+      <SectionMethodology />
       <section className="bg-panel">
         <div className="mx-auto max-w-6xl px-6 py-20 lg:px-10">
           <SectionHeading
@@ -94,29 +62,6 @@ export function HomePage() {
                 </article>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-panel">
-        <div className="mx-auto max-w-6xl px-6 py-20 lg:px-10">
-          <SectionHeading
-            eyebrow="Методика"
-            title="Нагрузочная методика описана как последовательность воспроизводимых шагов."
-            description="Структура сценариев, профили нагрузки и формат артефактов берутся из benchmark-модуля репозитория."
-          />
-          <div className="grid gap-px border border-line bg-line md:grid-cols-2 xl:grid-cols-4">
-            {methodologySteps.map((item) => (
-              <article key={item.step} className="bg-white px-7 py-8">
-                <div className="text-sm font-semibold text-accent">
-                  {item.step}
-                </div>
-                <h3 className="mt-5 text-xl font-semibold">{item.title}</h3>
-                <p className="mt-4 text-sm leading-7 text-black/60">
-                  {item.text}
-                </p>
-              </article>
-            ))}
           </div>
         </div>
       </section>
@@ -197,7 +142,18 @@ export function HomePage() {
 
       <footer className="border-t border-black/5 bg-mist">
         <div className="mx-auto flex max-w-6xl flex-col gap-5 px-6 py-10 text-sm text-black/50 md:flex-row md:items-center md:justify-between lg:px-10">
-          <div>© 2026 Experimental Benchmark Web Resource</div>
+          <div>
+            © 2026{' '}
+            <a
+              href="https://itmo.ru/"
+              target="_blank"
+              rel="noreferrer"
+              className="transition hover:text-ink"
+            >
+              Университет ИТМО
+            </a>
+            , Иван Моничев, Санкт-Петербург
+          </div>
           <div className="flex flex-wrap gap-6">
             <Link to="/methodology" className="transition hover:text-ink">
               Methodology
