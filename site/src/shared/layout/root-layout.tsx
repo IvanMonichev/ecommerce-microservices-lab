@@ -1,11 +1,11 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from 'react-router-dom'
 
 const navigation = [
-  { label: "Главная", to: "/" },
-  { label: "Методика", to: "/methodology" },
-  { label: "Отчёты", to: "/reports/get-all-orders-grpc" },
-  { label: "О проекте", to: "/about" },
-];
+  { label: 'Главная', to: '/' },
+  { label: 'Методика', to: '/methodology' },
+  { label: 'Отчёты', to: '/reports/get-all-orders-grpc' },
+  { label: 'О проекте', to: '/about' },
+]
 
 export function RootLayout() {
   return (
@@ -18,7 +18,7 @@ export function RootLayout() {
             </span>
             <div>
               <div className="text-[11px] uppercase tracking-[0.28em] text-black/45">
-                Experimental Benchmark
+                Microservices Benchmark
               </div>
             </div>
           </NavLink>
@@ -28,7 +28,7 @@ export function RootLayout() {
                 key={item.to}
                 to={item.to}
                 className={({ isActive }) =>
-                  isActive ? "text-ink" : "transition hover:text-ink"
+                  isActive ? 'text-ink' : 'transition hover:text-ink'
                 }
               >
                 {item.label}
@@ -41,5 +41,5 @@ export function RootLayout() {
         <Outlet />
       </main>
     </div>
-  );
+  )
 }

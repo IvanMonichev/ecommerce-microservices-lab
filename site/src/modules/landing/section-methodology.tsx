@@ -20,7 +20,7 @@ const methodologyStepIcons = [
 export function SectionMethodology() {
   return (
     <Section color="gray">
-      <Section.Title>Этапы методики</Section.Title>
+      <Section.Title>Ключевые этапы</Section.Title>
 
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-6">
         {methodologySteps.map((item, index) => {

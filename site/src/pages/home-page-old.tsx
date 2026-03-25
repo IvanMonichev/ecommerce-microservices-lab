@@ -216,7 +216,7 @@ export function HomePage() {
 
       <footer className="border-t border-black/5 bg-mist">
         <div className="mx-auto flex max-w-6xl flex-col gap-5 px-6 py-10 text-sm text-black/50 md:flex-row md:items-center md:justify-between lg:px-10">
-          <div>© 2026 Experimental Benchmark Web Resource</div>
+          <div>© 2026 Microservices Benchmark</div>
           <div className="flex flex-wrap gap-6">
             <Link to="/methodology" className="transition hover:text-ink">
               Methodology
