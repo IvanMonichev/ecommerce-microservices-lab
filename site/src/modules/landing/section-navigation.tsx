@@ -1,12 +1,16 @@
-import { navigationCards } from '@/data/site-content'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { useSiteContent } from '@/shared/hooks/use-site-content'
 import { Section } from '@/shared/ui/section'
 
 export function SectionNavigation() {
+  const { t } = useTranslation()
+  const { navigationCards } = useSiteContent()
+
   return (
     <Section color="gray">
-      <Section.Title>Навигация по исследованию</Section.Title>
+      <Section.Title>{t('home.researchNavigation.title')}</Section.Title>
 
       <div className="grid gap-px overflow-hidden rounded-sm border border-line bg-line sm:grid-cols-2">
           {navigationCards.map((item) => {
@@ -28,7 +32,7 @@ export function SectionNavigation() {
                   </p>
                 </div>
                 <span className="mt-8 inline-flex text-sm font-semibold text-ink">
-                  Открыть раздел
+                  {t('navigation.openSection')}
                 </span>
               </a>
             ) : (
@@ -45,7 +49,7 @@ export function SectionNavigation() {
                   </p>
                 </div>
                 <span className="mt-8 inline-flex text-sm font-semibold text-ink">
-                  Открыть раздел
+                  {t('navigation.openSection')}
                 </span>
               </Link>
             )

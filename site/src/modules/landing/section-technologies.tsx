@@ -1,6 +1,7 @@
-import { technologies } from '@/data/site-content'
 import { Section } from '@/shared/ui/section'
 import { Text } from '@/shared/ui/text'
+import { useTranslation } from 'react-i18next'
+import { useSiteContent } from '@/shared/hooks/use-site-content'
 import {
   Binary,
   Box,
@@ -27,18 +28,19 @@ const technologyIcons = {
 const { Paragraph } = Text
 
 export function SectionTechnologies() {
+  const { t } = useTranslation()
+  const { technologies } = useSiteContent()
+
   return (
     <Section color="white">
-      <Section.Title>Технологии</Section.Title>
+      <Section.Title>{t('home.technologies.title')}</Section.Title>
 
       <div className="mx-auto flex max-w-4xl flex-col items-center px-4 pb-2 pt-6 text-center">
-        <h3 className="text-6xl font-semibold tracking-tight text-ink md:text-7xl">
-          {technologies.length} технологий
+        <h3 className="text-2xl font-semibold tracking-tight text-ink md:text-4xl">
+          {t('home.technologies.count', { count: technologies.length })}
         </h3>
         <Paragraph className="mt-6 max-w-2xl text-center text-black/60">
-          В проекте используются следующие технологии для реализации
-          микросервисов, хранения данных, контейнеризации и нагрузочного
-          тестирования.
+          {t('home.technologies.description')}
         </Paragraph>
 
         <div className="mt-16 flex max-w-3xl flex-wrap items-center justify-center gap-3 md:gap-4">

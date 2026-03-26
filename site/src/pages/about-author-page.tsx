@@ -1,9 +1,30 @@
-import { authorProfile } from '@/data/site-content'
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { Mail, MessageCircle } from 'lucide-react'
+import { NavigationLink } from '@/shared/constants/navigation.constant'
+import { useSiteContent } from '@/shared/hooks/use-site-content'
 import { AppButton } from '@/shared/ui/app-button'
 import { AppButtonOutline } from '@/shared/ui/app-button-outline'
-import { Link } from 'react-router-dom'
 
-export function AboutPage() {
+function getContactIcon(label: string, href: string) {
+  const normalizedLabel = label.toLowerCase()
+  const normalizedHref = href.toLowerCase()
+
+  if (normalizedLabel.includes('mail') || normalizedHref.startsWith('mailto:')) {
+    return Mail
+  }
+
+  if (normalizedLabel.includes('vk') || normalizedHref.includes('vk.com')) {
+    return MessageCircle
+  }
+
+  return MessageCircle
+}
+
+export function AboutAuthorPage() {
+  const { t } = useTranslation()
+  const { authorProfile } = useSiteContent()
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10 lg:py-20">
       <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
@@ -30,29 +51,34 @@ export function AboutPage() {
 
           <div className="mt-10 border-t border-line pt-6">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45">
-              Контакты
+              {t('common.contacts')}
             </p>
             <div className="mt-5 grid gap-px overflow-hidden rounded-sm border border-line bg-line sm:grid-cols-2">
-              {authorProfile.contacts.map((contact) => (
-                <a
-                  key={contact.label}
-                  href={contact.href}
-                  className="bg-white px-5 py-5 transition hover:bg-accentSoft"
-                >
-                  <div className="text-xs font-semibold uppercase tracking-[0.2em] text-black/45">
-                    {contact.label}
-                  </div>
-                  <div className="mt-3 text-sm font-semibold text-ink">
-                    {contact.value}
-                  </div>
-                </a>
-              ))}
+              {authorProfile.contacts.map((contact) => {
+                const Icon = getContactIcon(contact.label, contact.href)
+
+                return (
+                  <a
+                    key={contact.label}
+                    href={contact.href}
+                    className="bg-white px-5 py-5 transition hover:bg-accentSoft"
+                  >
+                    <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-black/45">
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                      <span>{contact.label}</span>
+                    </div>
+                    <div className="mt-3 text-sm font-semibold text-ink">
+                      {contact.value}
+                    </div>
+                  </a>
+                )
+              })}
             </div>
           </div>
 
           <div className="mt-10 border-t border-line pt-6">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-black/45">
-              Навыки
+              {t('common.skills')}
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               {authorProfile.skills.map((skill) => (
@@ -74,14 +100,13 @@ export function AboutPage() {
               <div className="absolute right-8 top-10 h-16 w-16 rounded-full border border-accent/20 bg-accent/10" />
               <div className="relative">
                 <div className="text-xs font-semibold uppercase tracking-[0.26em] text-black/45">
-                  Фотография
+                  {t('common.photo')}
                 </div>
                 <div className="mt-4 text-5xl font-semibold tracking-tight text-ink">
                   ИМ
                 </div>
                 <p className="mt-4 max-w-xs text-sm leading-7 text-black/60">
-                  Здесь можно разместить фотографию автора. Сейчас блок оставлен
-                  как плейсхолдер до добавления изображения в проект.
+                  {t('aboutPage.imagePlaceholder')}
                 </p>
               </div>
             </div>
@@ -89,11 +114,11 @@ export function AboutPage() {
 
           <div className="rounded-sm border border-line bg-white px-7 py-6">
             <div className="flex flex-wrap gap-3">
-              <Link to="/methodology">
-                <AppButtonOutline>Методика</AppButtonOutline>
+              <Link to={NavigationLink.Methodology}>
+                <AppButtonOutline>{t('navigation.methodology')}</AppButtonOutline>
               </Link>
-              <Link to="/reports/get-all-orders-grpc">
-                <AppButton>Отчеты</AppButton>
+              <Link to={`${NavigationLink.Reports}/get-all-orders-grpc`}>
+                <AppButton>{t('aboutPage.reportsCta')}</AppButton>
               </Link>
             </div>
           </div>

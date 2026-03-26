@@ -1,5 +1,6 @@
-import { methodologySteps } from '@/data/site-content'
 import { Section } from '@/shared/ui/section'
+import { useTranslation } from 'react-i18next'
+import { useSiteContent } from '@/shared/hooks/use-site-content'
 import classNames from 'classnames'
 import {
   BarChart3,
@@ -18,9 +19,12 @@ const methodologyStepIcons = [
 ]
 
 export function SectionMethodology() {
+  const { t } = useTranslation()
+  const { methodologySteps } = useSiteContent()
+
   return (
     <Section color="gray">
-      <Section.Title>Ключевые этапы</Section.Title>
+      <Section.Title>{t('home.methodology.title')}</Section.Title>
 
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-6">
         {methodologySteps.map((item, index) => {

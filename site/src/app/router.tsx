@@ -1,9 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { RootLayout } from '@/shared/layout/root-layout'
-import { AboutPage } from '@/pages/about-page'
+import { AboutAuthorPage } from '@/pages/about-author-page'
 import { HomePage } from '@/pages/home-page'
 import { MethodologyPage } from '@/pages/methodology-page'
 import { ReportPage } from '@/pages/report-page'
+import { NavigationLink } from '@/shared/constants/navigation.constant'
 
 export const router = createBrowserRouter(
   [
@@ -12,9 +13,10 @@ export const router = createBrowserRouter(
       element: <RootLayout />,
       children: [
         { index: true, element: <HomePage /> },
-        { path: 'methodology', element: <MethodologyPage /> },
-        { path: 'reports/:id', element: <ReportPage /> },
-        { path: 'about', element: <AboutPage /> },
+        { path: NavigationLink.Methodology, element: <MethodologyPage /> },
+        { path: NavigationLink.Reports, element: <ReportPage /> },
+        { path: `${NavigationLink.Reports}/:id`, element: <ReportPage /> },
+        { path: NavigationLink.AboutAuthor, element: <AboutAuthorPage /> },
       ],
     },
   ],
