@@ -2,9 +2,9 @@ import { NavLink, Outlet } from 'react-router-dom'
 
 const navigation = [
   { label: 'Главная', to: '/' },
+  { label: 'Автор', to: '/about' },
   { label: 'Методика', to: '/methodology' },
   { label: 'Отчёты', to: '/reports/get-all-orders-grpc' },
-  { label: 'О проекте', to: '/about' },
 ]
 
 export function RootLayout() {

@@ -170,9 +170,9 @@ export const reports = [
 
 export const navigationCards = [
   {
-    title: "Автор проекта",
+    title: "Об авторе",
     description:
-      "Кто собрал стенд, зачем он был запущен и в каком академическом контексте ведётся работа.",
+      "Кто выполнил ВКР, в каком академическом и профессиональном контексте ведётся работа.",
     to: "/about",
   },
   {
@@ -201,6 +201,39 @@ export const methodologyDetails = [
   "Нагрузка формируется повторяемыми сценариями, а временные и ресурсные показатели собираются в одинаковом режиме для всех реализаций.",
   "Ключевые метрики: среднее время отклика, p95, RPS, средняя загрузка CPU и потребление оперативной памяти.",
 ];
+
+export const authorProfile = {
+  name: "Иван Моничев",
+  education: "Магистрант, Университет ИТМО",
+  age: "29 лет",
+  position: 'Senior Frontend Developer, ООО "Балтех"',
+  description:
+    "Я занимаюсь разработкой веб-интерфейсов и инженерной проработкой frontend-архитектуры. В рамках ВКР исследую, как разные способы взаимодействия между микросервисами влияют на производительность веб-приложения в условиях воспроизводимого нагрузочного эксперимента.",
+  contacts: [
+    {
+      label: "Почта",
+      value: "Добавьте email",
+      href: "#",
+    },
+    {
+      label: "VK",
+      value: "Добавьте ссылку на VK",
+      href: "#",
+    },
+  ],
+  skills: [
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Frontend Architecture",
+    "Design Systems",
+    "Node.js",
+    "Tailwind CSS",
+    "Performance",
+    "Docker",
+    "Microservices",
+  ],
+} as const;
 
 export const reportDetailContent = {
   "get-all-orders-http": {

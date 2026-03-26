@@ -36,13 +36,15 @@ export function SectionTechnologies() {
           {technologies.length} технологий
         </h3>
         <Paragraph className="mt-6 max-w-2xl text-center text-black/60">
-          В проекте используются технологии для реализации микросервисов,
-          хранения данных, контейнеризации и нагрузочного тестирования.
+          В проекте используются следующие технологии для реализации
+          микросервисов, хранения данных, контейнеризации и нагрузочного
+          тестирования.
         </Paragraph>
 
         <div className="mt-16 flex max-w-3xl flex-wrap items-center justify-center gap-3 md:gap-4">
           {technologies.map((item) => {
-            const Icon = technologyIcons[item.name as keyof typeof technologyIcons]
+            const Icon =
+              technologyIcons[item.name as keyof typeof technologyIcons]
 
             return (
               <div

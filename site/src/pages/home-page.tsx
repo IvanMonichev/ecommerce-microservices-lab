@@ -30,6 +30,9 @@ export function HomePage() {
             , Иван Моничев, Санкт-Петербург
           </div>
           <div className="flex flex-wrap gap-6">
+            <Link to="/about" className="transition hover:text-ink">
+              Author
+            </Link>
             <Link to="/methodology" className="transition hover:text-ink">
               Methodology
             </Link>
@@ -38,9 +41,6 @@ export function HomePage() {
               className="transition hover:text-ink"
             >
               Reports
-            </Link>
-            <Link to="/about" className="transition hover:text-ink">
-              About
             </Link>
           </div>
         </div>
