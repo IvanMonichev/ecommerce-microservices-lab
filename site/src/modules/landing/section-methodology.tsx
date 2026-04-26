@@ -1,4 +1,4 @@
-import { Section } from '@/shared/ui/section'
+import { Section } from '@/shared/components/section'
 import { useTranslation } from 'react-i18next'
 import { useSiteContent } from '@/shared/hooks/use-site-content'
 import classNames from 'classnames'

@@ -35,15 +35,6 @@ export const resources = {
           paragraph1Accent: 'реальной нагрузки',
           paragraph2:
             'В текущей версии проекта сопоставляются две реализации одного экспериментального e-commerce приложения: на Express для TypeScript-стека и на Fiber для Go-стека. Сравнение выполняется по метрикам среднего времени отклика, p95 времени отклика, пропускной способности, загрузки CPU и потребления памяти. Нагрузочное тестирование проводится в контейнеризированной среде Docker с использованием k6, а сбор ресурсных метрик выполняется при фиксированных условиях эксперимента.',
-          keywordsTitle: 'Ключевые слова',
-          keywords: [
-            'Микросервисная архитектура',
-            'Веб-фреймворки',
-            'Производительность',
-            'Нагрузочное тестирование',
-            'Контролируемый эксперимент',
-            'Воспроизводимость',
-          ],
         },
         methodology: {
           title: 'Ключевые этапы',
@@ -62,11 +53,19 @@ export const resources = {
         eyebrow: 'Methodology',
         title: 'Методика эксперимента',
         description:
-          'Эта страница дает опорную структуру раздела, который можно расширять подробными таблицами, графиками и ссылками на артефакты прогонов.',
-        fixedTitle: 'Что фиксируется',
+          'Страница описывает, как организован воспроизводимый эксперимент по сравнению Express и Fiber в микросервисном веб-приложении: какие условия зафиксированы, какие сценарии нагружаются и по каким метрикам анализируются результаты.',
+        fixedTitle: 'Исследовательская рамка',
+        stagesTitle: 'Этапы методики',
+        stagesDescription:
+          'Методика построена как последовательность шагов, позволяющих удерживать архитектурную эквивалентность реализаций, контролировать нагрузочное окружение и получать сопоставимые результаты.',
+        scenariosTitle: 'Нагрузочные сценарии',
+        metricsTitle: 'Метрики оценки',
+        environmentTitle: 'Контролируемое окружение',
+        environmentDescription:
+          'Сопоставимость результатов обеспечивается не только одинаковой бизнес-логикой, но и фиксацией инфраструктуры, входных данных, параметров генерации нагрузки и правил сбора метрик.',
       },
       reportsPage: {
-        eyebrow: 'Reports',
+        eyebrow: 'Отчеты',
         scenario: 'Сценарий',
         nextTitle: 'Что добавить дальше',
         nextItems: [
@@ -129,27 +128,27 @@ export const resources = {
           {
             step: '01',
             title: 'Формирование единых условий эксперимента',
-            text: 'На первом этапе фиксируются архитектура приложения, бизнес-логика, сценарии взаимодействия сервисов, базы данных и параметры инфраструктурного окружения, чтобы сравнение платформ оставалось сопоставимым.',
+            text: 'На первом этапе фиксируются предметная область, состав микросервисов, архитектурная схема, хранилища данных, API Gateway, брокер сообщений и единая бизнес-логика. Это исключает влияние функциональных различий между реализациями и позволяет сравнивать именно программно-технологические платформы.',
           },
           {
             step: '02',
             title: 'Определение техник нагрузочного тестирования',
-            text: 'После фиксации условий выбираются техники нагрузочного воздействия: равномерная нагрузка, стресс-тестирование, пиковые сценарии и тестирование стабильности в зависимости от исследуемого аспекта поведения системы.',
+            text: 'После фиксации условий задаётся профиль нагрузки. В исследовании используется равномерная постоянная нагрузка, позволяющая удерживать стабильное число виртуальных пользователей и анализировать поведение системы без искажения результатов случайными колебаниями интенсивности запросов.',
           },
           {
             step: '03',
             title: 'Выбор и формализация метрик',
-            text: 'На этом этапе фиксируется набор метрик для сравнения реализаций: среднее время отклика, p95, пропускная способность, загрузка CPU и потребление оперативной памяти.',
+            text: 'На этом этапе определяется единый набор показателей: среднее время отклика, p95, пропускная способность, средняя загрузка CPU и потребление оперативной памяти. Такой набор позволяет оценивать и скорость обработки запросов, и цену этой производительности с точки зрения вычислительных ресурсов.',
           },
           {
             step: '04',
             title: 'Проведение эксперимента и сбор метрик',
-            text: 'На этом этапе выполняются повторяемые прогоны сценариев в контейнеризированной среде, генерируется нагрузка и собираются временные и ресурсные показатели по всем компонентам приложения.',
+            text: 'На этом этапе выполняются повторяемые прогоны четырёх сценариев в контейнеризированной среде. Нагрузка генерируется инструментом k6, а ресурсные показатели контейнеров фиксируются во время выполнения сценариев с помощью docker stats.',
           },
           {
             step: '05',
             title: 'Анализ и интерпретация результатов',
-            text: 'Финальный этап посвящен сопоставлению полученных метрик, выявлению узких мест и формулированию выводов о поведении платформ в идентичных условиях микросервисного взаимодействия.',
+            text: 'Финальный этап посвящён сопоставлению собранных метрик, анализу устойчивости отклика, оценке ресурсоёмкости и формулированию выводов о том, как выбранный стек и способ межсервисного взаимодействия влияют на производительность приложения.',
           },
         ],
         technologies: [
@@ -202,7 +201,7 @@ export const resources = {
         reports: [
           {
             id: 'get-all-orders-http',
-            title: 'Get All Orders over HTTP',
+            title: 'Получение всех заказов по HTTP',
             summary:
               'Чтение списка заказов через HTTP downstream для оценки накладных расходов синхронного взаимодействия.',
             tags: ['k6', 'HTTP', 'Orders'],
@@ -215,7 +214,7 @@ export const resources = {
           },
           {
             id: 'get-all-orders-grpc',
-            title: 'Get All Orders over gRPC',
+            title: 'Получение всех заказов по gRPC',
             summary:
               'Сценарий сравнивает чтение заказов через gRPC downstream при высокой конкурентной нагрузке.',
             tags: ['k6', 'gRPC', 'Orders'],
@@ -228,7 +227,7 @@ export const resources = {
           },
           {
             id: 'create-order',
-            title: 'Create Order',
+            title: 'Создание заказа',
             summary:
               'Оценивает полный путь создания заказа: gateway, валидация, получение товара и запись результата.',
             tags: ['Write path', 'Orders', 'Users'],
@@ -241,7 +240,7 @@ export const resources = {
           },
           {
             id: 'update-order-status',
-            title: 'Update Order Status',
+            title: 'Обновление статуса заказа',
             summary:
               'Показывает наиболее легкий сценарий обновления, удобный для базового сравнения write latency.',
             tags: ['Status', 'Orders', 'Baseline'],
@@ -256,8 +255,7 @@ export const resources = {
         navigationCards: [
           {
             title: 'Об авторе',
-            description:
-              'Кто выполнил ВКР, в каком академическом и профессиональном контексте ведется работа.',
+            description: 'Информация об авторе, контакты.',
             to: '/about-author',
           },
           {
@@ -280,58 +278,139 @@ export const resources = {
           },
         ],
         methodologyDetails: [
-          'Независимый параметр эксперимента: используемая технологическая платформа при неизменной архитектуре и бизнес-логике.',
-          'Среда выполнения фиксируется через контейнеризацию Docker и единые условия запуска сервисов и хранилищ.',
-          'Нагрузка формируется повторяемыми сценариями, а временные и ресурсные показатели собираются в одинаковом режиме для всех реализаций.',
-          'Ключевые метрики: среднее время отклика, p95, RPS, средняя загрузка CPU и потребление оперативной памяти.',
+          'Независимой переменной эксперимента выступает программно-технологическая реализация микросервисного приложения: Express/Node.js и Fiber/Go при неизменной архитектуре, одинаковой бизнес-логике и фиксированных сценариях межсервисного взаимодействия.',
+          'Цель методики состоит в том, чтобы получить сопоставимую экспериментальную оценку производительности без смешения исследуемого фактора с различиями в предметной области, структуре сервисов, нагрузке или инфраструктуре.',
+          'Поэтому все существенные условия эксперимента фиксируются заранее: состав сервисов, типы хранилищ, API Gateway, RabbitMQ, контейнерное окружение, параметры генерации нагрузки, входные данные и правила агрегирования результатов.',
+          'Такой подход позволяет интерпретировать различия в метриках как следствие особенностей реализации и взаимодействия сервисов, а не как эффект случайных изменений внешней среды.',
+        ],
+        methodologyPrinciples: [
+          {
+            title: 'Что именно сравнивается',
+            text: 'Сравниваются две реализации одного и того же микросервисного веб-приложения: на Express в среде Node.js и на Fiber в среде Go. Архитектура, доменная модель, сценарии обработки запросов и набор инфраструктурных компонентов при этом сохраняются неизменными.',
+          },
+          {
+            title: 'Почему эксперимент воспроизводим',
+            text: 'Все сервисы и инфраструктурные компоненты разворачиваются в Docker-контейнерах на единой тестовой платформе. Это уменьшает влияние различий в системных зависимостях, конфигурации окружения и порядке запуска сервисов.',
+          },
+          {
+            title: 'Как обеспечивается корректность сравнения',
+            text: 'Перед прогонами фиксируются версии технологий, состояние хранилищ, входные данные и параметры нагрузки. За счёт этого наблюдаемые различия можно связывать с особенностями стека и межсервисной коммуникации, а не с побочными факторами.',
+          },
+        ],
+        methodologyScenarios: [
+          {
+            title: 'Сценарий 1. Получение списка заказов через HTTP',
+            text: 'Клиентский запрос поступает в API Gateway, затем маршрутизируется в сервис заказов, который обращается к сервису товаров по HTTP. Сценарий используется для оценки накладных расходов классического REST-взаимодействия между внутренними сервисами.',
+          },
+          {
+            title: 'Сценарий 2. Получение списка заказов через gRPC',
+            text: 'Прикладная логика совпадает со сценарием HTTP, однако взаимодействие между сервисом заказов и сервисом товаров выполняется по gRPC. Это позволяет оценить влияние бинарной сериализации и RPC-коммуникации при сохранении одинакового маршрута запроса.',
+          },
+          {
+            title: 'Сценарий 3. Создание заказа',
+            text: 'Сценарий моделирует операцию записи: клиент отправляет POST-запрос через API Gateway, сервис заказов валидирует входные данные, создаёт новую сущность и сохраняет результат. Он позволяет наблюдать поведение системы при ресурсозатратной операции записи.',
+          },
+          {
+            title: 'Сценарий 4. Асинхронное обновление статуса заказа',
+            text: 'Запрос поступает в сервис уведомлений через API Gateway, после чего сервис публикует сообщение в RabbitMQ по AMQP. Этот сценарий отражает событийный контур взаимодействия и дополняет синхронные вызовы асинхронной моделью обмена.',
+          },
+        ],
+        methodologyMetrics: [
+          {
+            title: 'Среднее время отклика',
+            text: 'Показывает усреднённый интервал между отправкой запроса и получением полного ответа. Метрика позволяет оценить общий уровень быстродействия системы при заданной нагрузке.',
+          },
+          {
+            title: '95-й перцентиль времени отклика (p95)',
+            text: 'Используется для анализа устойчивости отклика и поведения системы в менее благоприятной части распределения задержек. Именно эта метрика показывает, насколько предсказуемо приложение ведёт себя под нагрузкой.',
+          },
+          {
+            title: 'Пропускная способность (RPS)',
+            text: 'Характеризует количество успешно обработанных запросов в секунду. Метрика позволяет оценить, какой объём работы система способна выполнить при фиксированном профиле нагрузки.',
+          },
+          {
+            title: 'Средняя загрузка CPU',
+            text: 'Отражает интенсивность использования процессорных ресурсов контейнерами приложения. Этот показатель нужен для сопоставления скорости обработки запросов с вычислительной ценой достигнутой производительности.',
+          },
+          {
+            title: 'Потребление оперативной памяти',
+            text: 'Показывает объём памяти, используемый контейнерами в ходе прогона. Метрика позволяет оценить ресурсоёмкость реализации и её пригодность для плотного контейнерного развёртывания.',
+          },
+        ],
+        methodologyEnvironment: [
+          {
+            title: 'Аппаратная и системная платформа',
+            text: 'Эксперименты выполняются на единой тестовой машине с фиксированными характеристиками операционной системы, процессора и памяти. Все сравниваемые реализации работают в одном и том же аппаратном окружении.',
+          },
+          {
+            title: 'Контейнеризация и инфраструктура',
+            text: 'Сервисы, базы данных и RabbitMQ запускаются в Docker-контейнерах. Контейнеризация используется как средство изоляции, фиксации окружения и воспроизводимого развертывания экспериментального стенда.',
+          },
+          {
+            title: 'Параметры генерации нагрузки',
+            text: 'Нагрузка создаётся с помощью k6: 1000 виртуальных пользователей, задержка 1 секунда между итерациями, продолжительность прогона 1 минута и 10 повторений для каждого сценария. Такой режим позволяет снизить влияние случайных колебаний.',
+          },
+          {
+            title: 'Подготовка данных и сбор метрик',
+            text: 'Перед сериями запусков хранилища приводятся к сопоставимому начальному состоянию, а входные данные фиксируются заранее. Временные метрики собираются в ходе прогонов, а ресурсные показатели дополнительно снимаются через docker stats.',
+          },
         ],
         authorProfile: {
           name: 'Иван Моничев',
           education: 'Магистрант, Университет ИТМО',
           age: '29 лет',
-          position: 'Senior Frontend Developer, ООО "Балтех"',
           description:
-            'Я занимаюсь разработкой веб-интерфейсов и инженерной проработкой frontend-архитектуры. В рамках ВКР исследую, как разные способы взаимодействия между микросервисами влияют на производительность веб-приложения в условиях воспроизводимого нагрузочного эксперимента.',
+            'Веб-разработчик с опытом в коммерческой разработке с 2022 года. Специализируюсь на frontend-разработке, уделяю большое внимание архитектуре приложений, инженерным процессам и системному развитию экспертизы. Параллельно углубляюсь в backend-направление и интересуюсь проектированием современных программных систем. В рамках ВКР провожу исследование, посвященное микросервисной архитектуре и особенностям взаимодействия сервисов.',
+          position: 'Senior Frontend Developer, ООО "Балтех"',
           contacts: [
             {
               label: 'Почта',
-              value: 'Добавьте email',
-              href: '#',
+              value: 'id.monichev@gmail.com',
+              href: 'mailto:id.monichev@gmail.com',
             },
             {
               label: 'VK',
-              value: 'Добавьте ссылку на VK',
-              href: '#',
+              value: 'vk.com/ivan_monichev',
+              href: 'https://vk.com/ivan_monichev',
             },
           ],
           skills: [
-            'TypeScript',
             'React',
-            'Next.js',
-            'Frontend Architecture',
-            'Design Systems',
+            'JavaScript',
+            'TypeScript',
+            'CSS',
+            'HTML',
+            'CSS3',
+            'HTML5',
+            'Git',
+            'Frontend',
             'Node.js',
-            'Tailwind CSS',
-            'Performance',
-            'Docker',
-            'Microservices',
+            'Electron',
+            'Redux',
+            'FSD',
+            'nestJS',
+            'JS',
+            'Веб-программирование',
+            'React.js',
+            'Обучение персонала',
+            'SSR',
           ],
         },
         reportDetailContent: {
           'get-all-orders-http': {
-            title: 'HTTP downstream comparison',
+            title: 'Сравнение HTTP downstream',
             lead: 'Сценарий полезен для оценки накладных расходов на синхронные вызовы между gateway и downstream сервисами при выборке списка заказов.',
           },
           'get-all-orders-grpc': {
-            title: 'gRPC downstream comparison',
+            title: 'Сравнение gRPC downstream',
             lead: 'Фокус на сравнении той же доменной операции при смене протокола downstream взаимодействия на gRPC.',
           },
           'create-order': {
-            title: 'Write path benchmark',
+            title: 'Нагрузочный тест пути записи',
             lead: 'Комплексный write path позволяет увидеть влияние сериализации, бизнес-логики и сетевого взаимодействия на создание заказа.',
           },
           'update-order-status': {
-            title: 'Status update baseline',
+            title: 'Базовый сценарий обновления статуса',
             lead: 'Короткий сценарий обновления статуса используется как базовый ориентир для latency и ресурсоемкости write операций.',
           },
         },
@@ -374,15 +453,6 @@ export const resources = {
           paragraph1Accent: 'realistic load',
           paragraph2:
             'The current version compares two implementations of the same experimental e-commerce application: Express for the TypeScript stack and Fiber for the Go stack. The comparison covers average response time, p95 response time, throughput, CPU usage, and memory consumption. Load testing is performed in a containerized Docker environment with k6, while resource metrics are collected under fixed experimental conditions.',
-          keywordsTitle: 'Keywords',
-          keywords: [
-            'Microservice architecture',
-            'Web frameworks',
-            'Performance',
-            'Load testing',
-            'Controlled experiment',
-            'Reproducibility',
-          ],
         },
         methodology: {
           title: 'Key stages',
@@ -401,8 +471,16 @@ export const resources = {
         eyebrow: 'Methodology',
         title: 'Experiment methodology',
         description:
-          'This page provides a structural baseline for the section and can be expanded with detailed tables, charts, and links to run artifacts.',
-        fixedTitle: 'What is fixed',
+          'This page describes the reproducible experiment used to compare Express and Fiber in a microservice web application: which conditions are fixed, which scenarios are loaded, and which metrics are used to interpret the results.',
+        fixedTitle: 'Research frame',
+        stagesTitle: 'Methodology stages',
+        stagesDescription:
+          'The methodology is organized as a sequence of steps that preserve architectural equivalence, control the load environment, and provide comparable results.',
+        scenariosTitle: 'Load scenarios',
+        metricsTitle: 'Evaluation metrics',
+        environmentTitle: 'Controlled environment',
+        environmentDescription:
+          'Result comparability is ensured not only by identical business logic but also by fixed infrastructure, input data, load generation parameters, and metric collection rules.',
       },
       reportsPage: {
         eyebrow: 'Reports',
@@ -468,27 +546,27 @@ export const resources = {
           {
             step: '01',
             title: 'Define uniform experimental conditions',
-            text: 'The first stage fixes application architecture, business logic, service interaction scenarios, databases, and infrastructure parameters so platform comparison remains consistent.',
+            text: 'The first stage fixes the problem domain, service set, architectural scheme, data stores, API Gateway, message broker, and shared business logic. This removes functional differences from the comparison and keeps the focus on the technology stack itself.',
           },
           {
             step: '02',
             title: 'Select load testing techniques',
-            text: 'After conditions are fixed, the load techniques are selected: steady load, stress testing, spike scenarios, and stability testing depending on the aspect of system behavior being studied.',
+            text: 'After the baseline is fixed, the load profile is defined. The study uses steady constant load to keep the number of active virtual users stable and avoid distorting the comparison with random fluctuations in request intensity.',
           },
           {
             step: '03',
             title: 'Choose and formalize metrics',
-            text: 'At this stage the metric set is fixed for implementation comparison: average response time, p95, throughput, CPU usage, and memory consumption.',
+            text: 'At this stage the metric set is defined: average response time, p95 latency, throughput, average CPU usage, and memory consumption. This makes it possible to evaluate both response speed and the computational cost of achieving it.',
           },
           {
             step: '04',
             title: 'Run the experiment and collect metrics',
-            text: 'This stage executes repeatable scenario runs in a containerized environment, generates load, and collects temporal and resource metrics across all application components.',
+            text: 'This stage runs repeatable executions of the four scenarios in a containerized environment. Load is generated with k6, while container-level resource metrics are captured during the runs with docker stats.',
           },
           {
             step: '05',
             title: 'Analyze and interpret results',
-            text: 'The final stage compares the collected metrics, identifies bottlenecks, and formulates conclusions about platform behavior under identical microservice interaction conditions.',
+            text: 'The final stage compares the collected metrics, evaluates latency stability and resource usage, and formulates conclusions about how the chosen stack and interservice communication mode affect overall system performance.',
           },
         ],
         technologies: [
@@ -619,10 +697,82 @@ export const resources = {
           },
         ],
         methodologyDetails: [
-          'The independent experimental variable is the technology platform, while architecture and business logic remain unchanged.',
-          'The execution environment is fixed through Docker containerization and uniform service and storage startup conditions.',
-          'Load is generated through repeatable scenarios, while temporal and resource metrics are collected in the same mode for all implementations.',
-          'Key metrics are average response time, p95, RPS, average CPU usage, and memory consumption.',
+          'The independent variable of the experiment is the software platform used to implement the microservice application: Express/Node.js versus Fiber/Go, while architecture, business logic, and interaction scenarios remain unchanged.',
+          'The goal of the methodology is to obtain a comparable performance evaluation without mixing the studied factor with differences in the problem domain, service structure, load profile, or infrastructure.',
+          'For that reason, all substantial conditions are fixed in advance: service composition, data stores, API Gateway, RabbitMQ, container environment, load parameters, input data, and result aggregation rules.',
+          'This makes it possible to interpret metric differences as a consequence of implementation and communication choices rather than accidental changes in the external environment.',
+        ],
+        methodologyPrinciples: [
+          {
+            title: 'What is being compared',
+            text: 'Two implementations of the same microservice web application are compared: Express in Node.js and Fiber in Go. The architecture, domain model, request processing scenarios, and infrastructure remain the same across both implementations.',
+          },
+          {
+            title: 'Why the experiment is reproducible',
+            text: 'All services and infrastructure components are deployed in Docker containers on a single test platform. This reduces the impact of differences in system dependencies, environment configuration, and startup order.',
+          },
+          {
+            title: 'How comparison validity is preserved',
+            text: 'Technology versions, storage state, input data, and load parameters are fixed before the runs. Because of that, observed differences can be attributed to stack behavior and interservice communication rather than side effects.',
+          },
+        ],
+        methodologyScenarios: [
+          {
+            title: 'Scenario 1. Fetch order list over HTTP',
+            text: 'A client request enters the API Gateway and is routed to the order service, which calls the product service over HTTP. This scenario is used to evaluate the overhead of classic REST-style communication between internal services.',
+          },
+          {
+            title: 'Scenario 2. Fetch order list over gRPC',
+            text: 'The business logic is identical to the HTTP scenario, but communication between the order service and the product service uses gRPC. This isolates the effect of binary serialization and RPC-based communication while keeping the request path the same.',
+          },
+          {
+            title: 'Scenario 3. Create order',
+            text: 'This scenario models a write operation: the client sends a POST request through the API Gateway, the order service validates input, creates a new entity, and persists it. It is intended to observe behavior under a more resource-intensive write path.',
+          },
+          {
+            title: 'Scenario 4. Asynchronous order status update',
+            text: 'The request is sent to the notification service through the API Gateway, after which the service publishes a message to RabbitMQ via AMQP. This scenario represents the event-driven communication path and complements the synchronous calls.',
+          },
+        ],
+        methodologyMetrics: [
+          {
+            title: 'Average response time',
+            text: 'Shows the average interval between sending a request and receiving the full response. It provides a general estimate of how fast the system responds under the chosen load profile.',
+          },
+          {
+            title: '95th percentile latency (p95)',
+            text: 'Used to analyze latency stability and the less favorable part of the delay distribution. This metric shows how predictable the application remains under load.',
+          },
+          {
+            title: 'Throughput (RPS)',
+            text: 'Represents the number of successfully processed requests per second. It shows how much useful work the system can perform under fixed load conditions.',
+          },
+          {
+            title: 'Average CPU usage',
+            text: 'Reflects how intensively the application containers use processor resources. This helps relate response speed to the computational cost of delivering that performance.',
+          },
+          {
+            title: 'Memory consumption',
+            text: 'Shows how much memory the containers use during a run. This metric is necessary for assessing resource efficiency and deployment density in containerized environments.',
+          },
+        ],
+        methodologyEnvironment: [
+          {
+            title: 'Hardware and system platform',
+            text: 'Experiments are executed on a single test machine with fixed operating system, processor, and memory characteristics. Both implementations run in the same hardware environment.',
+          },
+          {
+            title: 'Containerization and infrastructure',
+            text: 'Services, databases, and RabbitMQ are launched in Docker containers. Containerization is used to isolate components, fix runtime conditions, and reproduce the testbed reliably.',
+          },
+          {
+            title: 'Load generation parameters',
+            text: 'Load is generated with k6: 1000 virtual users, a 1-second delay between iterations, 1-minute run duration, and 10 repetitions per scenario. This reduces the impact of random fluctuations.',
+          },
+          {
+            title: 'Data preparation and metric collection',
+            text: 'Before run series, data stores are returned to a comparable initial state and input data is fixed in advance. Temporal metrics are collected during execution, while resource metrics are additionally captured through docker stats.',
+          },
         ],
         authorProfile: {
           name: 'Ivan Monichev',
@@ -630,30 +780,39 @@ export const resources = {
           age: '29 years old',
           position: 'Senior Frontend Developer, Baltekh LLC',
           description:
-            'I work on web interface development and frontend architecture. In this thesis, I study how different microservice interaction patterns affect web application performance under a reproducible load experiment.',
+            'Web developer with commercial experience since 2022. I focus on frontend engineering, application architecture, engineering processes, and systematic professional growth. At the same time, I continue to deepen my backend expertise and study the design of modern software systems. In this thesis, I investigate microservice architecture and the performance impact of different service interaction patterns.',
           contacts: [
             {
               label: 'Email',
-              value: 'Add email',
-              href: '#',
+              value: 'id.monichev@gmail.com',
+              href: 'mailto:id.monichev@gmail.com',
             },
             {
               label: 'VK',
-              value: 'Add VK link',
-              href: '#',
+              value: 'vk.com/ivan_monichev',
+              href: 'https://vk.com/ivan_monichev',
             },
           ],
           skills: [
-            'TypeScript',
             'React',
-            'Next.js',
-            'Frontend Architecture',
-            'Design Systems',
+            'JavaScript',
+            'TypeScript',
+            'CSS',
+            'HTML',
+            'CSS3',
+            'HTML5',
+            'Git',
+            'Frontend',
             'Node.js',
-            'Tailwind CSS',
-            'Performance',
-            'Docker',
-            'Microservices',
+            'Electron',
+            'Redux',
+            'FSD',
+            'nestJS',
+            'JS',
+            'Web programming',
+            'React.js',
+            'Staff training',
+            'SSR',
           ],
         },
         reportDetailContent: {

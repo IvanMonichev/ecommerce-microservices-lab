@@ -2,8 +2,8 @@ import webHero from '@/assets/web-hero.svg'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { NavigationLink } from '@/shared/constants/navigation.constant'
-import { AppButtonOutline } from '@/shared/ui/app-button-outline'
-import { AppButton } from '@/shared/ui/app-button'
+import { AppButtonOutline } from '@/shared/components/app-button-outline'
+import { AppButton } from '@/shared/components/app-button'
 
 export function SectionHero() {
   const { t } = useTranslation()
@@ -21,7 +21,9 @@ export function SectionHero() {
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
               <Link to={NavigationLink.Methodology}>
-                <AppButtonOutline>{t('home.hero.methodologyCta')}</AppButtonOutline>
+                <AppButtonOutline>
+                  {t('home.hero.methodologyCta')}
+                </AppButtonOutline>
               </Link>
               <Link to={`${NavigationLink.Reports}/get-all-orders-grpc`}>
                 <AppButton>{t('home.hero.reportsCta')}</AppButton>

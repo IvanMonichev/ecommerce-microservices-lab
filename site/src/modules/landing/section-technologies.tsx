@@ -1,5 +1,5 @@
-import { Section } from '@/shared/ui/section'
-import { Text } from '@/shared/ui/text'
+import { Section } from '@/shared/components/section'
+import { Text } from '@/shared/components/text'
 import { useTranslation } from 'react-i18next'
 import { useSiteContent } from '@/shared/hooks/use-site-content'
 import {

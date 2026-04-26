@@ -2,7 +2,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSiteContent } from '@/shared/hooks/use-site-content'
-import { Section } from '@/shared/ui/section'
+import { Section } from '@/shared/components/section'
 
 export function SectionNavigation() {
   const { t } = useTranslation()
@@ -13,47 +13,47 @@ export function SectionNavigation() {
       <Section.Title>{t('home.researchNavigation.title')}</Section.Title>
 
       <div className="grid gap-px overflow-hidden rounded-sm border border-line bg-line sm:grid-cols-2">
-          {navigationCards.map((item) => {
-            const isAnchor = item.to.startsWith('/#')
-            const cardClassName =
-              'group flex min-h-[220px] flex-col justify-between bg-white px-7 py-8 transition hover:bg-accentSoft'
+        {navigationCards.map((item) => {
+          const isAnchor = item.to.startsWith('/#')
+          const cardClassName =
+            'group flex min-h-[220px] flex-col justify-between bg-white px-7 py-8 transition hover:bg-accentSoft'
 
-            return isAnchor ? (
-              <a key={item.to} href={item.to} className={cardClassName}>
-                <div>
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-2xl font-semibold tracking-tight text-ink">
-                      {item.title}
-                    </h3>
-                    <ArrowUpRight className="h-5 w-5 shrink-0 text-black/35 transition group-hover:text-accent" />
-                  </div>
-                  <p className="mt-4 max-w-xs text-sm leading-7 text-black/60">
-                    {item.description}
-                  </p>
+          return isAnchor ? (
+            <a key={item.to} href={item.to} className={cardClassName}>
+              <div>
+                <div className="flex items-center justify-between gap-4">
+                  <h3 className="text-2xl font-semibold tracking-tight text-ink">
+                    {item.title}
+                  </h3>
+                  <ArrowUpRight className="h-5 w-5 shrink-0 text-black/35 transition group-hover:text-accent" />
                 </div>
-                <span className="mt-8 inline-flex text-sm font-semibold text-ink">
-                  {t('navigation.openSection')}
-                </span>
-              </a>
-            ) : (
-              <Link key={item.to} to={item.to} className={cardClassName}>
-                <div>
-                  <div className="flex items-center justify-between gap-4">
-                    <h3 className="text-2xl font-semibold tracking-tight text-ink">
-                      {item.title}
-                    </h3>
-                    <ArrowUpRight className="h-5 w-5 shrink-0 text-black/35 transition group-hover:text-accent" />
-                  </div>
-                  <p className="mt-4 max-w-xs text-sm leading-7 text-black/60">
-                    {item.description}
-                  </p>
+                <p className="mt-4 max-w-xs text-sm leading-7 text-black/60">
+                  {item.description}
+                </p>
+              </div>
+              <span className="mt-8 inline-flex text-sm font-semibold text-ink">
+                {t('navigation.openSection')}
+              </span>
+            </a>
+          ) : (
+            <Link key={item.to} to={item.to} className={cardClassName}>
+              <div>
+                <div className="flex items-center justify-between gap-4">
+                  <h3 className="text-2xl font-semibold tracking-tight text-ink">
+                    {item.title}
+                  </h3>
+                  <ArrowUpRight className="h-5 w-5 shrink-0 text-black/35 transition group-hover:text-accent" />
                 </div>
-                <span className="mt-8 inline-flex text-sm font-semibold text-ink">
-                  {t('navigation.openSection')}
-                </span>
-              </Link>
-            )
-          })}
+                <p className="mt-4 max-w-xs text-sm leading-7 text-black/60">
+                  {item.description}
+                </p>
+              </div>
+              <span className="mt-8 inline-flex text-sm font-semibold text-ink">
+                {t('navigation.openSection')}
+              </span>
+            </Link>
+          )
+        })}
       </div>
     </Section>
   )

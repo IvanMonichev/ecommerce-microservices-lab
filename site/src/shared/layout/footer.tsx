@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { NavigationLink } from '@/shared/constants/navigation.constant'
-import { ExternalLink } from '@/shared/ui/external-link'
+import { ExternalLink } from '@/shared/components/external-link'
 
 export function Footer() {
   const { t } = useTranslation()
