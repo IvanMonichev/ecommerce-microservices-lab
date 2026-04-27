@@ -19,11 +19,13 @@ function Title({ children }: TitleProps) {
 interface SectionProps {
   children: ReactNode
   color?: 'gray' | 'white'
+  id?: string
 }
 
-export function Section({ children, color = 'gray' }: SectionProps) {
+export function Section({ children, color = 'gray', id }: SectionProps) {
   return (
     <section
+      id={id}
       className={classNames({
         'bg-mist': color === 'gray',
         'bg-white': color === 'white',

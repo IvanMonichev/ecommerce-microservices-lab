@@ -3,17 +3,13 @@ import { Bar } from 'react-chartjs-2'
 import type { ChartData } from 'chart.js'
 import { benchmarkData } from '@/data/benchmark-data.generated'
 import { STACK_META } from '@/modules/report/report-config'
-import { formatMetric } from '@/modules/report/report-format'
 import { ScenarioTrendCard } from '@/modules/report/report-metric-dashboard-scenario-trend-card'
 import { TechnologyTable } from '@/modules/report/report-metric-dashboard-technology-table'
 import type {
   ReportMetricDashboardProps,
   ScenarioColumn,
 } from '@/modules/report/report-metric-dashboard.types'
-import {
-  averageValues,
-  getReportMetricChartOptions,
-} from '@/modules/report/report-metric-dashboard.utils'
+import { getReportMetricChartOptions } from '@/modules/report/report-metric-dashboard.utils'
 
 export function ReportMetricDashboard({
   metric,
@@ -86,47 +82,21 @@ export function ReportMetricDashboard({
       },
     ],
   }
-
-  const overallSummary = {
-    go: averageValues(goColumns.map((column) => column.average)),
-    ts: averageValues(tsColumns.map((column) => column.average)),
-  }
   const activeScenario =
     scenarios.find((scenario) => scenario.id === activeScenarioId) ??
     scenarios[0]
 
   return (
     <div className="space-y-8">
-      <section className="overflow-hidden rounded-sm border border-line bg-white shadow-panel">
-        <div className="border-b border-line bg-[linear-gradient(135deg,rgba(239,239,237,0.82),rgba(255,255,255,0.98))] px-8 py-6">
-          <div className="mb-3 h-1 w-16 rounded-full bg-accent/80" />
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl">
-              <h2 className="text-2xl font-semibold">
-                {isRu ? metric.label.ru : metric.label.en}
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-black/60">
-                {isRu ? metric.description.ru : metric.description.en}
-              </p>
-            </div>
-            <div className="grid gap-px border border-line bg-line sm:grid-cols-2">
-              <div className="bg-white px-5 py-4">
-                <div className="text-[11px] uppercase tracking-[0.18em] text-black/45">
-                  {STACK_META.go.label}
-                </div>
-                <div className="mt-2 text-xl font-semibold">
-                  {formatMetric(overallSummary.go, unit)}
-                </div>
-              </div>
-              <div className="bg-white px-5 py-4">
-                <div className="text-[11px] uppercase tracking-[0.18em] text-black/45">
-                  {STACK_META.ts.label}
-                </div>
-                <div className="mt-2 text-xl font-semibold">
-                  {formatMetric(overallSummary.ts, unit)}
-                </div>
-              </div>
-            </div>
+      <section className="overflow-hidden rounded-sm border border-ink bg-white">
+        <div className="border-b border-ink bg-[linear-gradient(135deg,rgba(239,239,237,0.82),rgba(255,255,255,0.98))] px-8 py-6">
+          <div className="max-w-3xl">
+            <h2 className="text-2xl font-semibold">
+              {isRu ? metric.label.ru : metric.label.en}
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-black/60">
+              {isRu ? metric.description.ru : metric.description.en}
+            </p>
           </div>
         </div>
         <div className="bg-panel px-5 py-5 lg:px-6 lg:py-6">
@@ -156,15 +126,17 @@ export function ReportMetricDashboard({
                 onScenarioChange={setActiveScenarioId}
               />
             </div>
-            <div className="rounded-sm border border-line/70 bg-white p-4">
-              <div className="mb-3 text-sm font-semibold text-ink">
+            <div className="overflow-hidden rounded-sm border border-ink bg-white">
+              <div className="border-b border-ink px-4 py-4 text-sm font-semibold text-ink">
                 {isRu ? 'Усреднение по сценариям' : 'Scenario averages'}
               </div>
-              <div className="h-[380px]">
-                <Bar
-                  data={aggregatedChartData}
-                  options={getReportMetricChartOptions()}
-                />
+              <div className="p-4">
+                <div className="h-[380px]">
+                  <Bar
+                    data={aggregatedChartData}
+                    options={getReportMetricChartOptions()}
+                  />
+                </div>
               </div>
             </div>
           </div>

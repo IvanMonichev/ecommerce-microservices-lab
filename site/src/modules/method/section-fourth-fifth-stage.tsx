@@ -7,7 +7,7 @@ export function SectionFourthFifthStage() {
   const { t } = useTranslation()
 
   return (
-    <Section color="gray">
+    <Section id="stage-04-05" color="gray">
       <Section.Title>
         {t('methodologyPage.selectedStagePrefix')} 04-05.{' '}
         {t('methodologyPage.stageFourFive.title')}

@@ -20,30 +20,24 @@ export function TechnologyTable({
       : 'bg-[linear-gradient(135deg,rgba(122,52,243,0.08),rgba(255,255,255,0.98))]'
 
   return (
-    <section className="overflow-hidden rounded-sm border border-line bg-white shadow-panel">
-      <div className={`border-b border-line px-6 py-5 ${accent}`}>
-        <div className="mb-3 h-1 w-14 rounded-full bg-accent/80" />
+    <section className="overflow-hidden rounded-sm border border-ink bg-white">
+      <div className={`border-b border-ink px-6 py-5 ${accent}`}>
         <h3 className="text-xl font-semibold">{title}</h3>
-        <p className="mt-2 text-sm leading-7 text-black/60">
-          {isRu
-            ? 'Строки таблицы соответствуют прогонам, столбцы — сценариям; внизу показано среднее значение по каждому сценарию.'
-            : 'Table rows represent runs, columns represent scenarios, and the last row shows the average for each scenario.'}
-        </p>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse text-sm">
+      <div className="overflow-hidden">
+        <table className="min-w-full table-fixed border-collapse text-[12px] leading-5 lg:text-[13px]">
           <thead className="bg-ink text-white">
             <tr>
-              <th className="sticky left-0 bg-ink px-4 py-4 text-left font-semibold">
+              <th className="sticky left-0 w-[90px] bg-ink px-3 py-3 text-left font-semibold lg:w-[108px]">
                 {isRu ? 'Прогон' : 'Run'}
               </th>
               {columns.map((column) => (
                 <th
                   key={column.id}
-                  className="min-w-[220px] px-4 py-4 text-left font-semibold"
+                  className="px-3 py-3 text-left font-semibold"
                 >
-                  {column.id}
+                  <span className="block truncate">{column.id}</span>
                 </th>
               ))}
             </tr>
@@ -63,8 +57,10 @@ export function TechnologyTable({
                       : 'bg-panel',
                 ].join(' ')}
               >
-                <td className="sticky left-0 border-r border-line bg-inherit px-4 py-3 font-semibold transition-colors">
-                  {formatReportRunLabel(runId)}
+                <td className="sticky left-0 border-r border-ink bg-inherit px-3 py-2.5 font-semibold transition-colors">
+                  <span className="block truncate">
+                    {formatReportRunLabel(runId)}
+                  </span>
                 </td>
                 {columns.map((column) => {
                   const value = column.valuesByRunId.get(runId)
@@ -72,24 +68,28 @@ export function TechnologyTable({
                   return (
                     <td
                       key={`${column.id}-${runId}`}
-                      className="px-4 py-3 transition-colors"
+                      className="px-3 py-2.5 transition-colors"
                     >
-                      {value === undefined ? '—' : formatMetric(value, unit)}
+                      <span className="block truncate">
+                        {value === undefined ? '—' : formatMetric(value, unit)}
+                      </span>
                     </td>
                   )
                 })}
               </tr>
             ))}
-            <tr className="border-t border-line bg-accentSoft/55">
-              <td className="sticky left-0 border-r border-line bg-accentSoft/55 px-4 py-3 font-semibold">
+            <tr className="border-t border-ink bg-accentSoft/55">
+              <td className="sticky left-0 border-r border-ink bg-accentSoft/55 px-3 py-2.5 font-semibold">
                 {isRu ? 'Среднее' : 'Average'}
               </td>
               {columns.map((column) => (
                 <td
                   key={`${column.id}-average`}
-                  className="px-4 py-3 font-semibold"
+                  className="px-3 py-2.5 font-semibold"
                 >
-                  {formatMetric(column.average, unit)}
+                  <span className="block truncate">
+                    {formatMetric(column.average, unit)}
+                  </span>
                 </td>
               ))}
             </tr>

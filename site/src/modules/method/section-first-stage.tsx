@@ -45,7 +45,7 @@ export function SectionFirstStage() {
   )
 
   return (
-    <Section color="white">
+    <Section id="stage-01" color="white">
       <Section.Title>
         {t('methodologyPage.selectedStagePrefix')} 01. {stageOne.title}
       </Section.Title>

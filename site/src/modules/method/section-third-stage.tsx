@@ -17,7 +17,7 @@ export function SectionThirdStage() {
   }) as { title: string; intro: string }
 
   return (
-    <Section color="white">
+    <Section id="stage-03" color="white">
       <Section.Title>
         {t('methodologyPage.selectedStagePrefix')} 03. {stageThree.title}
       </Section.Title>
