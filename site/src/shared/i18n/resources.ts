@@ -66,7 +66,11 @@ export const resources = {
             leftHeader: 'Параметр среды',
             rightHeader: 'Показатель',
             rows: [
-              { id: 'os', left: 'Операционная система', right: 'macOS Tahoe, 26.3' },
+              {
+                id: 'os',
+                left: 'Операционная система',
+                right: 'macOS Tahoe, 26.3',
+              },
               { id: 'cpu', left: 'Процессор', right: 'Apple M5 (ARM)' },
               {
                 id: 'ram',
@@ -125,7 +129,8 @@ export const resources = {
             'В качестве базового подхода используется равномерное тестирование при постоянной нагрузке. Такой формат ориентирован на сопоставление производительности различных реализаций микросервисного взаимодействия в одинаковых и контролируемых условиях, а не на поиск предельной отказоустойчивости системы. Поддержание стабильного числа одновременно активных клиентов на всём протяжении прогона снижает влияние случайных колебаний интенсивности запросов и делает итоговые показатели более сопоставимыми.',
           scenariosLead:
             'Нагрузочное тестирование структурировано в виде четырёх сценариев, охватывающих чтение данных, запись данных и асинхронную обработку событий. Такое разбиение позволяет сравнивать поведение системы в разных режимах межсервисного взаимодействия при одинаковых условиях проведения эксперимента.',
-          diagramAlt: 'Схема сценариев взаимодействия в микросервисном приложении',
+          diagramAlt:
+            'Схема сценариев взаимодействия в микросервисном приложении',
           scenarios: [
             {
               id: 'scenario-1',
@@ -481,25 +486,20 @@ export const resources = {
             },
           ],
           skills: [
+            'TypeScript',
             'React',
             'JavaScript',
             'Node.js',
+            'SSR',
+            'Redux',
+            'FSD',
             'CSS',
             'HTML',
             'CSS3',
             'HTML5',
             'Git',
-            'Frontend',
-            'Node.js',
             'Electron',
-            'Redux',
-            'FSD',
-            'nestJS',
-            'JS',
-            'Веб-программирование',
-            'React.js',
-            'Обучение персонала',
-            'SSR',
+            'NestJS',
           ],
         },
         reportDetailContent: {
@@ -590,7 +590,11 @@ export const resources = {
             leftHeader: 'Environment parameter',
             rightHeader: 'Value',
             rows: [
-              { id: 'os', left: 'Operating system', right: 'macOS Tahoe, 26.3' },
+              {
+                id: 'os',
+                left: 'Operating system',
+                right: 'macOS Tahoe, 26.3',
+              },
               { id: 'cpu', left: 'Processor', right: 'Apple M5 (ARM)' },
               {
                 id: 'ram',
@@ -649,7 +653,8 @@ export const resources = {
             'The baseline approach uses uniform testing under constant load. This format is aimed at comparing performance across different microservice interaction implementations under identical controlled conditions, rather than finding the system’s absolute fault-tolerance limit. Keeping the number of concurrently active clients stable throughout each run reduces random request-intensity fluctuations and makes final metrics more comparable.',
           scenariosLead:
             'Load testing is structured into four scenarios covering read operations, write operations, and asynchronous event handling. This decomposition makes it possible to compare system behavior across different interservice communication modes under the same experimental conditions.',
-          diagramAlt: 'Interaction scenario diagram for the microservice application',
+          diagramAlt:
+            'Interaction scenario diagram for the microservice application',
           scenarios: [
             {
               id: 'scenario-1',
@@ -686,7 +691,11 @@ export const resources = {
                 left: 'Delay between user requests',
                 right: '1 second',
               },
-              { id: 'duration', left: 'Single-run duration', right: '1 minute' },
+              {
+                id: 'duration',
+                left: 'Single-run duration',
+                right: '1 minute',
+              },
               {
                 id: 'repeats',
                 left: 'Repetitions per scenario',
@@ -998,25 +1007,18 @@ export const resources = {
             },
           ],
           skills: [
+            'TypeScript',
             'React',
             'JavaScript',
             'Node.js',
-            'CSS',
-            'HTML',
-            'CSS3',
-            'HTML5',
-            'Git',
-            'Frontend',
-            'Node.js',
-            'Electron',
+            'SSR',
             'Redux',
             'FSD',
-            'nestJS',
-            'JS',
-            'Web programming',
-            'React.js',
-            'Staff training',
-            'SSR',
+            'CSS',
+            'HTML',
+            'Git',
+            'Electron',
+            'NestJS',
           ],
         },
         reportDetailContent: {
