@@ -2,7 +2,7 @@
 
 Набор `k6`-сценариев для сравнения двух реализаций одного и того же e-commerce gateway:
 
-- TypeScript + Express: `http://localhost:3000`
+- Node.js + Express: `http://localhost:3000`
 - Go + Fiber: `http://localhost:4000`
 
 Во время каждого прогона сохраняются:
@@ -205,7 +205,7 @@ sum(cpu_perc / 100 * sample_interval_seconds)
 
 ## Какие метрики использовать для сравнения
 
-Для сравнения TypeScript и Go достаточно смотреть:
+Для сравнения Node.js и Go достаточно смотреть:
 
 - из `k6`: latency, throughput, error rate
 - из `docker-stats-summary.json`:
@@ -219,7 +219,7 @@ sum(cpu_perc / 100 * sample_interval_seconds)
 
 ## Примеры запуска
 
-Чтение заказов через HTTP на TypeScript gateway:
+Чтение заказов через HTTP на Node.js gateway:
 
 ```bash
 cd benchmark
@@ -233,7 +233,7 @@ cd benchmark
 USER_ID=<user-id> PRODUCT_ID=<product-id> RUNS=3 ./scripts/run-create-order.sh go
 ```
 
-Обновление статуса заказа на TypeScript gateway:
+Обновление статуса заказа на Node.js gateway:
 
 ```bash
 cd benchmark

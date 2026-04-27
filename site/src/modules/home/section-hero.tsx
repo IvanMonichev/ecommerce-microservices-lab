@@ -20,7 +20,7 @@ export function SectionHero() {
               {t('home.hero.description')}
             </p>
             <div className="mt-10 flex flex-wrap gap-4">
-              <Link to={NavigationLink.Methodology}>
+              <Link to={NavigationLink.Method}>
                 <AppButtonOutline>
                   {t('home.hero.methodologyCta')}
                 </AppButtonOutline>

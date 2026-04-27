@@ -2,21 +2,6 @@ import { Section } from '@/shared/components/section'
 import { useTranslation } from 'react-i18next'
 import { useSiteContent } from '@/shared/hooks/use-site-content'
 import classNames from 'classnames'
-import {
-  BarChart3,
-  ClipboardList,
-  FlaskConical,
-  Gauge,
-  Search,
-} from 'lucide-react'
-
-const methodologyStepIcons = [
-  ClipboardList,
-  Gauge,
-  BarChart3,
-  FlaskConical,
-  Search,
-]
 
 export function SectionMethodology() {
   const { t } = useTranslation()
@@ -28,8 +13,6 @@ export function SectionMethodology() {
 
       <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-6">
         {methodologySteps.map((item, index) => {
-          const Icon = methodologyStepIcons[index]
-
           return (
             <article
               key={item.step}
@@ -43,7 +26,12 @@ export function SectionMethodology() {
             >
               <div className="flex items-center gap-4 text-accent">
                 <span className="h-px flex-1 bg-ink" />
-                <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
+                <span
+                  className="shrink-0 text-2xl font-semibold leading-none text-accent"
+                  aria-hidden="true"
+                >
+                  {String(index + 1).padStart(2, '0')}
+                </span>
                 <span className="h-px flex-1 bg-ink" />
               </div>
               <h3 className="mt-5 text-xl font-semibold text-center">

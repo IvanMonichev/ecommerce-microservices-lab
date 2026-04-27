@@ -1,6 +1,6 @@
 export const NavigationLink = {
   Home: '/',
   AboutAuthor: '/about-author',
-  Methodology: '/methodology',
+  Method: '/method',
   Reports: '/reports',
 } as const

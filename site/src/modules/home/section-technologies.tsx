@@ -15,7 +15,7 @@ import {
 
 const technologyIcons = {
   Go: Binary,
-  TypeScript: Braces,
+  'Node.js': Braces,
   Fiber: Workflow,
   Express: Box,
   MongoDB: Database,

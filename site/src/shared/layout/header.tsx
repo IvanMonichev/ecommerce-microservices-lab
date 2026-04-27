@@ -21,7 +21,7 @@ export function Header() {
     new URLSearchParams(search).get('metric') ?? defaultReportMetricId
   const navigation = [
     { label: t('navigation.home'), to: NavigationLink.Home },
-    { label: t('navigation.methodology'), to: NavigationLink.Methodology },
+    { label: t('navigation.methodology'), to: NavigationLink.Method },
     { label: t('navigation.reports'), to: NavigationLink.Reports },
     { label: t('navigation.aboutAuthor'), to: NavigationLink.AboutAuthor },
   ]

@@ -49,7 +49,7 @@ export function AboutAuthorPage() {
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <Link to={NavigationLink.Methodology} className="block">
+            <Link to={NavigationLink.Method} className="block">
               <AppButtonOutline className="w-full">
                 {t('navigation.methodology')}
               </AppButtonOutline>
@@ -58,7 +58,9 @@ export function AboutAuthorPage() {
               to={`${NavigationLink.Reports}/get-all-orders-grpc`}
               className="block"
             >
-              <AppButton className="w-full">{t('aboutPage.reportsCta')}</AppButton>
+              <AppButton className="w-full">
+                {t('aboutPage.reportsCta')}
+              </AppButton>
             </Link>
           </div>
         </section>

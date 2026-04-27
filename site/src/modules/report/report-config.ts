@@ -32,7 +32,7 @@ export const STACK_META: Record<
     soft: 'rgba(25, 101, 111, 0.12)',
   },
   ts: {
-    label: 'TypeScript / Express',
+    label: 'Node.js / Express',
     accent: '#7a34f3',
     soft: 'rgba(122, 52, 243, 0.12)',
   },

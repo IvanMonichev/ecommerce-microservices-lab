@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         'text-black': '#1d1d1d',
+        muted: 'rgb(29 29 29 / 0.65)',
         ink: '#23252c',
         mist: '#dddee3',
         panel: '#ffffff',

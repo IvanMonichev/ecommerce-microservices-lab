@@ -34,7 +34,7 @@ export const resources = {
             'Проект базируется на разработанной воспроизводимой методике сравнительной оценки производительности микросервисного взаимодействия. Исследование ориентировано на выбор технологической платформы для микросервисных систем в условиях',
           paragraph1Accent: 'реальной нагрузки',
           paragraph2:
-            'В текущей версии проекта сопоставляются две реализации одного экспериментального e-commerce приложения: на Express для TypeScript-стека и на Fiber для Go-стека. Сравнение выполняется по метрикам среднего времени отклика, p95 времени отклика, пропускной способности, загрузки CPU и потребления памяти. Нагрузочное тестирование проводится в контейнеризированной среде Docker с использованием k6, а сбор ресурсных метрик выполняется при фиксированных условиях эксперимента.',
+            'В текущей версии проекта сопоставляются две реализации одного экспериментального e-commerce приложения: на Express для Node.js-стека и на Fiber для Go-стека. Сравнение выполняется по метрикам среднего времени отклика, p95 времени отклика, пропускной способности, загрузки CPU и потребления памяти. Нагрузочное тестирование проводится в контейнеризированной среде Docker с использованием k6, а сбор ресурсных метрик выполняется при фиксированных условиях эксперимента.',
         },
         methodology: {
           title: 'Ключевые этапы',
@@ -50,19 +50,161 @@ export const resources = {
         },
       },
       methodologyPage: {
-        eyebrow: 'Methodology',
         title: 'Методика эксперимента',
-        description:
-          'Страница описывает, как организован воспроизводимый эксперимент по сравнению Express и Fiber в микросервисном веб-приложении: какие условия зафиксированы, какие сценарии нагружаются и по каким метрикам анализируются результаты.',
         fixedTitle: 'Исследовательская рамка',
-        stagesTitle: 'Этапы методики',
+        selectedStagePrefix: 'Этап',
+        stageOne: {
+          title: 'Формирование единых условий эксперимента',
+          intro:
+            'Ключевая цель первого этапа — обеспечить воспроизводимость эксперимента. При неизменных условиях различия в результатах нагрузочных и функциональных тестов корректно связываются с выбранным технологическим стеком и способом межсервисного взаимодействия.',
+          diagramText:
+            'Схема отражает полный контур взаимодействий: путь запроса через API Gateway, связи между сервисами по HTTP, gRPC и AMQP, а также привязку каждого сервиса к своему хранилищу данных. Это фиксирует единый архитектурный baseline для корректного сравнения реализаций.',
+          diagramAlt: 'Архитектура экспериментального стенда',
+          platformLead:
+            'Для обеспечения сопоставимости результатов были зафиксированы как параметры вычислительной платформы, так и версии ключевых технологий: все компоненты запускались в Docker-контейнерах на едином стенде, что изолировало окружение микросервисов и снизило влияние внешних факторов, связанных с конфигурацией системы, зависимостями и API библиотек.',
+          platformTable: {
+            leftHeader: 'Параметр среды',
+            rightHeader: 'Показатель',
+            rows: [
+              { id: 'os', left: 'Операционная система', right: 'macOS Tahoe, 26.3' },
+              { id: 'cpu', left: 'Процессор', right: 'Apple M5 (ARM)' },
+              {
+                id: 'ram',
+                left: 'Оперативная память (RAM)',
+                right: '16 GB Unified Memory',
+              },
+              {
+                id: 'cores',
+                left: 'Количество ядер',
+                right: '10 (6 performance + 4 efficiency)',
+              },
+              { id: 'threads', left: 'Количество потоков', right: '10' },
+            ],
+          },
+          technologyTable: {
+            leftHeader: 'Технология',
+            rightHeader: 'Версия',
+            rows: [
+              { id: 'node', left: 'Node.js', right: '22' },
+              { id: 'ts', left: 'TypeScript', right: '5.9.3' },
+              { id: 'express', left: 'Express', right: '5.2.1' },
+              { id: 'typeorm', left: 'TypeORM', right: '0.3.28' },
+              { id: 'mongoose', left: 'Mongoose', right: '9.2.3' },
+              { id: 'axios', left: 'Axios', right: '1.13.6' },
+              { id: 'amqplib', left: 'Amqplib', right: '0.10.9' },
+              { id: 'go', left: 'Go', right: '1.25.6' },
+              { id: 'fiber', left: 'Fiber', right: '3.1.0' },
+              {
+                id: 'mongo-driver',
+                left: 'go.mongodb.org/mongo-driver',
+                right: '2.5.0',
+              },
+              { id: 'pgx', left: 'pgx', right: '5.8.0' },
+              {
+                id: 'rabbitmq-go',
+                left: 'RabbitMQ Go Client (amqp091-go)',
+                right: '1.10.0',
+              },
+              { id: 'grpc', left: 'gRPC', right: '1.79.2' },
+              {
+                id: 'protobuf',
+                left: 'Protocol Buffers (protobuf)',
+                right: '1.36.11',
+              },
+              {
+                id: 'protoc-gen-go-grpc',
+                left: 'protoc-gen-go-grpc',
+                right: '1.6.1',
+              },
+            ],
+          },
+        },
+        stageTwo: {
+          title: 'Выбор техник нагрузочного тестирования',
+          intro:
+            'В качестве базового подхода используется равномерное тестирование при постоянной нагрузке. Такой формат ориентирован на сопоставление производительности различных реализаций микросервисного взаимодействия в одинаковых и контролируемых условиях, а не на поиск предельной отказоустойчивости системы. Поддержание стабильного числа одновременно активных клиентов на всём протяжении прогона снижает влияние случайных колебаний интенсивности запросов и делает итоговые показатели более сопоставимыми.',
+          scenariosLead:
+            'Нагрузочное тестирование структурировано в виде четырёх сценариев, охватывающих чтение данных, запись данных и асинхронную обработку событий. Такое разбиение позволяет сравнивать поведение системы в разных режимах межсервисного взаимодействия при одинаковых условиях проведения эксперимента.',
+          diagramAlt: 'Схема сценариев взаимодействия в микросервисном приложении',
+          scenarios: [
+            {
+              id: 'scenario-1',
+              title:
+                'Сценарий 1: получение списка заказов при HTTP-взаимодействии между сервисами',
+              text: 'Клиентский запрос поступает в API Gateway, после чего шлюз обращается к сервису пользователей и сервису заказов по HTTP. Сервис заказов дополнительно запрашивает данные у сервиса товаров также по HTTP, формирует итоговый ответ и возвращает его клиенту через API Gateway. Этот сценарий отражает классическую REST-коммуникацию и используется для оценки накладных расходов HTTP, сериализации данных и последовательной обработки запросов.',
+            },
+            {
+              id: 'scenario-2',
+              title:
+                'Сценарий 2: получение списка заказов при gRPC-взаимодействии между сервисами',
+              text: 'По прикладной логике сценарий повторяет первый, но взаимодействие между сервисом заказов и сервисом товаров выполняется через gRPC вместо HTTP. Такой вариант позволяет сопоставить два подхода к межсервисной коммуникации в одинаковых функциональных условиях и оценить влияние замены REST-вызова на задержки, пропускную способность и общее поведение системы.',
+            },
+            {
+              id: 'scenario-3',
+              title: 'Сценарий 3: создание заказа',
+              text: 'Клиент отправляет POST-запрос через API Gateway в сервис заказов по HTTP. Сервис выполняет проверку входных данных, обрабатывает запрос, формирует новую сущность заказа и сохраняет результат. В отличие от первых двух сценариев, здесь моделируется операция записи, а не чтения данных.',
+            },
+            {
+              id: 'scenario-4',
+              title:
+                'Сценарий 4: асинхронное обновление статуса заказа с публикацией события',
+              text: 'Клиентский запрос проходит через API Gateway и направляется в сервис уведомлений по HTTP. После обработки сервис уведомлений публикует сообщение в брокер RabbitMQ с использованием AMQP.',
+            },
+          ],
+          generatorTable: {
+            leftHeader: 'Параметр',
+            rightHeader: 'Значение',
+            rows: [
+              { id: 'tool', left: 'Инструмент генерации', right: 'k6' },
+              {
+                id: 'vus',
+                left: 'Количество виртуальных пользователей',
+                right: '1000',
+              },
+              {
+                id: 'sleep',
+                left: 'Интервал между запросами одного пользователя',
+                right: '1 секунда',
+              },
+              {
+                id: 'duration',
+                left: 'Длительность одного прогона',
+                right: '1 минута',
+              },
+              {
+                id: 'repeats',
+                left: 'Количество повторений каждого сценария',
+                right: '10',
+              },
+            ],
+          },
+          profileParagraphs: [
+            'Профиль нагрузки задаётся как стабильный и повторяемый режим воздействия: фиксируется интенсивность запросов, число одновременно активных пользователей, длительность прогона и количество повторений сценариев. Такая конфигурация снижает влияние случайных колебаний и делает сравнение технологических реализаций статистически более корректным.',
+            'Для сохранения сопоставимости перед каждым прогоном выполнялась подготовка стенда: сброс состояния баз данных к исходному набору, очистка очередей сообщений и фиксация одинакового начального состояния входных данных. Это исключало накопительный эффект от предыдущих запусков и повышало достоверность измерений.',
+          ],
+        },
+        stageThree: {
+          title: 'Определение метрик оценки',
+          intro:
+            'На данном этапе фиксируется единый набор метрик, по которым сопоставляются исследуемые реализации. Каждая метрика отражает отдельный аспект поведения системы под нагрузкой и формирует общую картину производительности и ресурсоёмкости.',
+        },
+        stagesTitle: 'Структура методики',
         stagesDescription:
           'Методика построена как последовательность шагов, позволяющих удерживать архитектурную эквивалентность реализаций, контролировать нагрузочное окружение и получать сопоставимые результаты.',
-        scenariosTitle: 'Нагрузочные сценарии',
-        metricsTitle: 'Метрики оценки',
-        environmentTitle: 'Контролируемое окружение',
-        environmentDescription:
-          'Сопоставимость результатов обеспечивается не только одинаковой бизнес-логикой, но и фиксацией инфраструктуры, входных данных, параметров генерации нагрузки и правил сбора метрик.',
+        stageFourFive: {
+          title: 'Проведение эксперимента, анализ и интерпретация результатов',
+          intro:
+            'На данном этапе выполняется полный цикл от повторяемых прогонов до интерпретации агрегированных результатов, что обеспечивает системный анализ производительности и ресурсоёмкости в одинаковых условиях эксперимента.',
+          executionTitle: 'Этап 04. Проведение эксперимента',
+          executionText:
+            'Для каждого сценария выполняются серии повторных прогонов с фиксированным профилем нагрузки. В ходе выполнения снимаются временные метрики (latency, p95, RPS, ошибки) и ресурсные показатели контейнеров (CPU и RAM).',
+          analysisTitle: 'Этап 05. Анализ и интерпретация',
+          analysisText:
+            'После завершения прогонов данные агрегируются и сопоставляются между технологическими реализациями и сценариями, что позволяет оценить устойчивость отклика, вычислительную стоимость и влияние способа межсервисного взаимодействия на итоговую эффективность.',
+          resultsLead:
+            'Подробные значения метрик и сравнительные результаты доступны в разделе отчётов.',
+          resultsCta: 'Перейти к результатам',
+        },
       },
       reportsPage: {
         eyebrow: 'Отчеты',
@@ -158,7 +300,7 @@ export const resources = {
               'Одна из двух сравниваемых платформ для реализации микросервисов в экспериментальном стенде.',
           },
           {
-            name: 'TypeScript',
+            name: 'Node.js',
             description:
               'Вторая платформа исследования, используемая для параллельной реализации того же приложения.',
           },
@@ -170,7 +312,7 @@ export const resources = {
           {
             name: 'Express',
             description:
-              'Web-фреймворк для Node.js, используемый в TypeScript-реализации исследуемого приложения.',
+              'Web-фреймворк для Node.js, используемый в Node.js-реализации исследуемого приложения.',
           },
           {
             name: 'MongoDB',
@@ -206,9 +348,9 @@ export const resources = {
               'Чтение списка заказов через HTTP downstream для оценки накладных расходов синхронного взаимодействия.',
             tags: ['k6', 'HTTP', 'Orders'],
             metrics: [
-              { label: 'TypeScript avg', value: '806 ms' },
+              { label: 'Node.js avg', value: '806 ms' },
               { label: 'Go avg', value: '221 ms' },
-              { label: 'TypeScript CPU', value: '314%' },
+              { label: 'Node.js CPU', value: '314%' },
               { label: 'Go CPU', value: '478%' },
             ],
           },
@@ -219,9 +361,9 @@ export const resources = {
               'Сценарий сравнивает чтение заказов через gRPC downstream при высокой конкурентной нагрузке.',
             tags: ['k6', 'gRPC', 'Orders'],
             metrics: [
-              { label: 'TypeScript p95', value: '1609 ms' },
+              { label: 'Node.js p95', value: '1609 ms' },
               { label: 'Go p95', value: '374 ms' },
-              { label: 'TypeScript RAM', value: '843 MiB' },
+              { label: 'Node.js RAM', value: '843 MiB' },
               { label: 'Go RAM', value: '343 MiB' },
             ],
           },
@@ -232,9 +374,9 @@ export const resources = {
               'Оценивает полный путь создания заказа: gateway, валидация, получение товара и запись результата.',
             tags: ['Write path', 'Orders', 'Users'],
             metrics: [
-              { label: 'TypeScript avg', value: '325 ms' },
+              { label: 'Node.js avg', value: '325 ms' },
               { label: 'Go avg', value: '19 ms' },
-              { label: 'TypeScript requests', value: '45 784' },
+              { label: 'Node.js requests', value: '45 784' },
               { label: 'Go requests', value: '59 236' },
             ],
           },
@@ -245,9 +387,9 @@ export const resources = {
               'Показывает наиболее легкий сценарий обновления, удобный для базового сравнения write latency.',
             tags: ['Status', 'Orders', 'Baseline'],
             metrics: [
-              { label: 'TypeScript p95', value: '66.5 ms' },
+              { label: 'Node.js p95', value: '66.5 ms' },
               { label: 'Go p95', value: '6.85 ms' },
-              { label: 'TypeScript RAM', value: '423 MiB' },
+              { label: 'Node.js RAM', value: '423 MiB' },
               { label: 'Go RAM', value: '99.9 MiB' },
             ],
           },
@@ -262,7 +404,7 @@ export const resources = {
             title: 'Методика',
             description:
               'Правила постановки эксперимента, профили нагрузки, набор метрик и принципы повторяемости прогонов.',
-            to: '/methodology',
+            to: '/metodika',
           },
           {
             title: 'Отчеты',
@@ -297,24 +439,6 @@ export const resources = {
             text: 'Перед прогонами фиксируются версии технологий, состояние хранилищ, входные данные и параметры нагрузки. За счёт этого наблюдаемые различия можно связывать с особенностями стека и межсервисной коммуникации, а не с побочными факторами.',
           },
         ],
-        methodologyScenarios: [
-          {
-            title: 'Сценарий 1. Получение списка заказов через HTTP',
-            text: 'Клиентский запрос поступает в API Gateway, затем маршрутизируется в сервис заказов, который обращается к сервису товаров по HTTP. Сценарий используется для оценки накладных расходов классического REST-взаимодействия между внутренними сервисами.',
-          },
-          {
-            title: 'Сценарий 2. Получение списка заказов через gRPC',
-            text: 'Прикладная логика совпадает со сценарием HTTP, однако взаимодействие между сервисом заказов и сервисом товаров выполняется по gRPC. Это позволяет оценить влияние бинарной сериализации и RPC-коммуникации при сохранении одинакового маршрута запроса.',
-          },
-          {
-            title: 'Сценарий 3. Создание заказа',
-            text: 'Сценарий моделирует операцию записи: клиент отправляет POST-запрос через API Gateway, сервис заказов валидирует входные данные, создаёт новую сущность и сохраняет результат. Он позволяет наблюдать поведение системы при ресурсозатратной операции записи.',
-          },
-          {
-            title: 'Сценарий 4. Асинхронное обновление статуса заказа',
-            text: 'Запрос поступает в сервис уведомлений через API Gateway, после чего сервис публикует сообщение в RabbitMQ по AMQP. Этот сценарий отражает событийный контур взаимодействия и дополняет синхронные вызовы асинхронной моделью обмена.',
-          },
-        ],
         methodologyMetrics: [
           {
             title: 'Среднее время отклика',
@@ -335,24 +459,6 @@ export const resources = {
           {
             title: 'Потребление оперативной памяти',
             text: 'Показывает объём памяти, используемый контейнерами в ходе прогона. Метрика позволяет оценить ресурсоёмкость реализации и её пригодность для плотного контейнерного развёртывания.',
-          },
-        ],
-        methodologyEnvironment: [
-          {
-            title: 'Аппаратная и системная платформа',
-            text: 'Эксперименты выполняются на единой тестовой машине с фиксированными характеристиками операционной системы, процессора и памяти. Все сравниваемые реализации работают в одном и том же аппаратном окружении.',
-          },
-          {
-            title: 'Контейнеризация и инфраструктура',
-            text: 'Сервисы, базы данных и RabbitMQ запускаются в Docker-контейнерах. Контейнеризация используется как средство изоляции, фиксации окружения и воспроизводимого развертывания экспериментального стенда.',
-          },
-          {
-            title: 'Параметры генерации нагрузки',
-            text: 'Нагрузка создаётся с помощью k6: 1000 виртуальных пользователей, задержка 1 секунда между итерациями, продолжительность прогона 1 минута и 10 повторений для каждого сценария. Такой режим позволяет снизить влияние случайных колебаний.',
-          },
-          {
-            title: 'Подготовка данных и сбор метрик',
-            text: 'Перед сериями запусков хранилища приводятся к сопоставимому начальному состоянию, а входные данные фиксируются заранее. Временные метрики собираются в ходе прогонов, а ресурсные показатели дополнительно снимаются через docker stats.',
           },
         ],
         authorProfile: {
@@ -377,7 +483,7 @@ export const resources = {
           skills: [
             'React',
             'JavaScript',
-            'TypeScript',
+            'Node.js',
             'CSS',
             'HTML',
             'CSS3',
@@ -425,13 +531,13 @@ export const resources = {
       navigation: {
         home: 'Home',
         aboutAuthor: 'About Author',
-        methodology: 'Methodology',
+        methodology: 'Method',
         reports: 'Reports',
         openSection: 'Open section',
       },
       common: {
         reportRoute: 'Open reports',
-        methodologyRoute: 'Go to methodology',
+        methodologyRoute: 'Go to method',
         photo: 'Photo',
         contacts: 'Contacts',
         skills: 'Skills',
@@ -443,16 +549,16 @@ export const resources = {
           description:
             'This graduation thesis compares several interaction patterns between microservices in a web application. It examines HTTP, gRPC, and event-driven messaging, along with their impact on latency, throughput, and resource usage under load testing.',
           reportsCta: 'Open reports',
-          methodologyCta: 'Go to methodology',
+          methodologyCta: 'Go to method',
           imageAlt: 'Web application illustration',
         },
         about: {
           title: 'About the project',
           paragraph1Start:
-            'The project is based on a reproducible methodology for comparative evaluation of microservice interaction performance. The study is focused on selecting a technology platform for microservice systems under',
+            'The project is based on a reproducible method for comparative evaluation of microservice interaction performance. The study is focused on selecting a technology platform for microservice systems under',
           paragraph1Accent: 'realistic load',
           paragraph2:
-            'The current version compares two implementations of the same experimental e-commerce application: Express for the TypeScript stack and Fiber for the Go stack. The comparison covers average response time, p95 response time, throughput, CPU usage, and memory consumption. Load testing is performed in a containerized Docker environment with k6, while resource metrics are collected under fixed experimental conditions.',
+            'The current version compares two implementations of the same experimental e-commerce application: Express for the Node.js stack and Fiber for the Go stack. The comparison covers average response time, p95 response time, throughput, CPU usage, and memory consumption. Load testing is performed in a containerized Docker environment with k6, while resource metrics are collected under fixed experimental conditions.',
         },
         methodology: {
           title: 'Key stages',
@@ -468,19 +574,153 @@ export const resources = {
         },
       },
       methodologyPage: {
-        eyebrow: 'Methodology',
-        title: 'Experiment methodology',
-        description:
-          'This page describes the reproducible experiment used to compare Express and Fiber in a microservice web application: which conditions are fixed, which scenarios are loaded, and which metrics are used to interpret the results.',
+        title: 'Experimental method',
         fixedTitle: 'Research frame',
-        stagesTitle: 'Methodology stages',
+        selectedStagePrefix: 'Step',
+        stageOne: {
+          title: 'Define uniform experimental conditions',
+          intro:
+            'The key objective of the first stage is to ensure experiment reproducibility. With fixed conditions, differences in load and functional test results can be correctly attributed to the selected technology stack and interservice communication approach.',
+          diagramText:
+            'The diagram shows the full interaction contour: the request path through the API Gateway, service-to-service links over HTTP, gRPC, and AMQP, and the storage binding for each service. This establishes a single architectural baseline for fair implementation comparison.',
+          diagramAlt: 'Experimental testbed architecture',
+          platformLead:
+            'To keep results comparable, both the computational platform parameters and key technology versions were fixed. All components ran in Docker containers on a single testbed, isolating microservice runtime conditions and reducing external effects from system configuration, dependencies, and library APIs.',
+          platformTable: {
+            leftHeader: 'Environment parameter',
+            rightHeader: 'Value',
+            rows: [
+              { id: 'os', left: 'Operating system', right: 'macOS Tahoe, 26.3' },
+              { id: 'cpu', left: 'Processor', right: 'Apple M5 (ARM)' },
+              {
+                id: 'ram',
+                left: 'Random access memory (RAM)',
+                right: '16 GB Unified Memory',
+              },
+              {
+                id: 'cores',
+                left: 'Core count',
+                right: '10 (6 performance + 4 efficiency)',
+              },
+              { id: 'threads', left: 'Thread count', right: '10' },
+            ],
+          },
+          technologyTable: {
+            leftHeader: 'Technology',
+            rightHeader: 'Version',
+            rows: [
+              { id: 'node', left: 'Node.js', right: '22' },
+              { id: 'ts', left: 'TypeScript', right: '5.9.3' },
+              { id: 'express', left: 'Express', right: '5.2.1' },
+              { id: 'typeorm', left: 'TypeORM', right: '0.3.28' },
+              { id: 'mongoose', left: 'Mongoose', right: '9.2.3' },
+              { id: 'axios', left: 'Axios', right: '1.13.6' },
+              { id: 'amqplib', left: 'Amqplib', right: '0.10.9' },
+              { id: 'go', left: 'Go', right: '1.25.6' },
+              { id: 'fiber', left: 'Fiber', right: '3.1.0' },
+              {
+                id: 'mongo-driver',
+                left: 'go.mongodb.org/mongo-driver',
+                right: '2.5.0',
+              },
+              { id: 'pgx', left: 'pgx', right: '5.8.0' },
+              {
+                id: 'rabbitmq-go',
+                left: 'RabbitMQ Go Client (amqp091-go)',
+                right: '1.10.0',
+              },
+              { id: 'grpc', left: 'gRPC', right: '1.79.2' },
+              {
+                id: 'protobuf',
+                left: 'Protocol Buffers (protobuf)',
+                right: '1.36.11',
+              },
+              {
+                id: 'protoc-gen-go-grpc',
+                left: 'protoc-gen-go-grpc',
+                right: '1.6.1',
+              },
+            ],
+          },
+        },
+        stageTwo: {
+          title: 'Select load testing techniques',
+          intro:
+            'The baseline approach uses uniform testing under constant load. This format is aimed at comparing performance across different microservice interaction implementations under identical controlled conditions, rather than finding the system’s absolute fault-tolerance limit. Keeping the number of concurrently active clients stable throughout each run reduces random request-intensity fluctuations and makes final metrics more comparable.',
+          scenariosLead:
+            'Load testing is structured into four scenarios covering read operations, write operations, and asynchronous event handling. This decomposition makes it possible to compare system behavior across different interservice communication modes under the same experimental conditions.',
+          diagramAlt: 'Interaction scenario diagram for the microservice application',
+          scenarios: [
+            {
+              id: 'scenario-1',
+              title:
+                'Scenario 1: get order list with HTTP interservice communication',
+              text: 'A client request reaches the API Gateway, which then calls the user service and the order service over HTTP. The order service additionally requests product data over HTTP, forms the final response, and returns it to the client through the API Gateway. This scenario represents classic REST communication and is used to evaluate HTTP overhead, data serialization costs, and sequential request processing.',
+            },
+            {
+              id: 'scenario-2',
+              title:
+                'Scenario 2: get order list with gRPC interservice communication',
+              text: 'By business logic, this scenario is identical to the first one, but communication between the order service and the product service is done over gRPC instead of HTTP. This allows two interservice communication approaches to be compared under the same functional conditions and shows how replacing a REST call with gRPC affects latency, throughput, and overall system behavior.',
+            },
+            {
+              id: 'scenario-3',
+              title: 'Scenario 3: create order',
+              text: 'The client sends a POST request through the API Gateway to the order service over HTTP. The service validates input data, processes the request, creates a new order entity, and persists the result. Unlike the first two scenarios, this one models a write operation rather than a read operation.',
+            },
+            {
+              id: 'scenario-4',
+              title:
+                'Scenario 4: asynchronous order status update with event publication',
+              text: 'The client request passes through the API Gateway and is routed to the notification service over HTTP. After processing, the notification service publishes a message to the RabbitMQ broker using AMQP.',
+            },
+          ],
+          generatorTable: {
+            leftHeader: 'Parameter',
+            rightHeader: 'Value',
+            rows: [
+              { id: 'tool', left: 'Load generation tool', right: 'k6' },
+              { id: 'vus', left: 'Virtual users', right: '1000' },
+              {
+                id: 'sleep',
+                left: 'Delay between user requests',
+                right: '1 second',
+              },
+              { id: 'duration', left: 'Single-run duration', right: '1 minute' },
+              {
+                id: 'repeats',
+                left: 'Repetitions per scenario',
+                right: '10',
+              },
+            ],
+          },
+          profileParagraphs: [
+            'The load profile is set as a stable and repeatable mode: request intensity, concurrently active users, run duration, and number of scenario repetitions are fixed. This configuration reduces random fluctuations and makes cross-stack comparison statistically more robust.',
+            'To preserve comparability, the testbed was prepared before each run: database state was reset to the baseline dataset, message queues were cleared, and input data was returned to the same initial state. This removed carry-over effects from previous runs and improved measurement reliability.',
+          ],
+        },
+        stageThree: {
+          title: 'Define evaluation metrics',
+          intro:
+            'At this stage, a unified metric set is fixed for comparing implementations. Each metric reflects a specific aspect of behavior under load and together forms an integral view of performance and resource efficiency.',
+        },
+        stagesTitle: 'Method stages',
         stagesDescription:
-          'The methodology is organized as a sequence of steps that preserve architectural equivalence, control the load environment, and provide comparable results.',
-        scenariosTitle: 'Load scenarios',
-        metricsTitle: 'Evaluation metrics',
-        environmentTitle: 'Controlled environment',
-        environmentDescription:
-          'Result comparability is ensured not only by identical business logic but also by fixed infrastructure, input data, load generation parameters, and metric collection rules.',
+          'The method is organized as a sequence of steps that preserve architectural equivalence, control the load environment, and provide comparable results.',
+        stageFourFive: {
+          title: 'Experiment execution, analysis, and interpretation',
+          intro:
+            'This stage covers the full cycle from repeatable runs to interpretation of aggregated results, enabling a system-level analysis of performance and resource usage under identical experimental conditions.',
+          executionTitle: 'Step 04. Experiment execution',
+          executionText:
+            'Each scenario is executed in repeated runs with a fixed load profile. During execution, temporal metrics (latency, p95, RPS, errors) and container resource metrics (CPU and RAM) are collected.',
+          analysisTitle: 'Step 05. Analysis and interpretation',
+          analysisText:
+            'After the runs complete, the collected data is aggregated and compared across technology implementations and scenarios to evaluate response stability, computational cost, and the impact of interservice communication mode on overall efficiency.',
+          resultsLead:
+            'Detailed metric values and comparative results are available in the reports section.',
+          resultsCta: 'Go to results',
+        },
       },
       reportsPage: {
         eyebrow: 'Reports',
@@ -517,7 +757,7 @@ export const resources = {
             text: 'The testbed shows the difference between HTTP, gRPC, and event-driven exchange across a realistic set of e-commerce services.',
           },
           {
-            title: 'Formalized load methodology',
+            title: 'Formalized load method',
             text: 'Scenarios, environment, and metrics are described so the experiment can be reproduced and extended.',
           },
           {
@@ -576,7 +816,7 @@ export const resources = {
               'One of the two platforms compared for microservice implementation in the experimental testbed.',
           },
           {
-            name: 'TypeScript',
+            name: 'Node.js',
             description:
               'The second study platform used to implement the same application in parallel.',
           },
@@ -588,7 +828,7 @@ export const resources = {
           {
             name: 'Express',
             description:
-              'The Node.js web framework used in the TypeScript implementation of the application under study.',
+              'The Node.js web framework used in the Node.js implementation of the application under study.',
           },
           {
             name: 'MongoDB',
@@ -624,9 +864,9 @@ export const resources = {
               'Reads the order list through an HTTP downstream to estimate the overhead of synchronous interaction.',
             tags: ['k6', 'HTTP', 'Orders'],
             metrics: [
-              { label: 'TypeScript avg', value: '806 ms' },
+              { label: 'Node.js avg', value: '806 ms' },
               { label: 'Go avg', value: '221 ms' },
-              { label: 'TypeScript CPU', value: '314%' },
+              { label: 'Node.js CPU', value: '314%' },
               { label: 'Go CPU', value: '478%' },
             ],
           },
@@ -637,9 +877,9 @@ export const resources = {
               'This scenario compares reading orders through a gRPC downstream under high concurrent load.',
             tags: ['k6', 'gRPC', 'Orders'],
             metrics: [
-              { label: 'TypeScript p95', value: '1609 ms' },
+              { label: 'Node.js p95', value: '1609 ms' },
               { label: 'Go p95', value: '374 ms' },
-              { label: 'TypeScript RAM', value: '843 MiB' },
+              { label: 'Node.js RAM', value: '843 MiB' },
               { label: 'Go RAM', value: '343 MiB' },
             ],
           },
@@ -650,9 +890,9 @@ export const resources = {
               'Evaluates the full order creation path: gateway, validation, product fetch, and result persistence.',
             tags: ['Write path', 'Orders', 'Users'],
             metrics: [
-              { label: 'TypeScript avg', value: '325 ms' },
+              { label: 'Node.js avg', value: '325 ms' },
               { label: 'Go avg', value: '19 ms' },
-              { label: 'TypeScript requests', value: '45 784' },
+              { label: 'Node.js requests', value: '45 784' },
               { label: 'Go requests', value: '59 236' },
             ],
           },
@@ -663,9 +903,9 @@ export const resources = {
               'Shows the lightest update scenario and works well as a baseline comparison for write latency.',
             tags: ['Status', 'Orders', 'Baseline'],
             metrics: [
-              { label: 'TypeScript p95', value: '66.5 ms' },
+              { label: 'Node.js p95', value: '66.5 ms' },
               { label: 'Go p95', value: '6.85 ms' },
-              { label: 'TypeScript RAM', value: '423 MiB' },
+              { label: 'Node.js RAM', value: '423 MiB' },
               { label: 'Go RAM', value: '99.9 MiB' },
             ],
           },
@@ -678,10 +918,10 @@ export const resources = {
             to: '/about-author',
           },
           {
-            title: 'Methodology',
+            title: 'Method',
             description:
               'Experiment setup rules, load profiles, metric set, and repeatability principles.',
-            to: '/methodology',
+            to: '/metodika',
           },
           {
             title: 'Reports',
@@ -698,7 +938,7 @@ export const resources = {
         ],
         methodologyDetails: [
           'The independent variable of the experiment is the software platform used to implement the microservice application: Express/Node.js versus Fiber/Go, while architecture, business logic, and interaction scenarios remain unchanged.',
-          'The goal of the methodology is to obtain a comparable performance evaluation without mixing the studied factor with differences in the problem domain, service structure, load profile, or infrastructure.',
+          'The goal of the method is to obtain a comparable performance evaluation without mixing the studied factor with differences in the problem domain, service structure, load profile, or infrastructure.',
           'For that reason, all substantial conditions are fixed in advance: service composition, data stores, API Gateway, RabbitMQ, container environment, load parameters, input data, and result aggregation rules.',
           'This makes it possible to interpret metric differences as a consequence of implementation and communication choices rather than accidental changes in the external environment.',
         ],
@@ -714,24 +954,6 @@ export const resources = {
           {
             title: 'How comparison validity is preserved',
             text: 'Technology versions, storage state, input data, and load parameters are fixed before the runs. Because of that, observed differences can be attributed to stack behavior and interservice communication rather than side effects.',
-          },
-        ],
-        methodologyScenarios: [
-          {
-            title: 'Scenario 1. Fetch order list over HTTP',
-            text: 'A client request enters the API Gateway and is routed to the order service, which calls the product service over HTTP. This scenario is used to evaluate the overhead of classic REST-style communication between internal services.',
-          },
-          {
-            title: 'Scenario 2. Fetch order list over gRPC',
-            text: 'The business logic is identical to the HTTP scenario, but communication between the order service and the product service uses gRPC. This isolates the effect of binary serialization and RPC-based communication while keeping the request path the same.',
-          },
-          {
-            title: 'Scenario 3. Create order',
-            text: 'This scenario models a write operation: the client sends a POST request through the API Gateway, the order service validates input, creates a new entity, and persists it. It is intended to observe behavior under a more resource-intensive write path.',
-          },
-          {
-            title: 'Scenario 4. Asynchronous order status update',
-            text: 'The request is sent to the notification service through the API Gateway, after which the service publishes a message to RabbitMQ via AMQP. This scenario represents the event-driven communication path and complements the synchronous calls.',
           },
         ],
         methodologyMetrics: [
@@ -756,24 +978,6 @@ export const resources = {
             text: 'Shows how much memory the containers use during a run. This metric is necessary for assessing resource efficiency and deployment density in containerized environments.',
           },
         ],
-        methodologyEnvironment: [
-          {
-            title: 'Hardware and system platform',
-            text: 'Experiments are executed on a single test machine with fixed operating system, processor, and memory characteristics. Both implementations run in the same hardware environment.',
-          },
-          {
-            title: 'Containerization and infrastructure',
-            text: 'Services, databases, and RabbitMQ are launched in Docker containers. Containerization is used to isolate components, fix runtime conditions, and reproduce the testbed reliably.',
-          },
-          {
-            title: 'Load generation parameters',
-            text: 'Load is generated with k6: 1000 virtual users, a 1-second delay between iterations, 1-minute run duration, and 10 repetitions per scenario. This reduces the impact of random fluctuations.',
-          },
-          {
-            title: 'Data preparation and metric collection',
-            text: 'Before run series, data stores are returned to a comparable initial state and input data is fixed in advance. Temporal metrics are collected during execution, while resource metrics are additionally captured through docker stats.',
-          },
-        ],
         authorProfile: {
           name: 'Ivan Monichev',
           education: 'Master’s student, ITMO University',
@@ -796,7 +1000,7 @@ export const resources = {
           skills: [
             'React',
             'JavaScript',
-            'TypeScript',
+            'Node.js',
             'CSS',
             'HTML',
             'CSS3',
