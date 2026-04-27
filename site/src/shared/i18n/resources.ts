@@ -404,7 +404,7 @@ export const resources = {
             title: 'Методика',
             description:
               'Правила постановки эксперимента, профили нагрузки, набор метрик и принципы повторяемости прогонов.',
-            to: '/metodika',
+            to: '/method',
           },
           {
             title: 'Отчеты',
@@ -416,7 +416,7 @@ export const resources = {
             title: 'Архитектура',
             description:
               'Схема экспериментального стенда, роли микросервисов и место асинхронного контура в системе.',
-            to: '/#architecture',
+            to: '/method#stage-01',
           },
         ],
         methodologyDetails: [
@@ -921,7 +921,7 @@ export const resources = {
             title: 'Method',
             description:
               'Experiment setup rules, load profiles, metric set, and repeatability principles.',
-            to: '/metodika',
+            to: '/method',
           },
           {
             title: 'Reports',
@@ -933,7 +933,7 @@ export const resources = {
             title: 'Architecture',
             description:
               'The experimental testbed scheme, microservice roles, and the place of the asynchronous layer in the system.',
-            to: '/#architecture',
+            to: '/method#stage-01',
           },
         ],
         methodologyDetails: [

@@ -8,7 +8,7 @@ RESULTS_DIR="${BENCHMARK_DIR}/results"
 STATS_SCRIPT="${SCRIPT_DIR}/collect-docker-stats.sh"
 SUMMARY_SCRIPT="${SCRIPT_DIR}/summarize-docker-stats.sh"
 SCENARIO="update-order-status"
-TARGET="${1:-go}"
+TARGET="${1:-ts}"
 RUNS="${RUNS:-10}"
 ORDER_ID="${ORDER_ID:-e9f49396-7e4b-40a9-b0dc-e5ef5f033a31}"
 

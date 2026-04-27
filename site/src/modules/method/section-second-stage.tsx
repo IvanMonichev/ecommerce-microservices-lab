@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import scenarioSchemeSvg from '@/assets/02.svg'
+import scenarioSchemeSvg from '@/assets/scheme-scenarios-for-experiment.svg'
 import { Section } from '@/shared/components/section'
 import { Text } from '@/shared/components/text'
 import { TwoColumnTable } from '@/shared/components/two-column-table'
@@ -43,7 +43,9 @@ export function SectionSecondStage() {
       </Section.Title>
 
       <article>
-        <Text.Paragraph className="mt-5 text-muted">{stageTwo.intro}</Text.Paragraph>
+        <Text.Paragraph className="mt-5 text-muted">
+          {stageTwo.intro}
+        </Text.Paragraph>
         <Text.Paragraph className="mt-5 text-muted">
           {stageTwo.scenariosLead}
         </Text.Paragraph>

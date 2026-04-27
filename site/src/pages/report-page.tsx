@@ -28,23 +28,23 @@ export function ReportPage() {
           <details className="group mb-8 overflow-hidden rounded-sm border border-ink bg-white">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 bg-[linear-gradient(135deg,rgba(239,239,237,0.82),rgba(255,255,255,0.98))] px-6 py-5 marker:hidden">
               <h2 className="text-lg font-semibold text-ink">
-                {isRu ? 'Сценарии' : 'Scenario'}
+                {isRu ? 'Сценарий' : 'Scenario'}
               </h2>
               <span className="text-lg leading-none text-black/45 transition group-open:rotate-45">
                 +
               </span>
             </summary>
 
-            <div className="border-t border-ink">
+            <div className="grid gap-px border-t border-ink bg-ink">
               {reports.map((report) => {
                 const detail = reportDetailContent[report.id]
 
                 return (
-                  <details
+                  <article
                     key={report.id}
-                    className="group border-b border-ink last:border-b-0"
+                    className="bg-white px-5 py-4"
                   >
-                    <summary className="flex cursor-pointer list-none items-start justify-between gap-4 px-5 py-4 marker:hidden transition hover:bg-mist">
+                    <div className="min-w-0">
                       <span className="min-w-0">
                         <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-black/45">
                           {report.id}
@@ -53,14 +53,11 @@ export function ReportPage() {
                           {report.title}
                         </span>
                       </span>
-                      <span className="mt-1 text-lg leading-none text-black/45 transition group-open:rotate-45">
-                        +
-                      </span>
-                    </summary>
-                    <div className="border-t border-ink px-5 py-4 text-sm leading-7 text-black/60">
+                    </div>
+                    <div className="mt-3 text-sm leading-7 text-black/60">
                       {detail?.lead ?? report.summary}
                     </div>
-                  </details>
+                  </article>
                 )
               })}
             </div>
