@@ -77,12 +77,14 @@ export function SectionSecondStage() {
         </section>
         <section className="py-5">
           <div className="grid gap-5 lg:grid-cols-2 lg:items-start">
-            <TwoColumnTable
-              leftHeader={stageTwo.generatorTable.leftHeader}
-              rightHeader={stageTwo.generatorTable.rightHeader}
-              rows={stageTwo.generatorTable.rows}
-            />
-            <div className="space-y-3 text-sm leading-7 text-black/70">
+            <div className="order-2 lg:order-1">
+              <TwoColumnTable
+                leftHeader={stageTwo.generatorTable.leftHeader}
+                rightHeader={stageTwo.generatorTable.rightHeader}
+                rows={stageTwo.generatorTable.rows}
+              />
+            </div>
+            <div className="order-1 space-y-3 text-sm leading-7 text-black/70 lg:order-2">
               {stageTwo.profileParagraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}

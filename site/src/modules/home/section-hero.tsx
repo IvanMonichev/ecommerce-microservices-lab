@@ -10,28 +10,33 @@ export function SectionHero() {
 
   return (
     <section className="bg-mist">
-      <div className="mx-auto w-full max-w-[1200px] px-6 py-20 md:px-8 lg:px-10">
+      <div className="mx-auto w-full max-w-[1200px] px-5 py-14 sm:px-6 md:px-8 md:py-20 lg:px-10">
         <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="flex flex-col justify-center">
+          <div className="order-1 flex flex-col justify-center">
             <h1 className="max-w-xl text-3xl font-bold tracking-tight">
               {t('home.hero.title')}
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-text-black">
               {t('home.hero.description')}
             </p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link to={NavigationLink.Method}>
-                <AppButtonOutline>
+            <div className="mt-10 grid gap-3 sm:flex sm:flex-wrap sm:gap-4">
+              <Link to={NavigationLink.Method} className="block">
+                <AppButtonOutline className="w-full sm:w-auto">
                   {t('home.hero.methodologyCta')}
                 </AppButtonOutline>
               </Link>
-              <Link to={`${NavigationLink.Reports}/get-all-orders-grpc`}>
-                <AppButton>{t('home.hero.reportsCta')}</AppButton>
+              <Link
+                to={`${NavigationLink.Reports}/get-all-orders-grpc`}
+                className="block"
+              >
+                <AppButton className="w-full sm:w-auto">
+                  {t('home.hero.reportsCta')}
+                </AppButton>
               </Link>
             </div>
           </div>
-          <div className="flex items-center justify-center">
-            <div className="relative h-[300px] w-[300px] rounded-full border border-line bg-[radial-gradient(circle_at_center,_rgba(122,52,243,0.12),_rgba(122,52,243,0)_62%)] md:h-[380px] md:w-[380px]">
+          <div className="order-2 flex items-center justify-center">
+            <div className="relative h-[min(76vw,300px)] w-[min(76vw,300px)] rounded-full border border-line bg-[radial-gradient(circle_at_center,_rgba(122,52,243,0.12),_rgba(122,52,243,0)_62%)] md:h-[380px] md:w-[380px]">
               <img
                 src={webHero}
                 alt={t('home.hero.imageAlt')}

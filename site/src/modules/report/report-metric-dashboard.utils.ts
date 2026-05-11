@@ -1,16 +1,26 @@
 import type { ChartOptions } from 'chart.js'
 
-export function getReportMetricChartOptions(): ChartOptions<'line' | 'bar'> {
+type ChartOptionsParams = {
+  compact?: boolean
+}
+
+export function getReportMetricChartOptions({
+  compact = false,
+}: ChartOptionsParams = {}): ChartOptions<'line' | 'bar'> {
   return {
     responsive: true,
     maintainAspectRatio: false,
+    resizeDelay: 120,
     plugins: {
       legend: {
+        position: compact ? 'bottom' : 'top',
         labels: {
           color: '#23252c',
+          boxHeight: compact ? 8 : 12,
+          boxWidth: compact ? 16 : 40,
           font: {
             family: 'Inter',
-            size: 12,
+            size: compact ? 10 : 12,
           },
         },
       },
@@ -24,7 +34,13 @@ export function getReportMetricChartOptions(): ChartOptions<'line' | 'bar'> {
           color: 'rgba(35, 37, 44, 0.08)',
         },
         ticks: {
+          autoSkip: true,
           color: '#23252c',
+          maxRotation: 0,
+          minRotation: 0,
+          font: {
+            size: compact ? 10 : 12,
+          },
         },
       },
       y: {
@@ -33,6 +49,10 @@ export function getReportMetricChartOptions(): ChartOptions<'line' | 'bar'> {
         },
         ticks: {
           color: '#23252c',
+          maxTicksLimit: compact ? 5 : 8,
+          font: {
+            size: compact ? 10 : 12,
+          },
         },
       },
     },

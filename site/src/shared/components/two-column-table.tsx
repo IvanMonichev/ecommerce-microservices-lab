@@ -28,10 +28,10 @@ export function TwoColumnTable({
         <table className="min-w-full border-collapse text-sm leading-7 text-black/75">
           <thead className="bg-accentSoft/70">
             <tr>
-              <th className="border-b border-ink px-5 py-3 text-left font-semibold text-accent">
+              <th className="border-b border-ink px-4 py-3 text-left font-semibold text-accent sm:px-5">
                 {leftHeader}
               </th>
-              <th className="border-b border-ink px-5 py-3 text-left font-semibold text-accent">
+              <th className="border-b border-ink px-4 py-3 text-left font-semibold text-accent sm:px-5">
                 {rightHeader}
               </th>
             </tr>
@@ -44,7 +44,7 @@ export function TwoColumnTable({
               >
                 <td
                   className={[
-                    'px-5 py-3',
+                    'px-4 py-3 sm:px-5',
                     index === rows.length - 1 ? '' : 'border-b border-ink',
                   ].join(' ')}
                 >
@@ -52,7 +52,7 @@ export function TwoColumnTable({
                 </td>
                 <td
                   className={[
-                    'px-5 py-3',
+                    'px-4 py-3 sm:px-5',
                     index === rows.length - 1 ? '' : 'border-b border-ink',
                   ].join(' ')}
                 >

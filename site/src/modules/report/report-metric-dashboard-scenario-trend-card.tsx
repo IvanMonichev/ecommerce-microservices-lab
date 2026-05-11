@@ -6,6 +6,7 @@ import {
   getReportMetricChartOptions,
 } from '@/modules/report/report-metric-dashboard.utils'
 import type { ScenarioTrendCardProps } from '@/modules/report/report-metric-dashboard.types'
+import { useMediaQuery } from '@/shared/hooks/use-media-query'
 
 export function ScenarioTrendCard({
   title,
@@ -18,6 +19,7 @@ export function ScenarioTrendCard({
   activeScenarioId,
   onScenarioChange,
 }: ScenarioTrendCardProps) {
+  const isCompactChart = useMediaQuery('(max-width: 640px)')
   const chartData: ChartData<'line', Array<number | null>, string> = {
     labels: runIds.map((runId) => formatReportRunLabel(runId)),
     datasets: [
@@ -47,7 +49,7 @@ export function ScenarioTrendCard({
   }
 
   return (
-    <div className="overflow-hidden rounded-sm border border-ink bg-white">
+    <div className="min-w-0 overflow-hidden rounded-sm border border-ink bg-white">
       <div className="border-b border-ink px-4 py-4">
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-4 text-xs text-black/50">
@@ -64,8 +66,8 @@ export function ScenarioTrendCard({
         </div>
       </div>
       <div className="border-b border-ink px-4 py-3">
-        <div className="flex justify-center overflow-x-auto">
-          <div className="flex gap-4 text-sm text-black/55">
+        <div className="overflow-x-auto">
+          <div className="flex w-max min-w-full justify-start gap-4 text-sm text-black/55 sm:justify-center">
             {scenarios.map((scenarioId) => (
               <button
                 key={scenarioId}
@@ -84,9 +86,14 @@ export function ScenarioTrendCard({
           </div>
         </div>
       </div>
-      <div className="p-4">
-        <div className="h-[320px]">
-          <Line data={chartData} options={getReportMetricChartOptions()} />
+      <div className="p-3 sm:p-4">
+        <div className="relative h-[260px] min-w-0 sm:h-[320px]">
+          <Line
+            data={chartData}
+            options={getReportMetricChartOptions({
+              compact: isCompactChart,
+            })}
+          />
         </div>
       </div>
     </div>

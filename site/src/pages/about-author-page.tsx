@@ -16,9 +16,9 @@ export function AboutAuthorPage() {
   const vkContact = authorProfile.contacts[1]
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-16 lg:px-10 lg:py-20">
+    <div className="mx-auto max-w-6xl px-5 py-12 sm:px-6 lg:px-10 lg:py-20">
       <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-stretch">
-        <section className="h-full rounded-sm border border-line bg-white px-7 py-8 md:px-8 md:py-9">
+        <section className="order-2 h-full rounded-sm border border-line bg-white px-5 py-7 sm:px-7 sm:py-8 md:px-8 md:py-9 lg:order-1">
           <Text.H2>{authorProfile.name}</Text.H2>
 
           <Text.Paragraph className="mt-3">
@@ -65,9 +65,9 @@ export function AboutAuthorPage() {
           </div>
         </section>
 
-        <aside className="h-full">
+        <aside className="order-1 h-full lg:order-2">
           <div className="flex h-full flex-col rounded-sm border border-line bg-white p-5 md:p-6">
-            <div className="relative h-[320px] flex-1 overflow-hidden rounded-sm border border-line bg-mist md:h-auto">
+            <div className="relative h-[280px] flex-1 overflow-hidden rounded-sm border border-line bg-mist sm:h-[320px] md:h-auto">
               <img
                 src={authorPhoto}
                 alt={authorProfile.name}
@@ -84,7 +84,7 @@ export function AboutAuthorPage() {
                   <Mail className="h-4 w-4" aria-hidden="true" />
                   <span>{emailContact.label}</span>
                 </div>
-                <div className="mt-3 text-sm font-semibold text-ink">
+                <div className="mt-3 break-words text-sm font-semibold text-ink">
                   {emailContact.value}
                 </div>
               </a>
@@ -98,7 +98,7 @@ export function AboutAuthorPage() {
                   <MessageCircle className="h-4 w-4" aria-hidden="true" />
                   <span>{vkContact.label}</span>
                 </div>
-                <div className="mt-3 text-sm font-semibold text-ink">
+                <div className="mt-3 break-words text-sm font-semibold text-ink">
                   {vkContact.value}
                 </div>
               </a>

@@ -22,11 +22,11 @@ export function ReportPage() {
   const isRu = i18n.language.startsWith('ru')
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
+    <div className="mx-auto max-w-7xl px-5 py-12 sm:px-6 lg:px-10 lg:py-20">
       <div className="flex flex-col gap-8 xl:grid xl:grid-cols-[minmax(0,1fr)_19rem] xl:items-start">
-        <div className="min-w-0">
+        <div className="order-2 min-w-0 xl:order-1">
           <details className="group mb-8 overflow-hidden rounded-sm border border-ink bg-white">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 bg-[linear-gradient(135deg,rgba(239,239,237,0.82),rgba(255,255,255,0.98))] px-6 py-5 marker:hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 bg-[linear-gradient(135deg,rgba(239,239,237,0.82),rgba(255,255,255,0.98))] px-5 py-5 marker:hidden sm:px-6">
               <h2 className="text-lg font-semibold text-ink">
                 {isRu ? 'Сценарий' : 'Scenario'}
               </h2>
@@ -70,7 +70,7 @@ export function ReportPage() {
           />
         </div>
 
-        <aside className="xl:sticky xl:top-28 xl:w-full">
+        <aside className="order-1 xl:sticky xl:top-28 xl:order-2 xl:w-full">
           <div className="space-y-6">
             <section className="overflow-hidden rounded-sm border border-ink bg-white">
               <div>

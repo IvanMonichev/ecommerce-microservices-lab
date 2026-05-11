@@ -10,6 +10,18 @@ import type {
   ScenarioColumn,
 } from '@/modules/report/report-metric-dashboard.types'
 import { getReportMetricChartOptions } from '@/modules/report/report-metric-dashboard.utils'
+import { useMediaQuery } from '@/shared/hooks/use-media-query'
+
+function formatScenarioChartLabel(scenarioId: string, compact: boolean) {
+  if (!compact) {
+    return scenarioId
+  }
+
+  return scenarioId
+    .replace('get-all-orders-', 'get ')
+    .replace('update-order-status', 'status')
+    .replace('create-order', 'create')
+}
 
 export function ReportMetricDashboard({
   metric,
@@ -21,6 +33,7 @@ export function ReportMetricDashboard({
       'get-all-orders-http',
   )
   const [hoveredRunId, setHoveredRunId] = useState<string | null>(null)
+  const isCompactChart = useMediaQuery('(max-width: 640px)')
   const unit = isRu ? metric.unit.ru : metric.unit.en
   const scenarios = reports
     .filter((report) => report.id in benchmarkData.scenarios)
@@ -66,7 +79,9 @@ export function ReportMetricDashboard({
   }))
 
   const aggregatedChartData: ChartData<'bar', number[], string> = {
-    labels: scenarios.map((scenario) => scenario.id),
+    labels: scenarios.map((scenario) =>
+      formatScenarioChartLabel(scenario.id, isCompactChart),
+    ),
     datasets: [
       {
         label: STACK_META.go.label,
@@ -89,9 +104,9 @@ export function ReportMetricDashboard({
   return (
     <div className="space-y-8">
       <section className="overflow-hidden rounded-sm border border-ink bg-white">
-        <div className="border-b border-ink bg-[linear-gradient(135deg,rgba(239,239,237,0.82),rgba(255,255,255,0.98))] px-8 py-6">
+        <div className="border-b border-ink bg-[linear-gradient(135deg,rgba(239,239,237,0.82),rgba(255,255,255,0.98))] px-5 py-5 sm:px-8 sm:py-6">
           <div className="max-w-3xl">
-            <h2 className="text-2xl font-semibold">
+            <h2 className="text-xl font-semibold sm:text-2xl">
               {isRu ? metric.label.ru : metric.label.en}
             </h2>
             <p className="mt-3 text-sm leading-7 text-black/60">
@@ -99,9 +114,9 @@ export function ReportMetricDashboard({
             </p>
           </div>
         </div>
-        <div className="bg-panel px-5 py-5 lg:px-6 lg:py-6">
-          <div className="grid gap-4">
-            <div>
+        <div className="min-w-0 bg-panel px-3 py-3 sm:px-5 sm:py-5 lg:px-6 lg:py-6">
+          <div className="grid min-w-0 gap-4">
+            <div className="min-w-0">
               <ScenarioTrendCard
                 title={activeScenario.id}
                 runIds={runIds}
@@ -126,15 +141,17 @@ export function ReportMetricDashboard({
                 onScenarioChange={setActiveScenarioId}
               />
             </div>
-            <div className="overflow-hidden rounded-sm border border-ink bg-white">
+            <div className="min-w-0 overflow-hidden rounded-sm border border-ink bg-white">
               <div className="border-b border-ink px-4 py-4 text-sm font-semibold text-ink">
                 {isRu ? 'Усреднение по сценариям' : 'Scenario averages'}
               </div>
-              <div className="p-4">
-                <div className="h-[380px]">
+              <div className="p-3 sm:p-4">
+                <div className="relative h-[280px] min-w-0 sm:h-[380px]">
                   <Bar
                     data={aggregatedChartData}
-                    options={getReportMetricChartOptions()}
+                    options={getReportMetricChartOptions({
+                      compact: isCompactChart,
+                    })}
                   />
                 </div>
               </div>

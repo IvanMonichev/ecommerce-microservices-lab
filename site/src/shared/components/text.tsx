@@ -56,11 +56,11 @@ function H3({ children, className, ...props }: H3Props) {
   )
 }
 
-function H2({ children, ...props }: H2Props) {
+function H2({ children, className, ...props }: H2Props) {
   return (
     <h2
       {...props}
-      className={classNames('text-2xl font-semibold text-ink', classNames)}
+      className={classNames('text-2xl font-semibold text-ink', className)}
     >
       {children}
     </h2>

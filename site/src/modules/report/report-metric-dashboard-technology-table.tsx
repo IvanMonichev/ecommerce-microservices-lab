@@ -21,12 +21,12 @@ export function TechnologyTable({
 
   return (
     <section className="overflow-hidden rounded-sm border border-ink bg-white">
-      <div className={`border-b border-ink px-6 py-5 ${accent}`}>
+      <div className={`border-b border-ink px-5 py-4 sm:px-6 sm:py-5 ${accent}`}>
         <h3 className="text-xl font-semibold">{title}</h3>
       </div>
 
-      <div className="overflow-hidden">
-        <table className="min-w-full table-fixed border-collapse text-[12px] leading-5 lg:text-[13px]">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[680px] table-fixed border-collapse text-[12px] leading-5 lg:text-[13px]">
           <thead className="bg-ink text-white">
             <tr>
               <th className="sticky left-0 w-[90px] bg-ink px-3 py-3 text-left font-semibold lg:w-[108px]">
